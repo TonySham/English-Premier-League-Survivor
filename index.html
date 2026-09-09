@@ -4,52 +4,443 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EPL Survivor Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-body{font-family:Arial,sans-serif;margin:0;background:#f4f6f8;color:#17202a}
-header{background:#111827;color:white;padding:20px;text-align:center}
-main{padding:20px;max-width:900px;margin:auto}
-.card{background:white;padding:20px;margin-bottom:15px;border-radius:12px;box-shadow:0 2px 8px #0001}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#17202a;
+}
+header{
+  background:#111827;
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+main{
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+.card{
+  background:white;
+  padding:20px;
+  margin-bottom:15px;
+  border-radius:12px;
+  box-shadow:0 2px 8px #0001;
+}
 h1{margin:0;font-size:24px}
 h2{margin-top:0}
-.stat{font-size:30px;font-weight:bold}
+.stat{
+  font-size:30px;
+  font-weight:bold;
+}
+button{
+  padding:12px 16px;
+  margin:5px;
+  border:0;
+  border-radius:8px;
+  background:#111827;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+}
+button:hover{opacity:.9}
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font-size:16px;
+}
+.hidden{display:none}
+.error{
+  color:#b91c1c;
+  margin-top:10px;
+}
+.success{
+  color:#15803d;
+  margin-top:10px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<h1>⚽ EPL Survivor</h1>
-<p>Admin Dashboard</p>
+  <h1>⚽ EPL Survivor</h1>
+  <p>Admin Dashboard</p>
 </header>
 
 <main>
 
-<div class="card">
-<h2>Competition</h2>
-<p><strong>Premier League Survivor 2026-27</strong></p>
-<p>Status: <strong>Upcoming</strong></p>
+<!-- LOGIN -->
+<div id="loginCard" class="card">
+  <h2>Admin Login</h2>
+
+  <input
+    type="email"
+    id="email"
+    placeholder="Admin email"
+  >
+
+  <input
+    type="password"
+    id="password"
+    placeholder="Password"
+  >
+
+  <button onclick="login()">Login</button>
+
+  <p id="loginMessage"></p>
 </div>
 
-<div class="card">
-<h2>Current Week</h2>
-<p class="stat">Week 1</p>
-<p>Deadline: 11 September 2026, 20:00</p>
-</div>
 
-<div class="card">
-<h2>Players</h2>
-<p class="stat">7</p>
-<p>Active players</p>
-</div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
 
-<div class="card">
-<h2>Quick Actions</h2>
-<button>Players</button>
-<button>Weekly Selections</button>
-<button>Fixtures & Results</button>
-<button>Reports</button>
+  <div class="card">
+    <h2>Competition</h2>
+    <p>
+      <strong id="competitionName">Loading...</strong>
+    </p>
+    <p>
+      Status:
+      <strong id="competitionStatus">Loading...</strong>
+    </p>
+  </div>
+
+
+  <div class="card">
+    <h2>Current Week</h2>
+
+    <p class="stat" id="currentWeek">Loading...</p>
+
+    <p>
+      Deadline:
+      <strong id="deadline">Loading...</strong>
+    </p>
+  </div>
+
+
+  <div class="card">
+    <h2>Players</h2>
+
+    <p class="stat" id="playerCount">0</p>
+
+    <p>Active players</p>
+  </div>
+
+
+  <div class="card">
+    <h2>Quick Actions</h2>
+
+    <button onclick="showPlayers()">Players</button>
+
+    <button onclick="showSelections()">
+      Weekly Selections
+    </button>
+
+    <button onclick="showFixtures()">
+      Fixtures & Results
+    </button>
+
+    <button onclick="showReports()">
+      Reports
+    </button>
+
+    <button onclick="logout()">
+      Logout
+    </button>
+  </div>
+
+
+  <div id="content"></div>
+
 </div>
 
 </main>
+
+
+<script>
+
+// =====================================================
+// SUPABASE CONNECTION
+// =====================================================
+
+// PASTE YOUR SUPABASE PROJECT URL BETWEEN THE QUOTES
+const SUPABASE_URL = "https://pkqzoxxjnzqaekhvnaku.supabase.co/rest/v1/";
+
+// PASTE YOUR SUPABASE PUBLISHABLE KEY BETWEEN THE QUOTES
+const SUPABASE_KEY = "sb_publishable_KVbBNWyIhdykAQsUf_yvhA_rupOxGSR";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+// =====================================================
+// LOGIN
+// =====================================================
+
+async function login(){
+
+  const email =
+    document.getElementById("email").value;
+
+  const password =
+    document.getElementById("password").value;
+
+  const message =
+    document.getElementById("loginMessage");
+
+  message.className="";
+  message.textContent="Logging in...";
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if(error){
+
+    message.className="error";
+    message.textContent=error.message;
+    return;
+  }
+
+  message.textContent="";
+
+  document
+    .getElementById("loginCard")
+    .classList.add("hidden");
+
+  document
+    .getElementById("dashboard")
+    .classList.remove("hidden");
+
+  loadDashboard();
+}
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  document
+    .getElementById("dashboard")
+    .classList.add("hidden");
+
+  document
+    .getElementById("loginCard")
+    .classList.remove("hidden");
+}
+
+
+// =====================================================
+// LOAD DASHBOARD
+// =====================================================
+
+async function loadDashboard(){
+
+  // Competition
+  const { data: competition } =
+    await supabaseClient
+      .from("competitions")
+      .select("*")
+      .eq("id",1)
+      .single();
+
+  if(competition){
+
+    document
+      .getElementById("competitionName")
+      .textContent=competition.name;
+
+    document
+      .getElementById("competitionStatus")
+      .textContent=competition.status;
+  }
+
+
+  // Current week
+  const { data: week } =
+    await supabaseClient
+      .from("weeks")
+      .select("*")
+      .eq("competition_id",1)
+      .eq("status","upcoming")
+      .order("week_number")
+      .limit(1)
+      .maybeSingle();
+
+  if(week){
+
+    document
+      .getElementById("currentWeek")
+      .textContent="Week "+week.week_number;
+
+    const deadline =
+      new Date(week.main_deadline);
+
+    document
+      .getElementById("deadline")
+      .textContent=
+        deadline.toLocaleString();
+  }
+
+
+  // Active players
+  const { count } =
+    await supabaseClient
+      .from("competition_players")
+      .select("*",{count:"exact",head:true})
+      .eq("competition_id",1)
+      .eq("status","active");
+
+  document
+    .getElementById("playerCount")
+    .textContent=count || 0;
+}
+
+
+// =====================================================
+// PLAYERS
+// =====================================================
+
+async function showPlayers(){
+
+  const content =
+    document.getElementById("content");
+
+  content.innerHTML=`
+    <div class="card">
+      <h2>Players</h2>
+      <p>Loading players...</p>
+    </div>
+  `;
+
+  const { data, error } =
+    await supabaseClient
+      .from("players")
+      .select("*")
+      .order("name");
+
+  if(error){
+
+    content.innerHTML=`
+      <div class="card">
+        <h2>Players</h2>
+        <p class="error">${error.message}</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  let html=`
+    <div class="card">
+      <h2>Players</h2>
+  `;
+
+  data.forEach(player=>{
+
+    html+=`
+      <p>
+        <strong>${player.name}</strong>
+      </p>
+    `;
+  });
+
+  html+=</div>;
+
+  content.innerHTML=html;
+}
+
+
+// =====================================================
+// SELECTIONS
+// =====================================================
+
+function showSelections(){
+
+  document.getElementById("content").innerHTML=`
+    <div class="card">
+      <h2>Weekly Selections</h2>
+      <p>Selection management will be added next.</p>
+    </div>
+  `;
+}
+
+
+// =====================================================
+// FIXTURES
+// =====================================================
+
+function showFixtures(){
+
+  document.getElementById("content").innerHTML=`
+    <div class="card">
+      <h2>Fixtures & Results</h2>
+      <p>Fixture and result management will be added next.</p>
+    </div>
+  `;
+}
+
+
+// =====================================================
+// REPORTS
+// =====================================================
+
+function showReports(){
+
+  document.getElementById("content").innerHTML=`
+    <div class="card">
+      <h2>Reports</h2>
+      <p>WhatsApp reports will be added next.</p>
+    </div>
+  `;
+}
+
+
+// =====================================================
+// CHECK EXISTING LOGIN
+// =====================================================
+
+async function checkLogin(){
+
+  const { data } =
+    await supabaseClient.auth.getSession();
+
+  if(data.session){
+
+    document
+      .getElementById("loginCard")
+      .classList.add("hidden");
+
+    document
+      .getElementById("dashboard")
+      .classList.remove("hidden");
+
+    loadDashboard();
+  }
+}
+
+checkLogin();
+
+</script>
 
 </body>
 </html>
