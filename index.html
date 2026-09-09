@@ -3,69 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPL Survivor Admin</title>
+<title>English Premier League Survivor</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f4f6f8;
-  color:#17202a;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f5f7;
+    color: #222;
 }
-header{
-  background:#111827;
-  color:white;
-  padding:20px;
-  text-align:center;
+
+header {
+    background: #111827;
+    color: white;
+    padding: 18px;
+    text-align: center;
 }
-main{
-  padding:20px;
-  max-width:900px;
-  margin:auto;
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
 }
-.card{
-  background:white;
-  padding:20px;
-  margin-bottom:15px;
-  border-radius:12px;
-  box-shadow:0 2px 8px #0001;
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-h1{margin:0;font-size:24px}
-h2{margin-top:0}
-.stat{
-  font-size:30px;
-  font-weight:bold;
+
+h1, h2 {
+    margin-top: 0;
 }
-button{
-  padding:12px 16px;
-  margin:5px;
-  border:0;
-  border-radius:8px;
-  background:#111827;
-  color:white;
-  font-size:15px;
-  cursor:pointer;
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 7px;
 }
-button:hover{opacity:.9}
-input{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border:1px solid #ccc;
-  border-radius:8px;
-  font-size:16px;
+
+button {
+    border: 0;
+    border-radius: 7px;
+    padding: 12px 18px;
+    margin: 5px;
+    cursor: pointer;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
 }
-.hidden{display:none}
-.error{
-  color:#b91c1c;
-  margin-top:10px;
+
+button:hover {
+    opacity: 0.9;
 }
-.success{
-  color:#15803d;
-  margin-top:10px;
+
+.logout {
+    background: #dc2626;
+}
+
+.hidden {
+    display: none;
+}
+
+.stat {
+    display: inline-block;
+    min-width: 180px;
+    margin: 8px;
+    padding: 15px;
+    background: #eef2ff;
+    border-radius: 10px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.status-active {
+    color: green;
+    font-weight: bold;
+}
+
+.status-eliminated {
+    color: red;
+    font-weight: bold;
+}
+
+.status-winner {
+    color: #b45309;
+    font-weight: bold;
+}
+
+#error {
+    color: #dc2626;
+    margin-top: 10px;
 }
 </style>
 </head>
@@ -73,369 +124,600 @@ input{
 <body>
 
 <header>
-  <h1>⚽ EPL Survivor</h1>
-  <p>Admin Dashboard</p>
+    <h1>English Premier League Survivor</h1>
+    <p>Admin Dashboard</p>
 </header>
 
-<main>
+<div class="container">
 
-<!-- LOGIN -->
-<div id="loginCard" class="card">
-  <h2>Admin Login</h2>
+    <!-- LOGIN -->
+    <div id="loginSection" class="card">
+        <h2>Admin Login</h2>
 
-  <input
-    type="email"
-    id="email"
-    placeholder="Admin email"
-  >
+        <input
+            type="email"
+            id="email"
+            placeholder="Admin email"
+        >
 
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-  >
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
 
-  <button onclick="login()">Login</button>
+        <button id="loginButton">Login</button>
 
-  <p id="loginMessage"></p>
-</div>
+        <div id="error"></div>
+    </div>
 
+    <!-- DASHBOARD -->
+    <div id="dashboardSection" class="hidden">
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="hidden">
+        <div class="card">
+            <button class="logout" id="logoutButton">Logout</button>
 
-  <div class="card">
-    <h2>Competition</h2>
-    <p>
-      <strong id="competitionName">Loading...</strong>
-    </p>
-    <p>
-      Status:
-      <strong id="competitionStatus">Loading...</strong>
-    </p>
-  </div>
+            <h2>Competition Dashboard</h2>
 
+            <div id="competitionInfo">
+                Loading competition...
+            </div>
+        </div>
 
-  <div class="card">
-    <h2>Current Week</h2>
+        <div class="card">
+            <h2>Players</h2>
 
-    <p class="stat" id="currentWeek">Loading...</p>
+            <div id="playersStats">
+                Loading players...
+            </div>
 
-    <p>
-      Deadline:
-      <strong id="deadline">Loading...</strong>
-    </p>
-  </div>
+            <div id="playersTable">
+            </div>
+        </div>
 
+        <div class="card">
+            <h2>Weekly Selections</h2>
 
-  <div class="card">
-    <h2>Players</h2>
+            <div id="selectionsTable">
+                Loading selections...
+            </div>
+        </div>
 
-    <p class="stat" id="playerCount">0</p>
+        <div class="card">
+            <h2>Fixtures</h2>
 
-    <p>Active players</p>
-  </div>
+            <div id="fixturesTable">
+                Loading fixtures...
+            </div>
+        </div>
 
+        <div class="card">
+            <h2>Weekly Results</h2>
 
-  <div class="card">
-    <h2>Quick Actions</h2>
+            <div id="resultsTable">
+                Loading results...
+            </div>
+        </div>
 
-    <button onclick="showPlayers()">Players</button>
-
-    <button onclick="showSelections()">
-      Weekly Selections
-    </button>
-
-    <button onclick="showFixtures()">
-      Fixtures & Results
-    </button>
-
-    <button onclick="showReports()">
-      Reports
-    </button>
-
-    <button onclick="logout()">
-      Logout
-    </button>
-  </div>
-
-
-  <div id="content"></div>
+    </div>
 
 </div>
-
-</main>
-
 
 <script>
-
-// =====================================================
-// SUPABASE CONNECTION
-// =====================================================
-
-// PASTE YOUR SUPABASE PROJECT URL BETWEEN THE QUOTES
 const SUPABASE_URL = "https://pkqzoxxjnzqaekhvnaku.supabase.co/rest/v1/";
-
-// PASTE YOUR SUPABASE PUBLISHABLE KEY BETWEEN THE QUOTES
 const SUPABASE_KEY = "sb_publishable_KVbBNWyIhdykAQsUf_yvhA_rupOxGSR";
 
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+let supabaseClient = null;
 
 
-// =====================================================
-// LOGIN
-// =====================================================
+/* ------------------------------
+   SUPABASE CONNECTION
+--------------------------------*/
 
-async function login(){
+function getSupabase() {
 
-  const email =
-    document.getElementById("email").value;
+    if (!window.supabase) {
+        document.getElementById("error").textContent =
+            "Supabase library could not load. Please refresh the page.";
 
-  const password =
-    document.getElementById("password").value;
+        return null;
+    }
 
-  const message =
-    document.getElementById("loginMessage");
+    if (!supabaseClient) {
+        supabaseClient = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+    }
 
-  message.className="";
-  message.textContent="Logging in...";
+    return supabaseClient;
+}
 
-  const { data, error } =
-    await supabaseClient.auth.signInWithPassword({
-      email,
-      password
+
+/* ------------------------------
+   LOGIN
+--------------------------------*/
+
+async function login() {
+
+    const client = getSupabase();
+
+    if (!client) return;
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const error =
+        document.getElementById("error");
+
+    error.textContent = "";
+
+    if (!email || !password) {
+        error.textContent =
+            "Please enter your email and password.";
+
+        return;
+    }
+
+    const { data, error: loginError } =
+        await client.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+    if (loginError) {
+
+        error.textContent =
+            loginError.message;
+
+        return;
+    }
+
+    document.getElementById("loginSection")
+        .classList.add("hidden");
+
+    document.getElementById("dashboardSection")
+        .classList.remove("hidden");
+
+    await loadDashboard();
+}
+
+
+/* ------------------------------
+   LOGOUT
+--------------------------------*/
+
+async function logout() {
+
+    const client = getSupabase();
+
+    if (!client) return;
+
+    await client.auth.signOut();
+
+    document.getElementById("dashboardSection")
+        .classList.add("hidden");
+
+    document.getElementById("loginSection")
+        .classList.remove("hidden");
+}
+
+
+/* ------------------------------
+   DASHBOARD
+--------------------------------*/
+
+async function loadDashboard() {
+
+    const client = getSupabase();
+
+    if (!client) return;
+
+    await loadCompetition();
+    await loadPlayers();
+    await loadSelections();
+    await loadFixtures();
+    await loadResults();
+}
+
+
+/* ------------------------------
+   COMPETITION
+--------------------------------*/
+
+async function loadCompetition() {
+
+    const client = getSupabase();
+
+    const { data, error } =
+        await client
+        .from("competitions")
+        .select("*")
+        .order("id", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+    const element =
+        document.getElementById("competitionInfo");
+
+    if (error) {
+
+        element.textContent =
+            "Error loading competition: " +
+            error.message;
+
+        return;
+    }
+
+    if (!data) {
+
+        element.textContent =
+            "No competition found.";
+
+        return;
+    }
+
+    element.innerHTML = `
+        <p><strong>${data.name}</strong></p>
+        <p>League: ${data.league}</p>
+        <p>Status: ${data.status}</p>
+        <p>Bye rule: ${data.bye_rule}</p>
+    `;
+}
+
+
+/* ------------------------------
+   PLAYERS
+--------------------------------*/
+
+async function loadPlayers() {
+
+    const client = getSupabase();
+
+    const { data, error } =
+        await client
+        .from("competition_players")
+        .select(`
+            id,
+            status,
+            player_id,
+            players (
+                name
+            )
+        `)
+        .eq("competition_id", 1)
+        .order("player_id");
+
+    const stats =
+        document.getElementById("playersStats");
+
+    const table =
+        document.getElementById("playersTable");
+
+    if (error) {
+
+        stats.textContent =
+            "Error loading players: " +
+            error.message;
+
+        return;
+    }
+
+    const active =
+        data.filter(p => p.status === "active").length;
+
+    const eliminated =
+        data.filter(p => p.status === "eliminated").length;
+
+    const winners =
+        data.filter(p => p.status === "winner").length;
+
+    stats.innerHTML = `
+        <div class="stat">
+            Active
+            <strong>${active}</strong>
+        </div>
+
+        <div class="stat">
+            Eliminated
+            <strong>${eliminated}</strong>
+        </div>
+
+        <div class="stat">
+            Winner
+            <strong>${winners}</strong>
+        </div>
+    `;
+
+    let html = `
+        <table>
+        <tr>
+            <th>Player</th>
+            <th>Status</th>
+        </tr>
+    `;
+
+    data.forEach(player => {
+
+        html += `
+            <tr>
+                <td>${player.players?.name || "Unknown"}</td>
+                <td class="status-${player.status}">
+                    ${player.status}
+                </td>
+            </tr>
+        `;
     });
 
-  if(error){
+    html += "</table>";
 
-    message.className="error";
-    message.textContent=error.message;
-    return;
-  }
-
-  message.textContent="";
-
-  document
-    .getElementById("loginCard")
-    .classList.add("hidden");
-
-  document
-    .getElementById("dashboard")
-    .classList.remove("hidden");
-
-  loadDashboard();
+    table.innerHTML = html;
 }
 
 
-// =====================================================
-// LOGOUT
-// =====================================================
+/* ------------------------------
+   SELECTIONS
+--------------------------------*/
 
-async function logout(){
+async function loadSelections() {
 
-  await supabaseClient.auth.signOut();
+    const client = getSupabase();
 
-  document
-    .getElementById("dashboard")
-    .classList.add("hidden");
+    const { data, error } =
+        await client
+        .from("selections")
+        .select(`
+            *,
+            players (
+                name
+            ),
+            teams (
+                name
+            ),
+            weeks (
+                week_number,
+                main_deadline
+            )
+        `)
+        .eq("competition_id", 1)
+        .order("week_id")
+        .order("player_id");
 
-  document
-    .getElementById("loginCard")
-    .classList.remove("hidden");
-}
+    const element =
+        document.getElementById("selectionsTable");
 
+    if (error) {
 
-// =====================================================
-// LOAD DASHBOARD
-// =====================================================
+        element.textContent =
+            "Error loading selections: " +
+            error.message;
 
-async function loadDashboard(){
+        return;
+    }
 
-  // Competition
-  const { data: competition } =
-    await supabaseClient
-      .from("competitions")
-      .select("*")
-      .eq("id",1)
-      .single();
+    if (!data.length) {
 
-  if(competition){
+        element.textContent =
+            "No selections yet.";
 
-    document
-      .getElementById("competitionName")
-      .textContent=competition.name;
+        return;
+    }
 
-    document
-      .getElementById("competitionStatus")
-      .textContent=competition.status;
-  }
-
-
-  // Current week
-  const { data: week } =
-    await supabaseClient
-      .from("weeks")
-      .select("*")
-      .eq("competition_id",1)
-      .eq("status","upcoming")
-      .order("week_number")
-      .limit(1)
-      .maybeSingle();
-
-  if(week){
-
-    document
-      .getElementById("currentWeek")
-      .textContent="Week "+week.week_number;
-
-    const deadline =
-      new Date(week.main_deadline);
-
-    document
-      .getElementById("deadline")
-      .textContent=
-        deadline.toLocaleString();
-  }
-
-
-  // Active players
-  const { count } =
-    await supabaseClient
-      .from("competition_players")
-      .select("*",{count:"exact",head:true})
-      .eq("competition_id",1)
-      .eq("status","active");
-
-  document
-    .getElementById("playerCount")
-    .textContent=count || 0;
-}
-
-
-// =====================================================
-// PLAYERS
-// =====================================================
-
-async function showPlayers(){
-
-  const content =
-    document.getElementById("content");
-
-  content.innerHTML=`
-    <div class="card">
-      <h2>Players</h2>
-      <p>Loading players...</p>
-    </div>
-  `;
-
-  const { data, error } =
-    await supabaseClient
-      .from("players")
-      .select("*")
-      .order("name");
-
-  if(error){
-
-    content.innerHTML=`
-      <div class="card">
-        <h2>Players</h2>
-        <p class="error">${error.message}</p>
-      </div>
+    let html = `
+        <table>
+        <tr>
+            <th>Week</th>
+            <th>Player</th>
+            <th>Team</th>
+            <th>Official</th>
+        </tr>
     `;
 
-    return;
-  }
+    data.forEach(selection => {
 
-  let html=`
-    <div class="card">
-      <h2>Players</h2>
-  `;
+        html += `
+            <tr>
+                <td>${selection.weeks?.week_number || ""}</td>
+                <td>${selection.players?.name || ""}</td>
+                <td>${selection.teams?.name || ""}</td>
+                <td>${selection.is_official ? "Yes" : "No"}</td>
+            </tr>
+        `;
+    });
 
-  data.forEach(player=>{
+    html += "</table>";
 
-    html+=`
-      <p>
-        <strong>${player.name}</strong>
-      </p>
+    element.innerHTML = html;
+}
+
+
+/* ------------------------------
+   FIXTURES
+--------------------------------*/
+
+async function loadFixtures() {
+
+    const client = getSupabase();
+
+    const { data, error } =
+        await client
+        .from("fixtures")
+        .select(`
+            *,
+            weeks (
+                week_number
+            ),
+            home_team:teams!fixtures_home_team_id_fkey (
+                name
+            ),
+            away_team:teams!fixtures_away_team_id_fkey (
+                name
+            )
+        `)
+        .order("week_id")
+        .order("scheduled_time");
+
+    const element =
+        document.getElementById("fixturesTable");
+
+    if (error) {
+
+        element.textContent =
+            "Error loading fixtures: " +
+            error.message;
+
+        return;
+    }
+
+    let html = `
+        <table>
+        <tr>
+            <th>Week</th>
+            <th>Match</th>
+            <th>Status</th>
+            <th>Score</th>
+        </tr>
     `;
-  });
 
-  html+=</div>;
+    data.forEach(fixture => {
 
-  content.innerHTML=html;
+        const score =
+            fixture.home_score === null
+            ? "-"
+            : ${fixture.home_score} - ${fixture.away_score};
+
+        html += `
+            <tr>
+                <td>${fixture.weeks?.week_number || ""}</td>
+                <td>
+                    ${fixture.home_team?.name || ""}
+                    vs
+                    ${fixture.away_team?.name || ""}
+                </td>
+                <td>${fixture.status}</td>
+                <td>${score}</td>
+            </tr>
+        `;
+    });
+
+    html += "</table>";
+
+    element.innerHTML = html;
 }
 
 
-// =====================================================
-// SELECTIONS
-// =====================================================
+/* ------------------------------
+   RESULTS
+--------------------------------*/
 
-function showSelections(){
+async function loadResults() {
 
-  document.getElementById("content").innerHTML=`
-    <div class="card">
-      <h2>Weekly Selections</h2>
-      <p>Selection management will be added next.</p>
-    </div>
-  `;
+    const client = getSupabase();
+
+    const { data, error } =
+        await client
+        .from("weekly_results")
+        .select(`
+            *,
+            players (
+                name
+            ),
+            weeks (
+                week_number
+            )
+        `)
+        .eq("competition_id", 1)
+        .order("week_id")
+        .order("player_id");
+
+    const element =
+        document.getElementById("resultsTable");
+
+    if (error) {
+
+        element.textContent =
+            "Error loading results: " +
+            error.message;
+
+        return;
+    }
+
+    if (!data.length) {
+
+        element.textContent =
+            "No weekly results yet.";
+
+        return;
+    }
+
+    let html = `
+        <table>
+        <tr>
+            <th>Week</th>
+            <th>Player</th>
+            <th>Outcome</th>
+            <th>Notes</th>
+        </tr>
+    `;
+
+    data.forEach(result => {
+
+        html += `
+            <tr>
+                <td>${result.weeks?.week_number || ""}</td>
+                <td>${result.players?.name || ""}</td>
+                <td>${result.outcome}</td>
+                <td>${result.notes || ""}</td>
+            </tr>
+        `;
+    });
+
+    html += "</table>";
+
+    element.innerHTML = html;
 }
 
 
-// =====================================================
-// FIXTURES
-// =====================================================
+/* ------------------------------
+   BUTTONS
+--------------------------------*/
 
-function showFixtures(){
+document
+    .getElementById("loginButton")
+    .addEventListener("click", login);
 
-  document.getElementById("content").innerHTML=`
-    <div class="card">
-      <h2>Fixtures & Results</h2>
-      <p>Fixture and result management will be added next.</p>
-    </div>
-  `;
-}
+document
+    .getElementById("logoutButton")
+    .addEventListener("click", logout);
 
 
-// =====================================================
-// REPORTS
-// =====================================================
+/* ------------------------------
+   CHECK EXISTING LOGIN
+--------------------------------*/
 
-function showReports(){
+async function checkLogin() {
 
-  document.getElementById("content").innerHTML=`
-    <div class="card">
-      <h2>Reports</h2>
-      <p>WhatsApp reports will be added next.</p>
-    </div>
-  `;
-}
+    const client = getSupabase();
 
+    if (!client) return;
 
-// =====================================================
-// CHECK EXISTING LOGIN
-// =====================================================
+    const {
+        data: { session }
+    } = await client.auth.getSession();
 
-async function checkLogin(){
+    if (session) {
 
-  const { data } =
-    await supabaseClient.auth.getSession();
+        document.getElementById("loginSection")
+            .classList.add("hidden");
 
-  if(data.session){
+        document.getElementById("dashboardSection")
+            .classList.remove("hidden");
 
-    document
-      .getElementById("loginCard")
-      .classList.add("hidden");
-
-    document
-      .getElementById("dashboard")
-      .classList.remove("hidden");
-
-    loadDashboard();
-  }
+        await loadDashboard();
+    }
 }
 
 checkLogin();
