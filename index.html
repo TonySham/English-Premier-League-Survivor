@@ -97,7 +97,6 @@
     <div id="loginMessage"></div>
   </div>
 
-
   <div id="dashboardSection" class="hidden">
 
     <div class="card">
@@ -134,7 +133,6 @@
 
 </div>
 
-
 <script>
 
 const SUPABASE_URL = "https://pkqzoxxjnzqaekhvnaku.supabase.co";
@@ -144,7 +142,6 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
-
 
 async function login() {
 
@@ -175,7 +172,6 @@ async function login() {
   await loadDashboard();
 }
 
-
 async function logout() {
 
   await supabaseClient.auth.signOut();
@@ -189,7 +185,6 @@ async function logout() {
     .classList.remove("hidden");
 }
 
-
 function showDashboard() {
 
   document
@@ -201,7 +196,6 @@ function showDashboard() {
     .classList.remove("hidden");
 }
 
-
 async function loadDashboard() {
 
   await loadCompetition();
@@ -210,7 +204,6 @@ async function loadDashboard() {
   await loadFixtures();
   await loadResults();
 }
-
 
 async function loadCompetition() {
 
@@ -242,7 +235,6 @@ async function loadCompetition() {
     Bye rule: ${escapeHtml(c.bye_rule || "")}
   `;
 }
-
 
 async function loadPlayers() {
 
@@ -288,7 +280,6 @@ async function loadPlayers() {
   box.innerHTML = html;
 }
 
-
 async function loadWeeks() {
 
   const box = document.getElementById("weeksInfo");
@@ -310,7 +301,8 @@ async function loadWeeks() {
     return;
   }
 
-  let html = "<table><tr><th>Week</th><th>Deadline</th><th>Status</th></tr>";
+  let html =
+    "<table><tr><th>Week</th><th>Deadline</th><th>Status</th></tr>";
 
   data.forEach(row => {
 
@@ -328,7 +320,6 @@ async function loadWeeks() {
 
   box.innerHTML = html;
 }
-
 
 async function loadFixtures() {
 
@@ -371,7 +362,7 @@ async function loadFixtures() {
 
     const score =
       row.home_score !== null && row.away_score !== null
-        ? ${row.home_score} - ${row.away_score}
+        ? `${row.home_score} - ${row.away_score}`
         : "-";
 
     html += `
@@ -393,7 +384,6 @@ async function loadFixtures() {
 
   box.innerHTML = html;
 }
-
 
 async function loadResults() {
 
@@ -445,7 +435,6 @@ async function loadResults() {
   box.innerHTML = html;
 }
 
-
 function escapeHtml(value) {
 
   return String(value)
@@ -456,7 +445,6 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
-
 supabaseClient.auth.getSession().then(async ({ data }) => {
 
   if (data.session) {
@@ -465,7 +453,6 @@ supabaseClient.auth.getSession().then(async ({ data }) => {
   }
 
 });
-
 
 </script>
 
