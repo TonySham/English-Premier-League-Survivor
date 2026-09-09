@@ -1,20 +1,814 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Survivor Test</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premier League Survivor Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f5f7;
+  margin: 0;
+  padding: 20px;
+  color: #222;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+}
+
+h1 {
+  margin-bottom: 5px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+input, select, button {
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  cursor: pointer;
+  background: #222;
+  color: white;
+  border: none;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+.danger {
+  background: #b00020;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: #b00020;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+#app {
+  display: none;
+}
+
+#login {
+  max-width: 450px;
+  margin: 50px auto;
+}
+</style>
 </head>
+
 <body>
-  <h1>Survivor Test Page</h1>
 
-  <button onclick="testButton()">TEST BUTTON</button>
+<div class="container">
 
-  <p id="message">Waiting...</p>
+  <!-- LOGIN -->
+  <div id="login" class="card">
+    <h1>Premier League Survivor</h1>
+    <p>Admin Login</p>
 
-  <script>
-    function testButton() {
-      document.getElementById("message").textContent =
-        "JAVASCRIPT IS WORKING!";
+    <input
+      type="email"
+      id="email"
+      placeholder="Email"
+      style="width:100%; box-sizing:border-box;"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      style="width:100%; box-sizing:border-box;"
+    >
+
+    <button onclick="login()" style="width:100%;">
+      Login
+    </button>
+
+    <p id="loginMessage"></p>
+  </div>
+
+
+  <!-- DASHBOARD -->
+  <div id="app">
+
+    <h1>Premier League Survivor Admin Dashboard</h1>
+
+    <button onclick="logout()">Logout</button>
+
+    <!-- COMPETITION -->
+    <div class="card">
+      <h2>Competition</h2>
+
+      <p><strong>Name:</strong>
+        <span id="competitionName">Loading...</span>
+      </p>
+
+      <p><strong>League:</strong>
+        <span id="competitionLeague">Loading...</span>
+      </p>
+
+      <p><strong>Status:</strong>
+        <span id="competitionStatus">Loading...</span>
+      </p>
+
+      <p><strong>Bye rule:</strong>
+        <span id="byeRule">Loading...</span>
+      </p>
+    </div>
+
+
+    <!-- SUMMARY -->
+    <div class="card">
+      <h2>Competition Summary</h2>
+
+      <p>
+        <strong>Players:</strong>
+        <span id="playerCount">0</span>
+      </p>
+
+      <p>
+        <strong>Active:</strong>
+        <span id="activeCount">0</span>
+      </p>
+
+      <p>
+        <strong>Eliminated:</strong>
+        <span id="eliminatedCount">0</span>
+      </p>
+
+      <p>
+        <strong>Winner:</strong>
+        <span id="winnerCount">0</span>
+      </p>
+    </div>
+
+
+    <!-- PLAYERS -->
+    <div class="card">
+
+      <h2>Players</h2>
+
+      <input
+        type="text"
+        id="newPlayerName"
+        placeholder="Player name"
+      >
+
+      <input
+        type="text"
+        id="newPlayerWhatsapp"
+        placeholder="WhatsApp number"
+      >
+
+      <button onclick="addPlayer()">
+        Add Player
+      </button>
+
+      <p id="playerMessage"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>WhatsApp</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="playersTable">
+        </tbody>
+      </table>
+
+    </div>
+
+
+    <!-- WEEKS -->
+    <div class="card">
+
+      <h2>Weeks & Deadlines</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Deadline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="weeksTable">
+        </tbody>
+      </table>
+
+    </div>
+
+
+    <!-- FIXTURES -->
+    <div class="card">
+
+      <h2>Fixtures</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Fixture</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+
+        <tbody id="fixturesTable">
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE SETTINGS
+   ===================================================== */
+
+const SUPABASE_URL =
+  "https://pkqzoxxjnzqaekhvnaku.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_KVbBNWyIhdykAQsUf_yvhA_rupOxGSR";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+const COMPETITION_ID = 1;
+
+
+/* =====================================================
+   LOGIN
+   ===================================================== */
+
+async function login() {
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const message =
+    document.getElementById("loginMessage");
+
+  message.textContent = "Logging in...";
+  message.className = "";
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+  if (error) {
+    message.textContent = error.message;
+    message.className = "error";
+    return;
+  }
+
+  document.getElementById("login").style.display = "none";
+  document.getElementById("app").style.display = "block";
+
+  await loadDashboard();
+}
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  document.getElementById("app").style.display = "none";
+  document.getElementById("login").style.display = "block";
+}
+
+
+/* =====================================================
+   DASHBOARD
+   ===================================================== */
+
+async function loadDashboard() {
+
+  await loadCompetition();
+  await loadPlayers();
+  await loadWeeks();
+  await loadFixtures();
+}
+
+
+/* =====================================================
+   COMPETITION
+   ===================================================== */
+
+async function loadCompetition() {
+
+  const { data, error } =
+    await supabaseClient
+      .from("competitions")
+      .select("*")
+      .eq("id", COMPETITION_ID)
+      .single();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  document.getElementById("competitionName").textContent =
+    data.name || "";
+
+  document.getElementById("competitionLeague").textContent =
+    data.league || "";
+
+  document.getElementById("competitionStatus").textContent =
+    data.status || "";
+
+  document.getElementById("byeRule").textContent =
+    data.bye_rule || "";
+}
+
+
+/* =====================================================
+   PLAYERS
+   ===================================================== */
+
+async function loadPlayers() {
+
+  const { data, error } =
+    await supabaseClient
+      .from("competition_players")
+      .select(`
+        id,
+        status,
+        players (
+          id,
+          name,
+          whatsapp_number
+        )
+      `)
+      .eq("competition_id", COMPETITION_ID)
+      .order("id");
+
+  if (error) {
+    console.error(error);
+    document.getElementById("playersTable").innerHTML =
+      "<tr><td colspan='4'>Error loading players</td></tr>";
+    return;
+  }
+
+  const table =
+    document.getElementById("playersTable");
+
+  table.innerHTML = "";
+
+  let active = 0;
+  let eliminated = 0;
+  let winner = 0;
+
+  data.forEach(row => {
+
+    if (row.status === "active") active++;
+    if (row.status === "eliminated") eliminated++;
+    if (row.status === "winner") winner++;
+
+    const player =
+      row.players || {};
+
+    const tr =
+      document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${escapeHtml(player.name || "")}</td>
+
+      <td>${escapeHtml(player.whatsapp_number || "")}</td>
+
+      <td>${escapeHtml(row.status || "")}</td>
+
+      <td>
+        <button onclick="editPlayer(${player.id})">
+          Edit
+        </button>
+
+        <button
+          class="danger"
+          onclick="removePlayer(${row.id})">
+          Remove
+        </button>
+      </td>
+    `;
+
+    table.appendChild(tr);
+  });
+
+  document.getElementById("playerCount").textContent =
+    data.length;
+
+  document.getElementById("activeCount").textContent =
+    active;
+
+  document.getElementById("eliminatedCount").textContent =
+    eliminated;
+
+  document.getElementById("winnerCount").textContent =
+    winner;
+}
+
+
+/* =====================================================
+   ADD PLAYER
+   ===================================================== */
+
+async function addPlayer() {
+
+  const name =
+    document.getElementById("newPlayerName")
+      .value.trim();
+
+  const whatsapp =
+    document.getElementById("newPlayerWhatsapp")
+      .value.trim();
+
+  const message =
+    document.getElementById("playerMessage");
+
+  if (!name) {
+    message.textContent =
+      "Please enter a player name.";
+
+    message.className = "error";
+    return;
+  }
+
+  const { data: player, error: playerError } =
+    await supabaseClient
+      .from("players")
+      .insert({
+        name: name,
+        whatsapp_number: whatsapp || null,
+        active: true
+      })
+      .select()
+      .single();
+
+  if (playerError) {
+
+    message.textContent =
+      playerError.message;
+
+    message.className = "error";
+    return;
+  }
+
+
+  const { error: competitionError } =
+    await supabaseClient
+      .from("competition_players")
+      .insert({
+        competition_id: COMPETITION_ID,
+        player_id: player.id,
+        status: "active"
+      });
+
+  if (competitionError) {
+
+    message.textContent =
+      competitionError.message;
+
+    message.className = "error";
+    return;
+  }
+
+
+  document.getElementById("newPlayerName").value = "";
+  document.getElementById("newPlayerWhatsapp").value = "";
+
+  message.textContent =
+    "Player added successfully.";
+
+  message.className = "success";
+
+  await loadPlayers();
+}
+
+
+/* =====================================================
+   EDIT PLAYER
+   ===================================================== */
+
+async function editPlayer(playerId) {
+
+  const { data, error } =
+    await supabaseClient
+      .from("players")
+      .select("*")
+      .eq("id", playerId)
+      .single();
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  const newName =
+    prompt("Player name:", data.name || "");
+
+  if (newName === null) return;
+
+  const newWhatsapp =
+    prompt(
+      "WhatsApp number:",
+      data.whatsapp_number || ""
+    );
+
+  if (newWhatsapp === null) return;
+
+  const { error: updateError } =
+    await supabaseClient
+      .from("players")
+      .update({
+        name: newName.trim(),
+        whatsapp_number: newWhatsapp.trim()
+      })
+      .eq("id", playerId);
+
+  if (updateError) {
+    alert(updateError.message);
+    return;
+  }
+
+  await loadPlayers();
+}
+
+
+/* =====================================================
+   REMOVE PLAYER FROM COMPETITION
+   ===================================================== */
+
+async function removePlayer(competitionPlayerId) {
+
+  const confirmed =
+    confirm(
+      "Remove this player from the current competition?"
+    );
+
+  if (!confirmed) return;
+
+  const { error } =
+    await supabaseClient
+      .from("competition_players")
+      .delete()
+      .eq("id", competitionPlayerId);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  await loadPlayers();
+}
+
+
+/* =====================================================
+   WEEKS
+   ===================================================== */
+
+async function loadWeeks() {
+
+  const { data, error } =
+    await supabaseClient
+      .from("weeks")
+      .select("*")
+      .eq("competition_id", COMPETITION_ID)
+      .order("week_number");
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const table =
+    document.getElementById("weeksTable");
+
+  table.innerHTML = "";
+
+  data.forEach(week => {
+
+    const tr =
+      document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${week.week_number}</td>
+
+      <td>
+        ${formatDate(week.main_deadline)}
+      </td>
+
+      <td>
+        ${escapeHtml(week.status || "")}
+      </td>
+    `;
+
+    table.appendChild(tr);
+  });
+}
+
+
+/* =====================================================
+   FIXTURES
+   ===================================================== */
+
+async function loadFixtures() {
+
+  const { data, error } =
+    await supabaseClient
+      .from("fixtures")
+      .select(`
+        id,
+        week_id,
+        scheduled_time,
+        status,
+        home_score,
+        away_score,
+        home_team_id,
+        away_team_id,
+        weeks (
+          week_number
+        ),
+        home_team:teams!fixtures_home_team_id_fkey (
+          name
+        ),
+        away_team:teams!fixtures_away_team_id_fkey (
+          name
+        )
+      `)
+      .order("scheduled_time");
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const table =
+    document.getElementById("fixturesTable");
+
+  table.innerHTML = "";
+
+  data.forEach(fixture => {
+
+    const home =
+      fixture.home_team
+        ? fixture.home_team.name
+        : "Unknown";
+
+    const away =
+      fixture.away_team
+        ? fixture.away_team.name
+        : "Unknown";
+
+    let score = "-";
+
+    if (
+      fixture.home_score !== null &&
+      fixture.away_score !== null
+    ) {
+      score =
+        fixture.home_score +
+        " - " +
+        fixture.away_score;
     }
-  </script>
+
+    const tr =
+      document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>
+        Week ${fixture.weeks.week_number}
+      </td>
+
+      <td>
+        ${escapeHtml(home)}
+        vs
+        ${escapeHtml(away)}
+      </td>
+
+      <td>
+        ${formatDate(fixture.scheduled_time)}
+      </td>
+
+      <td>
+        ${escapeHtml(fixture.status || "")}
+      </td>
+
+      <td>
+        ${score}
+      </td>
+    `;
+
+    table.appendChild(tr);
+  });
+}
+
+
+/* =====================================================
+   HELPERS
+   ===================================================== */
+
+function formatDate(value) {
+
+  if (!value) return "";
+
+  const date =
+    new Date(value);
+
+  return date.toLocaleString();
+}
+
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* =====================================================
+   CHECK EXISTING SESSION
+   ===================================================== */
+
+async function checkSession() {
+
+  const { data } =
+    await supabaseClient.auth.getSession();
+
+  if (data.session) {
+
+    document.getElementById("login").style.display =
+      "none";
+
+    document.getElementById("app").style.display =
+      "block";
+
+    await loadDashboard();
+  }
+}
+
+
+checkSession();
+
+</script>
+
 </body>
 </html>
