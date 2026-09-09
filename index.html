@@ -1,1590 +1,473 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premier League Survivor</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Premier League Survivor</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f3f4f6;
-  margin: 0;
-  color: #111827;
-}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+      color: #222;
+    }
 
-header {
-  background: #111827;
-  color: white;
-  padding: 20px;
-}
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
 
-header h1 {
-  margin: 0;
-}
+    .card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
 
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px;
-}
+    h1, h2 {
+      margin-top: 0;
+    }
 
-.card {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
 
-button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 15px;
-  cursor: pointer;
-  margin: 4px;
-}
+    button {
+      cursor: pointer;
+      background: #222;
+      color: white;
+      border: none;
+    }
 
-button:hover {
-  background: #1d4ed8;
-}
+    button:hover {
+      opacity: 0.9;
+    }
 
-button.danger {
-  background: #dc2626;
-}
+    .hidden {
+      display: none;
+    }
 
-button.success {
-  background: #16a34a;
-}
+    .error {
+      color: #b00020;
+      margin-top: 10px;
+    }
 
-button.secondary {
-  background: #6b7280;
-}
+    .success {
+      color: #087f23;
+      margin-top: 10px;
+    }
 
-input,
-select,
-textarea {
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  margin: 4px;
-  box-sizing: border-box;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-th,
-td {
-  padding: 10px;
-  border-bottom: 1px solid #e5e7eb;
-  text-align: left;
-}
-
-th {
-  background: #f9fafb;
-}
-
-.hidden {
-  display: none;
-}
-
-.login-box {
-  max-width: 400px;
-  margin: 80px auto;
-}
-
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 15px;
-}
-
-.stat {
-  background: #f9fafb;
-  padding: 15px;
-  border-radius: 8px;
-}
-
-.stat strong {
-  display: block;
-  font-size: 28px;
-  margin-top: 5px;
-}
-
-.message {
-  padding: 10px;
-  border-radius: 6px;
-  margin: 10px 0;
-  background: #eff6ff;
-}
-
-.error {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.success-message {
-  background: #dcfce7;
-  color: #166534;
-}
-</style>
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+  </style>
 </head>
 
 <body>
 
-<div id="loginScreen" class="login-box card">
-  <h2>Admin Login</h2>
-
-  <input
-    type="email"
-    id="email"
-    placeholder="Email"
-    style="width:90%;"
-  >
-
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-    style="width:90%;"
-  >
-
-  <button onclick="login()">Login</button>
-
-  <div id="loginMessage"></div>
-</div>
-
-<div id="app" class="hidden">
-
-<header>
-  <div class="container">
-    <h1>Premier League Survivor</h1>
-    <div>Admin Dashboard</div>
-  </div>
-</header>
-
 <div class="container">
 
-<div id="message"></div>
+  <div id="loginSection" class="card">
+    <h1>English Premier League Survivor</h1>
+    <h2>Admin Login</h2>
 
-<div class="card">
-  <h2>Competition</h2>
-  <div id="competitionInfo">
-    Loading competition...
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <div id="loginMessage"></div>
   </div>
 
-  <button class="secondary" onclick="logout()">
-    Logout
-  </button>
-</div>
 
-<div class="card">
-  <h2>Overview</h2>
+  <div id="dashboardSection" class="hidden">
 
-  <div class="stat-grid">
-
-    <div class="stat">
-      Active Players
-      <strong id="activeCount">0</strong>
+    <div class="card">
+      <h1>Admin Dashboard</h1>
+      <button onclick="logout()">Logout</button>
     </div>
 
-    <div class="stat">
-      Eliminated
-      <strong id="eliminatedCount">0</strong>
+    <div class="card">
+      <h2>Competition</h2>
+      <div id="competitionInfo">Loading...</div>
     </div>
 
-    <div class="stat">
-      Winners
-      <strong id="winnerCount">0</strong>
+    <div class="card">
+      <h2>Players</h2>
+      <div id="playersInfo">Loading...</div>
     </div>
 
-    <div class="stat">
-      Current Week
-      <strong id="currentWeek">1</strong>
+    <div class="card">
+      <h2>Weeks</h2>
+      <div id="weeksInfo">Loading...</div>
+    </div>
+
+    <div class="card">
+      <h2>Fixtures</h2>
+      <div id="fixturesInfo">Loading...</div>
+    </div>
+
+    <div class="card">
+      <h2>Weekly Results</h2>
+      <div id="resultsInfo">Loading...</div>
     </div>
 
   </div>
-</div>
-
-<div class="card">
-  <h2>Players</h2>
-
-  <input
-    type="text"
-    id="newPlayerName"
-    placeholder="Player name"
-  >
-
-  <input
-    type="text"
-    id="newPlayerWhatsApp"
-    placeholder="WhatsApp number"
-  >
-
-  <button onclick="addPlayer()">
-    Add Player
-  </button>
-
-  <div id="playersTable">
-    Loading players...
-  </div>
-</div>
-
-<div class="card">
-  <h2>Weekly Selection</h2>
-
-  <label>Week:</label>
-  <select id="selectionWeek"></select>
-
-  <label>Player:</label>
-  <select id="selectionPlayer"></select>
-
-  <label>Team:</label>
-  <select id="selectionTeam"></select>
-
-  <br>
-
-  <button onclick="saveSelection()">
-    Save Draft
-  </button>
-
-  <button class="success" onclick="makeOfficial()">
-    Make Official
-  </button>
-
-  <div id="selectionMessage"></div>
-
-  <div id="selectionTable">
-    Loading selections...
-  </div>
-</div>
-
-<div class="card">
-  <h2>Fixtures & Results</h2>
-
-  <div id="fixturesTable">
-    Loading fixtures...
-  </div>
-
-  <button class="success" onclick="processResults()">
-    Process Weekly Results
-  </button>
-</div>
-
-<div class="card">
-  <h2>Weekly Report</h2>
-
-  <button onclick="generateReport()">
-    Generate WhatsApp Report
-  </button>
-
-  <button onclick="copyReport()">
-    Copy Report
-  </button>
-
-  <textarea
-    id="report"
-    rows="15"
-    style="width:100%; margin-top:10px;"
-  ></textarea>
-</div>
 
 </div>
-</div>
+
 
 <script>
 
-const SUPABASE_URL =
-  "https://pkqzoxxjnzqaekhvnaku.supabase.co";
+const SUPABASE_URL = "https://pkqzoxxjnzqaekhvnaku.supabase.co";
+const SUPABASE_KEY = "sb_publishable_KVbBNWyIhdykAQsUf_yvhA_rupOxGSR";
 
-const SUPABASE_KEY =
-  "sb_publishable_KVbBNWyIhdykAQsUf_yvhA_rupOxGSR";
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-const client =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-let competition = null;
-let weeks = [];
-let players = [];
-let teams = [];
-let fixtures = [];
-let selections = [];
-
-function showMessage(text, error = false) {
-
-  const box =
-    document.getElementById("message");
-
-  box.innerHTML =
-    '<div class="message ' +
-    (error ? "error" : "success-message") +
-    '">' +
-    text +
-    "</div>";
-}
 
 async function login() {
 
-  const email =
-    document.getElementById("email").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-  const password =
-    document.getElementById("password").value;
+  const message = document.getElementById("loginMessage");
 
-  const message =
-    document.getElementById("loginMessage");
+  message.textContent = "Logging in...";
+  message.className = "";
 
-  message.innerHTML = "Logging in...";
-
-  const { error } =
-    await client.auth.signInWithPassword({
-      email,
-      password
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
     });
 
   if (error) {
-
-    message.innerHTML =
-      '<div class="message error">' +
-      error.message +
-      "</div>";
-
+    message.textContent = error.message;
+    message.className = "error";
     return;
   }
 
-  message.innerHTML = "";
+  message.textContent = "Login successful.";
+  message.className = "success";
 
-  await startApp();
+  showDashboard();
+  await loadDashboard();
 }
+
 
 async function logout() {
 
-  await client.auth.signOut();
+  await supabaseClient.auth.signOut();
 
   document
-    .getElementById("app")
+    .getElementById("dashboardSection")
     .classList.add("hidden");
 
   document
-    .getElementById("loginScreen")
+    .getElementById("loginSection")
     .classList.remove("hidden");
 }
 
-async function startApp() {
+
+function showDashboard() {
 
   document
-    .getElementById("loginScreen")
+    .getElementById("loginSection")
     .classList.add("hidden");
 
   document
-    .getElementById("app")
+    .getElementById("dashboardSection")
     .classList.remove("hidden");
+}
+
+
+async function loadDashboard() {
 
   await loadCompetition();
-  await loadWeeks();
   await loadPlayers();
-  await loadTeams();
+  await loadWeeks();
   await loadFixtures();
-  await loadSelections();
-
-  updateOverview();
-  populateSelectionMenus();
+  await loadResults();
 }
+
 
 async function loadCompetition() {
 
+  const box = document.getElementById("competitionInfo");
+
   const { data, error } =
-    await client
+    await supabaseClient
       .from("competitions")
       .select("*")
-      .limit(1)
-      .single();
+      .order("id")
+      .limit(1);
 
   if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
+    box.innerHTML = "Error loading competition: " + error.message;
     return;
   }
 
-  competition = data;
-
-  document.getElementById(
-    "competitionInfo"
-  ).innerHTML =
-    "<strong>" +
-    data.name +
-    "</strong><br>" +
-    "League: " +
-    data.league +
-    "<br>" +
-    "Status: " +
-    data.status +
-    "<br>" +
-    "Bye rule: " +
-    data.bye_rule;
-}
-
-async function loadWeeks() {
-
-  const { data, error } =
-    await client
-      .from("weeks")
-      .select("*")
-      .order("week_number");
-
-  if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
+  if (!data || data.length === 0) {
+    box.innerHTML = "No competition found.";
     return;
   }
 
-  weeks = data || [];
+  const c = data[0];
 
-  const select =
-    document.getElementById(
-      "selectionWeek"
-    );
-
-  select.innerHTML = "";
-
-  weeks.forEach(week => {
-
-    const option =
-      document.createElement("option");
-
-    option.value = week.id;
-
-    option.textContent =
-      "Week " +
-      week.week_number +
-      " — deadline " +
-      new Date(
-        week.main_deadline
-      ).toLocaleString();
-
-    select.appendChild(option);
-  });
+  box.innerHTML = `
+    <strong>${escapeHtml(c.name)}</strong><br>
+    League: ${escapeHtml(c.league || "")}<br>
+    Status: ${escapeHtml(c.status || "")}<br>
+    Bye rule: ${escapeHtml(c.bye_rule || "")}
+  `;
 }
+
 
 async function loadPlayers() {
 
+  const box = document.getElementById("playersInfo");
+
   const { data, error } =
-    await client
-      .from("players")
-      .select("*")
-      .order("name");
+    await supabaseClient
+      .from("competition_players")
+      .select(`
+        status,
+        players (
+          name
+        )
+      `)
+      .eq("competition_id", 1)
+      .order("id");
 
   if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
+    box.innerHTML = "Error loading players: " + error.message;
     return;
   }
 
-  players = data || [];
-
-  renderPlayers();
-}
-
-async function loadTeams() {
-
-  const { data, error } =
-    await client
-      .from("teams")
-      .select("*")
-      .order("name");
-
-  if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
+  if (!data || data.length === 0) {
+    box.innerHTML = "No players found.";
     return;
   }
 
-  teams = data || [];
+  let html = "<table><tr><th>Player</th><th>Status</th></tr>";
+
+  data.forEach(row => {
+
+    html += `
+      <tr>
+        <td>${escapeHtml(row.players?.name || "")}</td>
+        <td>${escapeHtml(row.status || "")}</td>
+      </tr>
+    `;
+
+  });
+
+  html += "</table>";
+
+  box.innerHTML = html;
 }
+
+
+async function loadWeeks() {
+
+  const box = document.getElementById("weeksInfo");
+
+  const { data, error } =
+    await supabaseClient
+      .from("weeks")
+      .select("*")
+      .eq("competition_id", 1)
+      .order("week_number");
+
+  if (error) {
+    box.innerHTML = "Error loading weeks: " + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    box.innerHTML = "No weeks found.";
+    return;
+  }
+
+  let html = "<table><tr><th>Week</th><th>Deadline</th><th>Status</th></tr>";
+
+  data.forEach(row => {
+
+    html += `
+      <tr>
+        <td>${row.week_number}</td>
+        <td>${escapeHtml(row.main_deadline || "")}</td>
+        <td>${escapeHtml(row.status || "")}</td>
+      </tr>
+    `;
+
+  });
+
+  html += "</table>";
+
+  box.innerHTML = html;
+}
+
 
 async function loadFixtures() {
 
+  const box = document.getElementById("fixturesInfo");
+
   const { data, error } =
-    await client
+    await supabaseClient
       .from("fixtures")
       .select(`
-        *,
-        home_team:teams!fixtures_home_team_id_fkey(name),
-        away_team:teams!fixtures_away_team_id_fkey(name)
+        scheduled_time,
+        status,
+        home_score,
+        away_score,
+        weeks (
+          week_number
+        ),
+        home_team:teams!fixtures_home_team_id_fkey (
+          name
+        ),
+        away_team:teams!fixtures_away_team_id_fkey (
+          name
+        )
       `)
       .order("scheduled_time");
 
   if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
+    box.innerHTML = "Error loading fixtures: " + error.message;
     return;
   }
 
-  fixtures = data || [];
-
-  renderFixtures();
-}
-
-async function loadSelections() {
-
-  const { data, error } =
-    await client
-      .from("selections")
-      .select(`
-        *,
-        player:players(name),
-        team:teams(name)
-      `)
-      .order("week_id");
-
-  if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
+  if (!data || data.length === 0) {
+    box.innerHTML = "No fixtures found.";
     return;
   }
-
-  selections = data || [];
-
-  renderSelections();
-}
-
-function renderPlayers() {
 
   let html =
-    "<table>" +
-    "<tr>" +
-    "<th>Name</th>" +
-    "<th>WhatsApp</th>" +
-    "<th>Active</th>" +
-    "<th>Action</th>" +
-    "</tr>";
+    "<table><tr><th>Week</th><th>Fixture</th><th>Score</th><th>Status</th></tr>";
 
-  players.forEach(player => {
-
-    html +=
-      "<tr>" +
-      "<td>" +
-      player.name +
-      "</td>" +
-      "<td>" +
-      (player.whatsapp_number || "") +
-      "</td>" +
-      "<td>" +
-      (player.active ? "Yes" : "No") +
-      "</td>" +
-      "<td>" +
-      "<button onclick=\"editPlayer(" +
-      player.id +
-      ")\">Edit</button>" +
-      "</td>" +
-      "</tr>";
-  });
-
-  html += "</table>";
-
-  document.getElementById(
-    "playersTable"
-  ).innerHTML = html;
-}
-
-async function addPlayer() {
-
-  const name =
-    document
-      .getElementById("newPlayerName")
-      .value
-      .trim();
-
-  const whatsapp =
-    document
-      .getElementById("newPlayerWhatsApp")
-      .value
-      .trim();
-
-  if (!name) {
-
-    showMessage(
-      "Enter a player name.",
-      true
-    );
-
-    return;
-  }
-
-  const { data: player, error } =
-    await client
-      .from("players")
-      .insert({
-        name: name,
-        whatsapp_number: whatsapp,
-        active: true
-      })
-      .select()
-      .single();
-
-  if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
-    return;
-  }
-
-  await client
-    .from("competition_players")
-    .insert({
-      competition_id: competition.id,
-      player_id: player.id,
-      status: "active"
-    });
-
-  document.getElementById(
-    "newPlayerName"
-  ).value = "";
-
-  document.getElementById(
-    "newPlayerWhatsApp"
-  ).value = "";
-
-  await loadPlayers();
-
-  showMessage(
-    "Player added successfully."
-  );
-}
-
-async function editPlayer(id) {
-
-  const player =
-    players.find(
-      p => p.id === id
-    );
-
-  if (!player) return;
-
-  const newName =
-    prompt(
-      "Player name:",
-      player.name
-    );
-
-  if (newName === null) return;
-
-  const newWhatsApp =
-    prompt(
-      "WhatsApp number:",
-      player.whatsapp_number || ""
-    );
-
-  if (newWhatsApp === null) return;
-
-  const { error } =
-    await client
-      .from("players")
-      .update({
-        name: newName.trim(),
-        whatsapp_number:
-          newWhatsApp.trim()
-      })
-      .eq("id", id);
-
-  if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
-    return;
-  }
-
-  await loadPlayers();
-
-  showMessage(
-    "Player updated successfully."
-  );
-}
-
-function populateSelectionMenus() {
-
-  const playerSelect =
-    document.getElementById(
-      "selectionPlayer"
-    );
-
-  const teamSelect =
-    document.getElementById(
-      "selectionTeam"
-    );
-
-  playerSelect.innerHTML = "";
-  teamSelect.innerHTML = "";
-
-  players
-    .filter(p => p.active)
-    .forEach(player => {
-
-      const option =
-        document.createElement("option");
-
-      option.value = player.id;
-      option.textContent =
-        player.name;
-
-      playerSelect.appendChild(
-        option
-      );
-    });
-
-  teams.forEach(team => {
-
-    const option =
-      document.createElement("option");
-
-    option.value = team.id;
-    option.textContent =
-      team.name;
-
-    teamSelect.appendChild(
-      option
-    );
-  });
- function renderSelections() {
-
-  let html =
-    "<table><tr>" +
-    "<th>Week</th>" +
-    "<th>Player</th>" +
-    "<th>Team</th>" +
-    "<th>Official</th>" +
-    "</tr>";
-
-  selections.forEach(selection => {
-
-    const week =
-      weeks.find(
-        w => w.id === selection.week_id
-      );
-
-    html +=
-      "<tr>" +
-      "<td>" +
-      (week ? week.week_number : "") +
-      "</td>" +
-      "<td>" +
-      selection.player.name +
-      "</td>" +
-      "<td>" +
-      selection.team.name +
-      "</td>" +
-      "<td>" +
-      (selection.is_official ? "Yes" : "No") +
-      "</td>" +
-      "</tr>";
-  });
-
-  html += "</table>";
-
-  document.getElementById(
-    "selectionTable"
-  ).innerHTML = html;
-}
-
-async function saveSelection() {
-
-  const weekId =
-    Number(
-      document.getElementById(
-        "selectionWeek"
-      ).value
-    );
-
-  const playerId =
-    Number(
-      document.getElementById(
-        "selectionPlayer"
-      ).value
-    );
-
-  const teamId =
-    Number(
-      document.getElementById(
-        "selectionTeam"
-      ).value
-    );
-
-  const existing =
-    selections.find(
-      s =>
-        s.week_id === weekId &&
-        s.player_id === playerId
-    );
-
-  let result;
-
-  if (existing) {
-
-    result =
-      await client
-        .from("selections")
-        .update({
-          team_id: teamId,
-          is_official: false,
-          updated_at:
-            new Date().toISOString()
-        })
-        .eq("id", existing.id);
-
-  } else {
-
-    result =
-      await client
-        .from("selections")
-        .insert({
-          competition_id:
-            competition.id,
-          week_id: weekId,
-          player_id: playerId,
-          team_id: teamId,
-          is_official: false,
-          submitted_at:
-            new Date().toISOString(),
-          updated_at:
-            new Date().toISOString()
-        });
-  }
-
-  if (result.error) {
-
-    showMessage(
-      result.error.message,
-      true
-    );
-
-    return;
-  }
-
-  await loadSelections();
-
-  document.getElementById(
-    "selectionMessage"
-  ).innerHTML =
-    '<div class="message success-message">' +
-    "Draft saved." +
-    "</div>";
-}
-
-async function makeOfficial() {
-
-  const weekId =
-    Number(
-      document.getElementById(
-        "selectionWeek"
-      ).value
-    );
-
-  const playerId =
-    Number(
-      document.getElementById(
-        "selectionPlayer"
-      ).value
-    );
-
-  const selection =
-    selections.find(
-      s =>
-        s.week_id === weekId &&
-        s.player_id === playerId
-    );
-
-  if (!selection) {
-
-    showMessage(
-      "Save the selection first.",
-      true
-    );
-
-    return;
-  }
-
-  const week =
-    weeks.find(
-      w => w.id === weekId
-    );
-
-  if (
-    week &&
-    new Date() >
-    new Date(week.main_deadline)
-  ) {
-
-    showMessage(
-      "The deadline has passed.",
-      true
-    );
-
-    return;
-  }
-
-  const historyCheck =
-    await client
-      .from("selection_history")
-      .select("*")
-      .eq(
-        "competition_id",
-        competition.id
-      )
-      .eq(
-        "player_id",
-        playerId
-      )
-      .eq(
-        "team_id",
-        selection.team_id
-      )
-      .limit(1);
-
-  if (
-    historyCheck.data &&
-    historyCheck.data.length > 0
-  ) {
-
-    showMessage(
-      "That player has already used this team.",
-      true
-    );
-
-    return;
-  }
-
-  const updateResult =
-    await client
-      .from("selections")
-      .update({
-        is_official: true,
-        updated_at:
-          new Date().toISOString()
-      })
-      .eq(
-        "id",
-        selection.id
-      );
-
-  if (updateResult.error) {
-
-    showMessage(
-      updateResult.error.message,
-      true
-    );
-
-    return;
-  }
-
-  const historyResult =
-    await client
-      .from("selection_history")
-      .insert({
-        competition_id:
-          competition.id,
-        week_id: weekId,
-        player_id: playerId,
-        team_id: selection.team_id
-      });
-
-  if (historyResult.error) {
-
-    showMessage(
-      historyResult.error.message,
-      true
-    );
-
-    return;
-  }
-
-  await loadSelections();
-
-  document.getElementById(
-    "selectionMessage"
-  ).innerHTML =
-    '<div class="message success-message">' +
-    "Selection is now official." +
-    "</div>";
-}
-
-function renderFixtures() {
-
-  let html =
-    "<table><tr>" +
-    "<th>Week</th>" +
-    "<th>Home</th>" +
-    "<th>Away</th>" +
-    "<th>Score</th>" +
-    "<th>Status</th>" +
-    "<th>Action</th>" +
-    "</tr>";
-
-  fixtures.forEach(fixture => {
-
-    const week =
-      weeks.find(
-        w => w.id === fixture.week_id
-      );
+  data.forEach(row => {
 
     const score =
-      fixture.home_score !== null &&
-      fixture.away_score !== null
-        ? fixture.home_score +
-          " - " +
-          fixture.away_score
+      row.home_score !== null && row.away_score !== null
+        ? ${row.home_score} - ${row.away_score}
         : "-";
 
-    html +=
-      "<tr>" +
-      "<td>" +
-      (week
-        ? week.week_number
-        : fixture.week_id) +
-      "</td>" +
-      "<td>" +
-      fixture.home_team.name +
-      "</td>" +
-      "<td>" +
-      fixture.away_team.name +
-      "</td>" +
-      "<td>" +
-      score +
-      "</td>" +
-      "<td>" +
-      fixture.status +
-      "</td>" +
-      "<td>" +
-      "<button onclick=\"editFixture(" +
-      fixture.id +
-      ")\">Edit Result</button>" +
-      "</td>" +
-      "</tr>";
+    html += `
+      <tr>
+        <td>${row.weeks?.week_number || ""}</td>
+        <td>
+          ${escapeHtml(row.home_team?.name || "")}
+          vs
+          ${escapeHtml(row.away_team?.name || "")}
+        </td>
+        <td>${score}</td>
+        <td>${escapeHtml(row.status || "")}</td>
+      </tr>
+    `;
+
   });
 
   html += "</table>";
 
-  document.getElementById(
-    "fixturesTable"
-  ).innerHTML = html;
+  box.innerHTML = html;
 }
 
-async function editFixture(id) {
 
-  const fixture =
-    fixtures.find(
-      f => f.id === id
-    );
+async function loadResults() {
 
-  if (!fixture) return;
+  const box = document.getElementById("resultsInfo");
 
-  const homeScore =
-    prompt(
-      "Home score:",
-      fixture.home_score === null
-        ? ""
-        : fixture.home_score
-    );
-
-  if (homeScore === null) return;
-
-  const awayScore =
-    prompt(
-      "Away score:",
-      fixture.away_score === null
-        ? ""
-        : fixture.away_score
-    );
-
-  if (awayScore === null) return;
-
-  const status =
-    prompt(
-      "Status (scheduled, completed, postponed):",
-      fixture.status
-    );
-
-  if (status === null) return;
-
-  const { error } =
-    await client
-      .from("fixtures")
-      .update({
-        home_score:
-          homeScore === ""
-            ? null
-            : Number(homeScore),
-
-        away_score:
-          awayScore === ""
-            ? null
-            : Number(awayScore),
-
-        status:
-          status.trim()
-      })
-      .eq("id", id);
-
-  if (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-
-    return;
-  }
-
-  await loadFixtures();
-
-  showMessage(
-    "Fixture updated."
-  );
-}
-
-async function processResults() {
-
-  if (!competition) return;
-
-  const officialSelections =
-    selections.filter(
-      s =>
-        s.competition_id ===
-          competition.id &&
-        s.is_official
-    );
-
-  for (
-    const selection
-    of officialSelections
-  ) {
-
-    const fixture =
-      fixtures.find(
-        f =>
-          f.week_id ===
-            selection.week_id &&
-          (
-            f.home_team_id ===
-              selection.team_id ||
-            f.away_team_id ===
-              selection.team_id
-          )
-      );
-
-    if (!fixture) continue;
-
-    if (
-      fixture.status ===
-      "postponed"
-    ) {
-
-      await client
-        .from("weekly_results")
-        .upsert({
-          competition_id:
-            competition.id,
-          week_id:
-            selection.week_id,
-          player_id:
-            selection.player_id,
-          selection_id:
-            selection.id,
-          outcome:
-            "progress",
-          notes:
-            "Postponed fixture"
-        });
-
-      continue;
-    }
-
-    if (
-      fixture.home_score === null ||
-      fixture.away_score === null
-    ) {
-      continue;
-    }
-
-    const selectedHome =
-      fixture.home_team_id ===
-      selection.team_id;
-
-    const selectedScore =
-      selectedHome
-        ? fixture.home_score
-        : fixture.away_score;
-
-    const opponentScore =
-      selectedHome
-        ? fixture.away_score
-        : fixture.home_score;
-
-    let outcome;
-
-    if (
-      selectedScore >
-      opponentScore
-    ) {
-
-      outcome = "win";
-
-    } else if (
-      selectedScore ===
-      opponentScore
-    ) {
-
-      outcome = "draw";
-
-    } else {
-
-      outcome = "loss";
-    }
-
-    await client
-      .from("weekly_results")
-      .upsert({
-        competition_id:
-          competition.id,
-        week_id:
-          selection.week_id,
-        player_id:
-          selection.player_id,
-        selection_id:
-          selection.id,
-        outcome:
-          outcome
-      });
-  }
-
-  await updatePlayerStatuses();
-
-  showMessage(
-    "Weekly results processed."
-  );
-}
-
-async function updatePlayerStatuses() {
-
-  const { data: results } =
-    await client
-      .from("weekly_results")
-      .select("*")
-      .eq(
-        "competition_id",
-        competition.id
-      );
-
-  if (!results) return;
-
-  for (const result of results) {
-
-    const { data: cp } =
-      await client
-        .from("competition_players")
-        .select("*")
-        .eq(
-          "competition_id",
-          competition.id
-        )
-        .eq(
-          "player_id",
-          result.player_id
-        )
-        .single();
-
-    if (!cp) continue;
-
-    if (
-      result.outcome === "loss" ||
-      result.outcome === "draw"
-    ) {
-
-      await client
-        .from("competition_players")
-        .update({
-          status: "eliminated",
-          eliminated_week_id:
-            result.week_id
-        })
-        .eq(
-          "id",
-          cp.id
-        );
-
-    } else if (
-      result.outcome === "win" ||
-      result.outcome === "progress"
-    ) {
-
-      if (
-        cp.status ===
-        "active"
-      ) {
-
-        await client
-          .from("competition_players")
-          .update({
-            status: "active"
-          })
-          .eq(
-            "id",
-            cp.id
-          );
-      }
-    }
-  }
-
-  await loadPlayers();
-  updateOverview();
-}
-
-function updateOverview() {
-
-  if (!competition) return;
-
-  client
-    .from("competition_players")
-    .select("*")
-    .eq(
-      "competition_id",
-      competition.id
-    )
-    .then(({ data }) => {
-
-      if (!data) return;
-
-      const active =
-        data.filter(
-          p =>
-            p.status ===
-            "active"
-        ).length;
-
-      const eliminated =
-        data.filter(
-          p =>
-            p.status ===
-            "eliminated"
-        ).length;
-
-      const winners =
-        data.filter(
-          p =>
-            p.status ===
-            "winner"
-        ).length;
-
-      document.getElementById(
-        "activeCount"
-      ).textContent = active;
-
-      document.getElementById(
-        "eliminatedCount"
-      ).textContent =
-        eliminated;
-
-      document.getElementById(
-        "winnerCount"
-      ).textContent =
-        winners;
-    });
-}
-
-async function generateReport() {
-
-  const { data: results } =
-    await client
+  const { data, error } =
+    await supabaseClient
       .from("weekly_results")
       .select(`
-        *,
-        player:players(name)
+        outcome,
+        notes,
+        players (
+          name
+        ),
+        weeks (
+          week_number
+        )
       `)
-      .eq(
-        "competition_id",
-        competition.id
-      )
+      .eq("competition_id", 1)
       .order("week_id");
 
-  const { data: cp } =
-    await client
-      .from("competition_players")
-      .select(`
-        *,
-        player:players(name)
-      `)
-      .eq(
-        "competition_id",
-        competition.id
-      );
-
-  let report =
-    "🏆 PREMIER LEAGUE SURVIVOR\n\n";
-
-  report +=
-    competition.name +
-    "\n\n";
-
-  if (results) {
-
-    results.forEach(r => {
-
-      report +=
-        r.player.name +
-        " — " +
-        r.outcome.toUpperCase() +
-        "\n";
-    });
-  }
-
-  report += "\n";
-
-  if (cp) {
-
-    const active =
-      cp.filter(
-        p =>
-          p.status ===
-          "active"
-      );
-
-    const eliminated =
-      cp.filter(
-        p =>
-          p.status ===
-          "eliminated"
-      );
-
-    const winners =
-      cp.filter(
-        p =>
-          p.status ===
-          "winner"
-      );
-
-    report +=
-      "🟢 STILL IN: " +
-      active
-        .map(
-          p => p.player.name
-        )
-        .join(", ") +
-      "\n";
-
-    report +=
-      "🔴 ELIMINATED: " +
-      eliminated
-        .map(
-          p => p.player.name
-        )
-        .join(", ") +
-      "\n";
-
-    if (winners.length) {
-
-      report +=
-        "🏆 WINNER: " +
-        winners
-          .map(
-            p => p.player.name
-          )
-          .join(", ") +
-        "\n";
-    }
-  }
-
-  document.getElementById(
-    "report"
-  ).value = report;
-}
-
-async function copyReport() {
-
-  const report =
-    document.getElementById(
-      "report"
-    ).value;
-
-  if (!report) {
-
-    showMessage(
-      "Generate the report first.",
-      true
-    );
-
+  if (error) {
+    box.innerHTML = "Error loading results: " + error.message;
     return;
   }
 
-  try {
-
-    await navigator.clipboard.writeText(
-      report
-    );
-
-    showMessage(
-      "Report copied."
-    );
-
-  } catch (error) {
-
-    showMessage(
-      "Could not copy automatically. Select the report and copy it manually.",
-      true
-    );
+  if (!data || data.length === 0) {
+    box.innerHTML = "No weekly results yet.";
+    return;
   }
+
+  let html =
+    "<table><tr><th>Week</th><th>Player</th><th>Outcome</th></tr>";
+
+  data.forEach(row => {
+
+    html += `
+      <tr>
+        <td>${row.weeks?.week_number || ""}</td>
+        <td>${escapeHtml(row.players?.name || "")}</td>
+        <td>${escapeHtml(row.outcome || "")}</td>
+      </tr>
+    `;
+
+  });
+
+  html += "</table>";
+
+  box.innerHTML = html;
 }
 
-client.auth.onAuthStateChange(
-  async (event, session) => {
 
-    if (session) {
-      await startApp();
-    }
+function escapeHtml(value) {
 
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+supabaseClient.auth.getSession().then(async ({ data }) => {
+
+  if (data.session) {
+    showDashboard();
+    await loadDashboard();
   }
-);
+
+});
+
 
 </script>
 
 </body>
-</html> 
+</html>
