@@ -1,653 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English Premier League Survivor</title>
+  <title>Premier League Survivor</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #222;
-    }
-
-    header {
-      background: #111827;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
+      background: #f2f4f7;
       padding: 20px;
     }
 
-    .card {
+    .box {
+      max-width: 500px;
+      margin: 50px auto;
       background: white;
+      padding: 25px;
       border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    h2 {
-      margin-top: 0;
     }
 
     input, button {
-      padding: 11px;
-      margin: 5px 0;
-      border-radius: 7px;
-      border: 1px solid #ccc;
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
       box-sizing: border-box;
     }
 
-    input {
-      width: 100%;
-    }
-
     button {
-      background: #2563eb;
-      color: white;
-      border: none;
       cursor: pointer;
-      padding-left: 18px;
-      padding-right: 18px;
     }
 
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    .danger {
-      background: #dc2626;
-    }
-
-    .danger:hover {
-      background: #b91c1c;
-    }
-
-    .hidden {
+    #dashboard {
       display: none;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-    }
-
-    .stat {
-      background: #eef2ff;
-      padding: 18px;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-    }
-
-    .status-active {
-      color: #16a34a;
-      font-weight: bold;
-    }
-
-    .status-eliminated {
-      color: #dc2626;
-      font-weight: bold;
-    }
-
-    .status-winner {
-      color: #ca8a04;
-      font-weight: bold;
-    }
-
-    .message {
-      margin-top: 10px;
-      font-weight: bold;
+    #message {
+      margin-top: 15px;
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <h1>English Premier League Survivor</h1>
-  <p>Admin Dashboard</p>
-</header>
+<div class="box" id="login">
+  <h1>Premier League Survivor</h1>
+  <h2>Admin Login</h2>
 
-<div class="container">
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
 
-  <div id="loginSection" class="card">
-    <h2>Admin Login</h2>
+  <button onclick="login()">Log In</button>
 
-    <input
-      type="email"
-      id="email"
-      placeholder="Admin email"
-    >
+  <div id="message"></div>
+</div>
 
-    <input
-      type="password"
-      id="password"
-      placeholder="Password"
-    >
+<div class="box" id="dashboard">
+  <h1>Premier League Survivor</h1>
+  <h2>Admin Dashboard</h2>
 
-    <button id="loginButton">Login</button>
+  <p>✅ You are successfully logged in.</p>
 
-    <div id="loginMessage" class="message"></div>
-  </div>
-
-  <div id="dashboardSection" class="hidden">
-
-    <div class="card">
-      <h2>Competition Dashboard</h2>
-
-      <div id="competitionInfo">
-        Loading competition...
-      </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat">
-        <div>Active Players</div>
-        <div class="stat-number" id="activeCount">0</div>
-      </div>
-
-      <div class="stat">
-        <div>Eliminated</div>
-        <div class="stat-number" id="eliminatedCount">0</div>
-      </div>
-
-      <div class="stat">
-        <div>Winners</div>
-        <div class="stat-number" id="winnerCount">0</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Players</h2>
-
-      <input
-        type="text"
-        id="playerName"
-        placeholder="Player name"
-      >
-
-      <input
-        type="text"
-        id="playerWhatsapp"
-        placeholder="WhatsApp number (optional)"
-      >
-
-      <button id="addPlayerButton">
-        Add Player
-      </button>
-
-      <div id="playerMessage" class="message"></div>
-
-      <br><br>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>WhatsApp</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-
-        <tbody id="playersTable">
-          <tr>
-            <td colspan="3">Loading players...</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <h2>Weekly Selection</h2>
-      <div id="selectionInfo">
-        No selections entered yet.
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Fixtures</h2>
-      <div id="fixturesInfo">
-        Loading fixtures...
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Weekly Results</h2>
-      <div id="resultsInfo">
-        No weekly results yet.
-      </div>
-    </div>
-
-    <div class="card">
-      <button id="logoutButton" class="danger">
-        Logout
-      </button>
-    </div>
-
-  </div>
-
+  <button onclick="logout()">Log Out</button>
 </div>
 
 <script>
-  const SUPABASE_URL = "https://pkqzoxxjnzqaekhvnaku.supabase.co";
 
-  const SUPABASE_KEY = "sb_publishable_KVbBNWyIhdykAQsUf_yvhA_rupOxGSR";
+const SUPABASE_URL =
+  "https://pkqzoxxjnzqaekhvnaku.supabase.co";
 
-  let supabaseClient = null;
-  let competition = null;
+const SUPABASE_KEY =
+  "sb_publishable_KVbBNWyIhdykAQsUf_yvhA_rupOxGSR";
 
-  function initialiseSupabase() {
-    if (!window.supabase) {
-      document.getElementById("loginMessage").textContent =
-        "Supabase library could not load.";
-      return false;
-    }
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
-    supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+async function login() {
 
-    return true;
-  }
+  const email =
+    document.getElementById("email").value;
 
-  async function login() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
+  const password =
+    document.getElementById("password").value;
 
-    const message = document.getElementById("loginMessage");
+  const message =
+    document.getElementById("message");
 
-    if (!email || !password) {
-      message.textContent = "Please enter your email and password.";
-      return;
-    }
+  message.innerText = "Logging in...";
 
-    message.textContent = "Logging in...";
-
-    const { error } = await supabaseClient.auth.signInWithPassword({
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
       email: email,
       password: password
     });
 
-    if (error) {
-      message.textContent = error.message;
-      return;
-    }
-
-    message.textContent = "";
-
-    document.getElementById("loginSection").classList.add("hidden");
-    document.getElementById("dashboardSection").classList.remove("hidden");
-
-    await loadDashboard();
+  if (error) {
+    message.innerText = error.message;
+    return;
   }
 
-  async function logout() {
-    await supabaseClient.auth.signOut();
+  document.getElementById("login").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+}
 
-    document.getElementById("dashboardSection").classList.add("hidden");
-    document.getElementById("loginSection").classList.remove("hidden");
+async function logout() {
 
-    document.getElementById("password").value = "";
-  }
+  await supabaseClient.auth.signOut();
 
-  async function loadDashboard() {
-    await loadCompetition();
-    await loadPlayers();
-    await loadSelections();
-    await loadFixtures();
-    await loadResults();
-  }
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("login").style.display = "block";
+}
 
-  async function loadCompetition() {
-    const { data, error } = await supabaseClient
-      .from("competitions")
-      .select("*")
-      .order("id", { ascending: true })
-      .limit(1)
-      .maybeSingle();
-
-    if (error) {
-      document.getElementById("competitionInfo").textContent =
-        error.message;
-      return;
-    }
-
-    competition = data;
-
-    if (!competition) {
-      document.getElementById("competitionInfo").textContent =
-        "No competition found.";
-      return;
-    }
-
-    document.getElementById("competitionInfo").innerHTML = `
-      <strong>${escapeHtml(competition.name)}</strong><br>
-      League: ${escapeHtml(competition.league || "")}<br>
-      Status: ${escapeHtml(competition.status || "")}<br>
-      Bye rule: ${escapeHtml(competition.bye_rule || "")}
-    `;
-  }
-
-  async function loadPlayers() {
-    if (!competition) return;
-
-    const { data, error } = await supabaseClient
-      .from("competition_players")
-      .select(`
-        id,
-        status,
-        player_id,
-        players (
-          name,
-          whatsapp_number
-        )
-      `)
-      .eq("competition_id", competition.id)
-      .order("id");
-
-    if (error) {
-      document.getElementById("playersTable").innerHTML =
-        <tr><td colspan="3">${escapeHtml(error.message)}</td></tr>;
-      return;
-    }
-
-    const active = data.filter(p => p.status === "active").length;
-    const eliminated = data.filter(p => p.status === "eliminated").length;
-    const winners = data.filter(p => p.status === "winner").length;
-
-    document.getElementById("activeCount").textContent = active;
-    document.getElementById("eliminatedCount").textContent = eliminated;
-    document.getElementById("winnerCount").textContent = winners;
-
-    if (!data.length) {
-      document.getElementById("playersTable").innerHTML =
-        <tr><td colspan="3">No players found.</td></tr>;
-      return;
-    }
-
-    document.getElementById("playersTable").innerHTML = data.map(row => {
-      const player = row.players || {};
-
-      let statusClass = "status-active";
-
-      if (row.status === "eliminated") {
-        statusClass = "status-eliminated";
-      }
-
-      if (row.status === "winner") {
-        statusClass = "status-winner";
-      }
-
-      return `
-        <tr>
-          <td>${escapeHtml(player.name || "")}</td>
-          <td>${escapeHtml(player.whatsapp_number || "")}</td>
-          <td class="${statusClass}">
-            ${escapeHtml(row.status || "")}
-          </td>
-        </tr>
-      `;
-    }).join("");
-  }
-
-  async function addPlayer() {
-    if (!competition) {
-      document.getElementById("playerMessage").textContent =
-        "Competition not loaded.";
-      return;
-    }
-
-    const name = document.getElementById("playerName").value.trim();
-    const whatsapp = document.getElementById("playerWhatsapp").value.trim();
-
-    const message = document.getElementById("playerMessage");
-
-    if (!name) {
-      message.textContent = "Please enter a player name.";
-      return;
-    }
-
-    message.textContent = "Adding player...";
-
-    const { data: existingPlayer, error: findError } =
-      await supabaseClient
-        .from("players")
-        .select("*")
-        .eq("name", name)
-        .maybeSingle();
-
-    if (findError) {
-      message.textContent = findError.message;
-      return;
-    }
-
-    let player = existingPlayer;
-
-    if (!player) {
-      const { data, error } = await supabaseClient
-        .from("players")
-        .insert({
-          name: name,
-          whatsapp_number: whatsapp,
-          active: true
-        })
-        .select()
-        .single();
-
-      if (error) {
-        message.textContent = error.message;
-        return;
-      }
-
-      player = data;
-    }
-
-    const { error: linkError } = await supabaseClient
-      .from("competition_players")
-      .insert({
-        competition_id: competition.id,
-        player_id: player.id,
-        status: "active"
-      });
-
-    if (linkError) {
-      message.textContent = linkError.message;
-      return;
-    }
-
-    document.getElementById("playerName").value = "";
-    document.getElementById("playerWhatsapp").value = "";
-
-    message.textContent = "Player added successfully.";
-
-    await loadPlayers();
-  }
-
-  async function loadSelections() {
-    if (!competition) return;
-
-    const { data, error } = await supabaseClient
-      .from("selections")
-      .select(`
-        id,
-        week_id,
-        player_id,
-        team_id,
-        is_official,
-        players (name),
-        teams (name),
-        weeks (week_number)
-      `)
-      .eq("competition_id", competition.id)
-      .order("week_id")
-      .order("player_id");
-
-    if (error) {
-      document.getElementById("selectionInfo").textContent =
-        error.message;
-      return;
-    }
-
-    if (!data.length) {
-      document.getElementById("selectionInfo").textContent =
-        "No selections entered yet.";
-      return;
-    }
-
-    document.getElementById("selectionInfo").innerHTML =
-      data.map(row => `
-        Week ${row.weeks ? row.weeks.week_number : ""} —
-        ${escapeHtml(row.players ? row.players.name : "")} —
-        ${escapeHtml(row.teams ? row.teams.name : "")} —
-        ${row.is_official ? "Official" : "Draft"}
-      `).join("<br>");
-  }
-
-  async function loadFixtures() {
-    if (!competition) return;
-
-    const { data, error } = await supabaseClient
-      .from("fixtures")
-      .select(`
-        id,
-        scheduled_time,
-        status,
-        home_score,
-        away_score,
-        weeks (week_number),
-        home_team:teams!fixtures_home_team_id_fkey (name),
-        away_team:teams!fixtures_away_team_id_fkey (name)
-      `)
-      .order("week_id")
-      .order("scheduled_time");
-
-    if (error) {
-      document.getElementById("fixturesInfo").textContent =
-        error.message;
-      return;
-    }
-
-    if (!data.length) {
-      document.getElementById("fixturesInfo").textContent =
-        "No fixtures found.";
-      return;
-    }
-
-    document.getElementById("fixturesInfo").innerHTML =
-      data.map(row => `
-        Week ${row.weeks ? row.weeks.week_number : ""}:
-        ${escapeHtml(row.home_team ? row.home_team.name : "")}
-        vs
-        ${escapeHtml(row.away_team ? row.away_team.name : "")}
-        —
-        ${row.status || "scheduled"}
-        —
-        ${row.home_score ?? "-"}:${row.away_score ?? "-"}
-      `).join("<br>");
-  }
-
-  async function loadResults() {
-    if (!competition) return;
-
-    const { data, error } = await supabaseClient
-      .from("weekly_results")
-      .select(`
-        id,
-        week_id,
-        player_id,
-        outcome,
-        notes,
-        players (name),
-        weeks (week_number)
-      `)
-      .eq("competition_id", competition.id)
-      .order("week_id")
-      .order("player_id");
-
-    if (error) {
-      document.getElementById("resultsInfo").textContent =
-        error.message;
-      return;
-    }
-
-    if (!data.length) {
-      document.getElementById("resultsInfo").textContent =
-        "No weekly results yet.";
-      return;
-    }
-
-    document.getElementById("resultsInfo").innerHTML =
-      data.map(row => `
-        Week ${row.weeks ? row.weeks.week_number : ""} —
-        ${escapeHtml(row.players ? row.players.name : "")} —
-        ${escapeHtml(row.outcome || "")}
-        ${row.notes ? " — " + escapeHtml(row.notes) : ""}
-      `).join("<br>");
-  }
-
-  function escapeHtml(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  document.addEventListener("DOMContentLoaded", async () => {
-    if (!initialiseSupabase()) return;
-
-    document
-      .getElementById("loginButton")
-      .addEventListener("click", login);
-
-    document
-      .getElementById("logoutButton")
-      .addEventListener("click", logout);
-
-    document
-      .getElementById("addPlayerButton")
-      .addEventListener("click", addPlayer);
-
-    const {
-      data: { session }
-    } = await supabaseClient.auth.getSession();
-
-    if (session) {
-      document.getElementById("loginSection").classList.add("hidden");
-      document.getElementById("dashboardSection").classList.remove("hidden");
-
-      await loadDashboard();
-    }
-  });
 </script>
 
 </body>
