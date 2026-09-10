@@ -418,6 +418,72 @@ button {
 button:hover {
   background: linear-gradient(135deg, #17b890, #0d8e70);
 }
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-top:20px;
+}
+
+.summary-card{
+  padding:22px;
+  border-radius:18px;
+  color:white;
+  text-align:center;
+  box-shadow:0 12px 25px rgba(0,0,0,.12);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+
+.summary-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 32px rgba(0,0,0,.18);
+}
+
+.summary-blue{
+  background:linear-gradient(135deg,#1688ff,#0856c9);
+}
+
+.summary-green{
+  background:linear-gradient(135deg,#20c878,#0b9f58);
+}
+
+.summary-red{
+  background:linear-gradient(135deg,#ff5a68,#cc2037);
+}
+
+.summary-gold{
+  background:linear-gradient(135deg,#ffc928,#e59f00);
+}
+
+.summary-icon{
+  font-size:2rem;
+  margin-bottom:8px;
+}
+
+.summary-number{
+  font-size:2.4rem;
+  font-weight:800;
+  line-height:1;
+}
+
+.summary-label{
+  margin-top:8px;
+  font-size:.95rem;
+  font-weight:700;
+  opacity:.95;
+}
+
+@media(max-width:800px){
+  .summary-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:450px){
+  .summary-grid{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 
@@ -509,25 +575,33 @@ button:hover {
   <div class="card">
     <h2>Competition Summary</h2>
 
-    <div class="stat">
-      <strong id="playerCount">0</strong><br>
-      Players
+   <div class="summary-grid">
+
+    <div class="summary-card summary-blue">
+        <div class="summary-icon">👥</div>
+        <div class="summary-number" id="playerCount">0</div>
+        <div class="summary-label">Players</div>
     </div>
 
-    <div class="stat">
-      <strong id="activeCount">0</strong><br>
-      Active
+    <div class="summary-card summary-green">
+        <div class="summary-icon">✅</div>
+        <div class="summary-number" id="activeCount">0</div>
+        <div class="summary-label">Active</div>
     </div>
 
-    <div class="stat">
-      <strong id="eliminatedCount">0</strong><br>
-      Eliminated
+    <div class="summary-card summary-red">
+        <div class="summary-icon">❌</div>
+        <div class="summary-number" id="eliminatedCount">0</div>
+        <div class="summary-label">Eliminated</div>
     </div>
 
-    <div class="stat">
-      <strong id="winnerCount">0</strong><br>
-      Winners
+    <div class="summary-card summary-gold">
+        <div class="summary-icon">🏆</div>
+        <div class="summary-number" id="winnerCount">0</div>
+        <div class="summary-label">Winners</div>
     </div>
+
+</div> 
   </div>
 
   <div class="card">
