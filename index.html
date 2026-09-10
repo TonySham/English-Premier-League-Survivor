@@ -441,13 +441,62 @@ button:hover {
 
 <div id="dashboard" class="hidden">
 
-  <div class="card">
-    <h1>Premier League Survivor Admin Dashboard</h1>
+  <div class="card survivor-header">
 
-    <button onclick="logout()">Logout</button>
+    <div class="header-main">
+
+        <div class="header-icon">⚽</div>
+
+        <div class="header-title">
+            <div class="header-small">SURVIVOR COMPETITION</div>
+
+            <h1>
+                Premier League Survivor
+                <span>Admin Dashboard</span>
+            </h1>
+
+            <div class="header-tagline">
+                PICK • SURVIVE • OUTLAST
+            </div>
+        </div>
+
+        <button class="header-logout" onclick="logout()">
+            ⏻ Logout
+        </button>
+
+    </div>
+
+    <div class="dashboard-nav">
+
+        <button onclick="document.getElementById('competitionInfo').scrollIntoView({behavior:'smooth'})">
+            🏠 Dashboard
+        </button>
+
+        <button onclick="document.getElementById('playersTable').scrollIntoView({behavior:'smooth'})">
+            👥 Players
+        </button>
+
+        <button onclick="document.getElementById('selectionsTable').scrollIntoView({behavior:'smooth'})">
+            ☑ Weekly Selections
+        </button>
+
+        <button onclick="document.getElementById('fixturesTable').scrollIntoView({behavior:'smooth'})">
+            ⚽ Fixtures
+        </button>
+
+        <button onclick="document.getElementById('resultsTable').scrollIntoView({behavior:'smooth'})">
+            🏆 Results
+        </button>
+
+        <button onclick="document.getElementById('reportBox').scrollIntoView({behavior:'smooth'})">
+            📋 Reports
+        </button>
+
+    </div>
 
     <div id="message"></div>
-  </div>
+
+</div>
 
   <div class="card">
     <h2>Competition</h2>
