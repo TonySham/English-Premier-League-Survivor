@@ -1098,6 +1098,115 @@ button:hover {
         padding: 13px 12px;
     }
 }  
+/* ===== WEEKLY RESULTS ===== */
+
+.results-section {
+    border-top: 3px solid #20b486;
+}
+
+.results-control-panel {
+    background: #f7f9fb;
+    border: 1px solid #e5e9ee;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.results-field {
+    margin-bottom: 16px;
+}
+
+.results-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.results-field select {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #dce1e7;
+    border-radius: 10px;
+    background: white;
+}
+
+.results-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.results-actions button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.results-process {
+    background: #1f2937;
+    color: white;
+}
+
+.results-report {
+    background: #20b486;
+    color: white;
+}
+
+.results-list-heading,
+.report-heading {
+    margin-top: 20px;
+    margin-bottom: 12px;
+}
+
+.results-list-heading strong,
+.report-heading strong {
+    display: block;
+    font-size: 15px;
+    color: #1f2937;
+}
+
+.results-list-heading span,
+.report-heading span {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    color: #7b8491;
+}
+
+.report-panel {
+    background: #f7f9fb;
+    border: 1px solid #e5e9ee;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 20px;
+}
+
+#reportBox {
+    width: 100%;
+    min-height: 180px;
+    box-sizing: border-box;
+    padding: 14px;
+    border: 1px solid #dce1e7;
+    border-radius: 10px;
+    background: white;
+    resize: vertical;
+    font-family: inherit;
+}
+
+@media (max-width: 700px) {
+    .results-actions {
+        flex-direction: column;
+    }
+
+    .results-actions button {
+        width: 100%;
+    }
+}  
 </style>
 </head>
 
@@ -1434,23 +1543,58 @@ button:hover {
 
 </div>
 
-  <div class="card">
-    <h2>Weekly Results</h2>
+ <!-- WEEKLY RESULTS SECTION -->
+<div class="card results-section">
 
-    <select id="resultWeek"></select>
-
-    <button onclick="processResults()">Process Results</button>
-    <button onclick="generateReport()">Generate WhatsApp Report</button>
-
-    <div id="resultsTable">
-      Loading...
+    <div class="section-heading">
+        <div class="section-label">RESULT CENTRE</div>
+        <h2>🏆 Weekly Results</h2>
+        <p>Process each Survivor week and prepare the latest competition update.</p>
     </div>
 
-    <textarea id="reportBox"
-      style="width:100%;height:180px;margin-top:15px;"
-      placeholder="WhatsApp report will appear here"></textarea>
-  </div>
+    <div class="results-control-panel">
+        <div class="results-field">
+            <label>WEEK</label>
+            <select id="resultWeek"></select>
+        </div>
 
+        <div class="results-actions">
+            <button class="results-process" onclick="processResults()">
+                ✓ Process Results
+            </button>
+
+            <button class="results-report" onclick="generateReport()">
+                💬 Generate WhatsApp Report
+            </button>
+        </div>
+    </div>
+
+    <div class="results-list-heading">
+        <div>
+            <strong>Processed Results</strong>
+            <span>Player outcomes for the selected Survivor week</span>
+        </div>
+    </div>
+
+    <div class="table-panel">
+        <div id="resultsTable">
+            Loading...
+        </div>
+    </div>
+
+    <div class="report-panel">
+        <div class="report-heading">
+            <strong>WhatsApp Report</strong>
+            <span>Ready to copy and share with the competition</span>
+        </div>
+
+        <textarea
+            id="reportBox"
+            placeholder="Your WhatsApp report will appear here..."
+        ></textarea>
+    </div>
+
+</div>
 </div>
 
 </div>
