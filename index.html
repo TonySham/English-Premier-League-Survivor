@@ -484,6 +484,120 @@ button:hover {
     grid-template-columns:1fr;
   }
 }
+/* ===== NEXT DEADLINE COUNTDOWN ===== */
+
+.deadline-card{
+  background:
+    radial-gradient(circle at top right,rgba(255,255,255,.16),transparent 220px),
+    linear-gradient(135deg,#4318b8 0%,#6b28d9 45%,#8f3ee8 100%);
+  color:white;
+  border:none;
+  box-shadow:0 18px 38px rgba(81,39,170,.24);
+  overflow:hidden;
+}
+
+.deadline-card h2{
+  color:white;
+  margin:4px 0 0;
+}
+
+.deadline-card h2::before{
+  display:none;
+}
+
+.deadline-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:20px;
+}
+
+.deadline-small{
+  font-size:.82rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  opacity:.9;
+}
+
+.deadline-badge{
+  background:#20d887;
+  color:#062d21;
+  padding:8px 13px;
+  border-radius:999px;
+  font-size:.74rem;
+  font-weight:900;
+  letter-spacing:.06em;
+  box-shadow:0 6px 16px rgba(0,0,0,.14);
+}
+
+.countdown-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.countdown-box{
+  background:rgba(255,255,255,.94);
+  color:#24124f;
+  border-radius:16px;
+  padding:18px 12px;
+  text-align:center;
+  box-shadow:0 9px 22px rgba(31,12,82,.18);
+}
+
+.countdown-box strong{
+  display:block;
+  font-size:2.2rem;
+  line-height:1;
+  font-weight:900;
+}
+
+.countdown-box span{
+  display:block;
+  margin-top:8px;
+  font-size:.82rem;
+  font-weight:800;
+  color:#6e5b99;
+}
+
+.deadline-date{
+  margin-top:18px;
+  padding:13px 16px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.19);
+  border-radius:12px;
+  font-weight:700;
+  text-align:center;
+}
+
+@media(max-width:700px){
+
+  .deadline-heading{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .countdown-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .countdown-box strong{
+    font-size:1.8rem;
+  }
+}
+
+@media(max-width:380px){
+
+  .countdown-grid{
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+
+  .countdown-box{
+    padding:14px 8px;
+  }
+}
 </style>
 </head>
 
@@ -572,6 +686,47 @@ button:hover {
     </div>
   </div>
 
+<div class="card deadline-card">
+
+    <div class="deadline-heading">
+        <div>
+            <div class="deadline-small">⏱ NEXT DEADLINE</div>
+            <h2 id="deadlineWeekTitle">Survivor Week</h2>
+        </div>
+
+        <div class="deadline-badge">LIVE COUNTDOWN</div>
+    </div>
+
+    <div class="countdown-grid">
+
+        <div class="countdown-box">
+            <strong id="countdownDays">--</strong>
+            <span>Days</span>
+        </div>
+
+        <div class="countdown-box">
+            <strong id="countdownHours">--</strong>
+            <span>Hours</span>
+        </div>
+
+        <div class="countdown-box">
+            <strong id="countdownMinutes">--</strong>
+            <span>Minutes</span>
+        </div>
+
+        <div class="countdown-box">
+            <strong id="countdownSeconds">--</strong>
+            <span>Seconds</span>
+        </div>
+
+    </div>
+
+    <div id="deadlineDate" class="deadline-date">
+        Finding next selection deadline...
+    </div>
+
+</div> 
+  
   <div class="card">
     <h2>Competition Summary</h2>
 
@@ -1074,7 +1229,86 @@ async function loadTeams() {
 }
 
 
-async function loadWeeks() {
+function startDeadlineCountdown() {
+
+    if (window.deadlineCountdownTimer) {
+        clearInterval(window.deadlineCountdownTimer);
+    }
+
+    function updateDeadlineCountdown() {
+
+        const now = new Date();
+
+        const nextWeek = weeks.find(week =>
+            week.main_deadline &&
+            new Date(week.main_deadline) > now
+        );
+
+        const title = document.getElementById("deadlineWeekTitle");
+        const dateBox = document.getElementById("deadlineDate");
+
+        const daysBox = document.getElementById("countdownDays");
+        const hoursBox = document.getElementById("countdownHours");
+        const minutesBox = document.getElementById("countdownMinutes");
+        const secondsBox = document.getElementById("countdownSeconds");
+
+        if (!nextWeek) {
+
+            title.textContent = "No Upcoming Deadline";
+            dateBox.textContent = "All scheduled Survivor deadlines have passed.";
+
+            daysBox.textContent = "0";
+            hoursBox.textContent = "0";
+            minutesBox.textContent = "0";
+            secondsBox.textContent = "0";
+
+            return;
+        }
+
+        const deadline = new Date(nextWeek.main_deadline);
+        const difference = deadline - now;
+
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+        const hours = Math.floor(
+            (difference / (1000 * 60 * 60)) % 24
+        );
+
+        const minutes = Math.floor(
+            (difference / (1000 * 60)) % 60
+        );
+
+        const seconds = Math.floor(
+            (difference / 1000) % 60
+        );
+
+        title.textContent =
+            "Survivor Week " + nextWeek.week_number;
+
+        dateBox.textContent =
+            "Selection deadline: " +
+            deadline.toLocaleString([], {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+        daysBox.textContent = days;
+        hoursBox.textContent = String(hours).padStart(2, "0");
+        minutesBox.textContent = String(minutes).padStart(2, "0");
+        secondsBox.textContent = String(seconds).padStart(2, "0");
+    }
+
+    updateDeadlineCountdown();
+
+    window.deadlineCountdownTimer =
+        setInterval(updateDeadlineCountdown, 1000);
+}
+  
+  async function loadWeeks() {
 
   const { data, error } =
     await supabaseClient
