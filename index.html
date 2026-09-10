@@ -769,7 +769,103 @@ button:hover {
     padding: 20px;
   }
 }
+/* PLAYERS + WEEKS DESIGN */
 
+.players-section,
+.weeks-section {
+    overflow: hidden;
+    border: 1px solid rgba(25, 160, 125, .22);
+}
+
+.section-heading {
+    background: linear-gradient(135deg, #162338, #17385d);
+    color: white;
+    padding: 24px 28px;
+    border-radius: 18px;
+    margin-bottom: 22px;
+}
+
+.section-heading h2 {
+    color: white;
+    margin: 5px 0 4px;
+    font-size: 1.55rem;
+}
+
+.section-heading p {
+    margin: 0;
+    color: rgba(255,255,255,.72);
+    font-size: .92rem;
+}
+
+.section-label {
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #59d7ba;
+}
+
+.player-add-panel {
+    padding: 18px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #f4f8fb, #eef7f4);
+    border: 1px solid #dce9e5;
+}
+
+.player-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+}
+
+.player-inputs input {
+    margin: 0;
+    width: 100%;
+}
+
+.player-inputs button {
+    margin: 0;
+    white-space: nowrap;
+    font-weight: 700;
+}
+
+.table-panel {
+    padding: 6px;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #e3eaf0;
+    overflow-x: auto;
+}
+
+.players-section table,
+.weeks-section table {
+    margin: 0;
+}
+
+.players-section th,
+.weeks-section th {
+    background: linear-gradient(135deg, #18324d, #24577d);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    font-size: .78rem;
+}
+
+.players-section tr:hover td,
+.weeks-section tr:hover td {
+    background: #f0f8f6;
+}
+
+@media(max-width: 650px) {
+    .player-inputs {
+        grid-template-columns: 1fr;
+    }
+
+    .section-heading {
+        padding: 20px;
+    }
+}
 
 </style>
 </head>
@@ -985,26 +1081,48 @@ button:hover {
 
 </div> 
   
-  <div class="card">
-    <h2>Players</h2>
+ <!-- PLAYERS SECTION -->
+<div class="card players-section">
 
-    <input id="newPlayerName" type="text" placeholder="Player name">
-    <input id="newPlayerWhatsApp" type="text" placeholder="WhatsApp number">
-
-    <button onclick="addPlayer()">Add Player</button>
-
-    <div id="playersTable">
-      Loading...
+    <div class="section-heading">
+        <div class="section-label">PLAYER MANAGEMENT</div>
+        <h2>👥 Players</h2>
+        <p>Add and manage everyone taking part in the competition.</p>
     </div>
-  </div>
 
-  <div class="card">
-    <h2>Weeks</h2>
-
-    <div id="weeksTable">
-      Loading...
+    <div class="player-add-panel">
+        <div class="player-inputs">
+            <input id="newPlayerName" type="text" placeholder="Player name">
+            <input id="newPlayerWhatsApp" type="text" placeholder="WhatsApp number">
+            <button onclick="addPlayer()">＋ Add Player</button>
+        </div>
     </div>
-  </div>
+
+    <div class="table-panel">
+        <div id="playersTable">
+            Loading...
+        </div>
+    </div>
+
+</div>
+
+
+<!-- WEEKS SECTION -->
+<div class="card weeks-section">
+
+    <div class="section-heading">
+        <div class="section-label">COMPETITION SCHEDULE</div>
+        <h2>📅 Weeks</h2>
+        <p>View each Survivor week, selection deadline and current status.</p>
+    </div>
+
+    <div class="table-panel">
+        <div id="weeksTable">
+            Loading...
+        </div>
+    </div>
+
+</div>
 
   <div class="card">
     <h2>Weekly Selections</h2>
