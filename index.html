@@ -1082,6 +1082,32 @@ async function loadPlayers() {
 
   const competitionPlayers =
     cpData || [];
+  const totalCompetitionPlayers = competitionPlayers.length;
+
+const eliminatedPlayers = competitionPlayers.filter(player =>
+    player.status === "eliminated"
+).length;
+
+const remainingPlayers = competitionPlayers.filter(player =>
+    player.status === "active"
+).length;
+
+const progressPercent =
+    totalCompetitionPlayers > 0
+        ? Math.round((eliminatedPlayers / totalCompetitionPlayers) * 100)
+        : 0;
+
+document.getElementById("progressText").textContent =
+    `${eliminatedPlayers} of ${totalCompetitionPlayers} players eliminated`;
+
+document.getElementById("progressPercent").textContent =
+    `${progressPercent}%`;
+
+document.getElementById("progressBar").style.width =
+    `${progressPercent}%`;
+
+document.getElementById("seasonPlayersRemaining").textContent =
+    remainingPlayers;
 
   let html = `
     <table>
