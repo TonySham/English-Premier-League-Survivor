@@ -1571,7 +1571,12 @@ function startDeadlineCountdown() {
 
   weeks = data || [];
   startDeadlineCountdown();
+const weeksCompleted = weeks.filter(week =>
+    week.status === "completed"
+).length;
 
+document.getElementById("seasonWeeksCompleted").textContent =
+    weeksCompleted;
   const weekSelect =
     document.getElementById("selectionWeek");
 
@@ -1966,7 +1971,12 @@ async function loadFixtures() {
       .order("scheduled_time");
 
   if (error) throw error;
+const fixturesCompleted = (data || []).filter(fixture =>
+    fixture.status === "completed"
+).length;
 
+document.getElementById("seasonFixturesCompleted").textContent =
+    fixturesCompleted;
   let html = `
     <table>
     <tr>
