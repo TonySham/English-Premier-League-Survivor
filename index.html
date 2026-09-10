@@ -1174,7 +1174,21 @@ async function processResults() {
     );
     return;
   }
+const { error: processError } = await supabaseClient.rpc(
+    'process_survivor_week',
+    {
+        p_competition_id: competitionId,
+        p_week_id: weekId
+    }
+);
 
+if (processError) {
+    showMessage(processError.message, 'error');
+    return;
+}
+
+showMessage('Weekly results processed successfully.', 'success');
+return;
   const { data: selections, error } =
     await supabaseClient
       .from("selections")
