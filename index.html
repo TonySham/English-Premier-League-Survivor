@@ -1020,6 +1020,84 @@ button:hover {
         width: 100%;
     }
 }
+
+/* FIXTURES & RESULTS */
+
+.fixtures-section {
+    overflow: hidden;
+    border: 1px solid rgba(25, 160, 125, .22);
+}
+
+.fixture-list-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+.fixture-list-heading strong {
+    display: block;
+    color: #1f2937;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.fixture-list-heading span {
+    display: block;
+    color: #64748b;
+    font-size: .86rem;
+}
+
+.fixtures-section .table-panel {
+    overflow-x: auto;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+}
+
+.fixtures-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.fixtures-section th {
+    background: linear-gradient(135deg, #1f2937, #334155);
+    color: white;
+    font-size: .76rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 16px 18px;
+}
+
+.fixtures-section td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #edf2f7;
+    vertical-align: middle;
+}
+
+.fixtures-section tbody tr:hover {
+    background: #f8fafc;
+}
+
+.fixtures-section tbody tr:last-child td {
+    border-bottom: none;
+}
+
+@media(max-width: 700px) {
+    .fixture-list-heading {
+        padding: 15px;
+    }
+
+    .fixtures-section th,
+    .fixtures-section td {
+        padding: 13px 12px;
+    }
+}  
 </style>
 </head>
 
@@ -1332,13 +1410,29 @@ button:hover {
 
 </div>
 
-  <div class="card">
-    <h2>Fixtures & Results</h2>
+ <!-- FIXTURES & RESULTS SECTION -->
+<div class="card fixtures-section">
 
-    <div id="fixturesTable">
-      Loading...
+    <div class="section-heading">
+        <div class="section-label">MATCH CENTRE</div>
+        <h2>⚽ Fixtures & Results</h2>
+        <p>View Premier League fixtures and update match results.</p>
     </div>
-  </div>
+
+    <div class="fixture-list-heading">
+        <div>
+            <strong>Competition Fixtures</strong>
+            <span>Fixtures and results for the current Survivor competition</span>
+        </div>
+    </div>
+
+    <div class="table-panel">
+        <div id="fixturesTable">
+            Loading...
+        </div>
+    </div>
+
+</div>
 
   <div class="card">
     <h2>Weekly Results</h2>
