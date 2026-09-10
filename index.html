@@ -580,7 +580,7 @@ button:hover {
 
   .countdown-grid{
     grid-template-columns:repeat(2,1fr);
-  }
+  }p
 
   .countdown-box strong{
     font-size:1.8rem;
@@ -598,6 +598,65 @@ button:hover {
     padding:14px 8px;
   }
 }
+/* Progress to Winner + Season Stats */
+
+.progress-card {
+    background: linear-gradient(135deg, #172554, #4338ca);
+    color: white;
+    border-radius: 20px;
+    padding: 24px;
+}
+
+.progress-card h2 {
+    color: white;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 18px;
+    background: rgba(255,255,255,.2);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 18px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #22c55e, #facc15);
+    border-radius: 20px;
+    transition: width .5s ease;
+}
+
+.season-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.season-stat {
+    background: rgba(255,255,255,.14);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+}
+
+.season-stat strong {
+    display: block;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.season-stat span {
+    font-size: .85rem;
+}
+
+@media(max-width:600px) {
+    .season-stats {
+        grid-template-columns: 1fr;
+    }
+}  
 </style>
 </head>
 
@@ -759,6 +818,59 @@ button:hover {
 </div> 
   </div>
 
+<div class="dashboard-two-col">
+
+    <div class="card progress-card">
+        <h2>🏁 Progress to Winner</h2>
+
+        <div class="progress-info">
+            <span id="progressText">0 of 0 players eliminated</span>
+            <strong id="progressPercent">0%</strong>
+        </div>
+
+        <div class="progress-track">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <div class="progress-note">
+            Survive each week. Be the last one standing.
+        </div>
+    </div>
+
+    <div class="card season-card">
+        <h2>📊 Season Stats</h2>
+
+        <div class="season-grid">
+
+            <div class="season-stat">
+                <div class="season-icon">👥</div>
+                <strong id="seasonPlayersRemaining">0</strong>
+                <span>Players Remaining</span>
+            </div>
+
+            <div class="season-stat">
+                <div class="season-icon">✅</div>
+                <strong id="seasonOfficialSelections">0</strong>
+                <span>Official Selections</span>
+            </div>
+
+            <div class="season-stat">
+                <div class="season-icon">⚽</div>
+                <strong id="seasonFixturesCompleted">0</strong>
+                <span>Fixtures Completed</span>
+            </div>
+
+            <div class="season-stat">
+                <div class="season-icon">📅</div>
+                <strong id="seasonWeeksCompleted">0</strong>
+                <span>Weeks Completed</span>
+            </div>
+
+        </div>
+    </div>
+
+</div> 
+  
   <div class="card">
     <h2>Players</h2>
 
