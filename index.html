@@ -657,6 +657,118 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }  
+/* ===== POLISHED SEASON STATS PANEL ===== */
+
+.season-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,.12), transparent 280px),
+    linear-gradient(135deg, #20104f 0%, #143d8f 45%, #3d147c 100%);
+  color: white;
+  border: none;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 18px 40px rgba(30,20,90,.22);
+}
+
+.season-card h2 {
+  color: white;
+  margin-bottom: 6px;
+}
+
+.season-card h2::before {
+  background: #bb5cff;
+}
+
+.season-card::after {
+  content: "⚽";
+  position: absolute;
+  right: 28px;
+  top: 18px;
+  font-size: 5rem;
+  opacity: .08;
+}
+
+.season-card::before {
+  content: "Key information for the current season";
+  display: block;
+  margin: 38px 0 18px 0;
+  color: rgba(255,255,255,.78);
+  font-size: .95rem;
+}
+
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.season-stat {
+  min-height: 170px;
+  border-radius: 18px;
+  padding: 22px 16px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.24);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.season-stat:nth-child(1) {
+  background: linear-gradient(135deg, #27338c, #1d4fb9);
+}
+
+.season-stat:nth-child(2) {
+  background: linear-gradient(135deg, #0f8f7d, #0d5f77);
+}
+
+.season-stat:nth-child(3) {
+  background: linear-gradient(135deg, #0c79d8, #194ca7);
+}
+
+.season-stat:nth-child(4) {
+  background: linear-gradient(135deg, #7c3bb5, #4c237f);
+}
+
+.season-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.season-stat strong {
+  display: block;
+  font-size: 2.2rem;
+  line-height: 1;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.season-stat span {
+  font-size: .92rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.95);
+}
+
+@media(max-width: 900px) {
+  .season-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 520px) {
+  .season-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .season-card {
+    padding: 20px;
+  }
+}
 </style>
 </head>
 
