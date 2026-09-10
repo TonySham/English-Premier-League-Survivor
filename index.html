@@ -1891,7 +1891,12 @@ async function loadSelections() {
       .order("week_id");
 
   if (error) throw error;
+const officialSelections = (data || []).filter(selection =>
+    selection.is_official === true
+).length;
 
+document.getElementById("seasonOfficialSelections").textContent =
+    officialSelections;
   let html = `
     <table>
     <tr>
