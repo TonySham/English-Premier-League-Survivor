@@ -1206,7 +1206,35 @@ button:hover {
     .results-actions button {
         width: 100%;
     }
-}  
+}
+/* TEAM LOGOS IN FIXTURES */
+
+.fixture-teams {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.fixture-team {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.team-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.fixture-vs {
+    font-size: 12px;
+    font-weight: 800;
+    color: #7b8794;
+    padding: 0 4px;
+}
+  
 </style>
 </head>
 
@@ -2508,7 +2536,34 @@ document.getElementById("seasonOfficialSelections").textContent =
 }
 
 
-async function loadFixtures() {
+const teamLogos = {
+    "Arsenal": "logos/arsenal.png",
+    "Aston Villa": "logos/aston-villa.png",
+    "AFC Bournemouth": "logos/afc-bournemouth.png",
+    "Brentford": "logos/brentford.png",
+    "Brighton & Hove Albion": "logos/brighton.png",
+    "Chelsea": "logos/chelsea.png",
+    "Coventry City": "logos/coventry-city.png",
+    "Crystal Palace": "logos/crystal-palace.png",
+    "Everton": "logos/everton.png",
+    "Fulham": "logos/fulham.png",
+    "Hull City": "logos/hull-city.png",
+    "Ipswich Town": "logos/ipswich-town.png",
+    "Leeds United": "logos/leeds-united.png",
+    "Liverpool": "logos/liverpool.png",
+    "Manchester City": "logos/manchester-city.png",
+    "Manchester United": "logos/manchester-united.png",
+    "Newcastle United": "logos/newcastle-united.png",
+    "Nottingham Forest": "logos/nottingham-forest.png",
+    "Sunderland": "logos/sunderland.png",
+    "Tottenham Hotspur": "logos/tottenham-hotspur.png"
+};
+
+function getTeamLogo(teamName) {
+    return teamLogos[teamName] || "";
+}
+  
+  async function loadFixtures() {
 
   const { data, error } =
     await supabaseClient
@@ -2561,11 +2616,25 @@ document.getElementById("seasonFixturesCompleted").textContent =
           ${week ? "Week " + week.week_number : ""}
         </td>
 
-        <td>
-          ${fixture.home_team.name}
-          vs
-          ${fixture.away_team.name}
-        </td>
+      <td>
+    <div class="fixture-teams">
+        <div class="fixture-team">
+            <img class="team-logo"
+                 src="${getTeamLogo(fixture.home_team.name)}"
+                 alt="${fixture.home_team.name}">
+            <span>${fixture.home_team.name}</span>
+        </div>
+
+        <span class="fixture-vs">VS</span>
+
+        <div class="fixture-team">
+            <img class="team-logo"
+                 src="${getTeamLogo(fixture.away_team.name)}"
+                 alt="${fixture.away_team.name}">
+            <span>${fixture.away_team.name}</span>
+        </div>
+    </div>
+</td>
 
         <td>
           ${new Date(
