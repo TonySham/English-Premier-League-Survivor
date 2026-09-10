@@ -866,7 +866,160 @@ button:hover {
         padding: 20px;
     }
 }
+/* ==============================
+   WEEKLY SELECTIONS
+   ============================== */
 
+.selections-section {
+    overflow: hidden;
+    border: 1px solid rgba(25, 160, 125, .22);
+}
+
+.selection-panel {
+    margin-bottom: 22px;
+    padding: 22px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #f4f8f7, #eef5f3);
+    border: 1px solid #dce9e5;
+}
+
+.selection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.selection-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.selection-field label {
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    color: #58716b;
+}
+
+.selection-field select {
+    width: 100%;
+    min-height: 48px;
+    margin: 0;
+    padding: 0 14px;
+    border: 1px solid #ceded9;
+    border-radius: 12px;
+    background: white;
+    font-size: .95rem;
+    color: #172b35;
+    outline: none;
+    cursor: pointer;
+}
+
+.selection-field select:focus {
+    border-color: #159b7d;
+    box-shadow: 0 0 0 3px rgba(21, 155, 125, .12);
+}
+
+.selection-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.selection-actions button {
+    margin: 0;
+    min-height: 46px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.selection-save {
+    background: #172b3a;
+    color: white;
+}
+
+.selection-official {
+    background: linear-gradient(135deg, #159b7d, #21b98f);
+    color: white;
+}
+
+.selection-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 18px rgba(20, 43, 54, .14);
+}
+
+.selection-list-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 2px 13px;
+}
+
+.selection-list-heading strong {
+    display: block;
+    color: #172b3a;
+    font-size: 1rem;
+}
+
+.selection-list-heading span {
+    display: block;
+    margin-top: 3px;
+    color: #71827e;
+    font-size: .82rem;
+}
+
+.selections-section .table-panel {
+    overflow-x: auto;
+    border-radius: 15px;
+    border: 1px solid #e0e9e6;
+}
+
+.selections-section table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+.selections-section th {
+    background: linear-gradient(135deg, #172b3a, #203e50);
+    color: white;
+    padding: 15px 16px;
+    font-size: .72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.selections-section td {
+    padding: 15px 16px;
+    border-bottom: 1px solid #edf1f0;
+}
+
+.selections-section tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 760px) {
+    .selection-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .selection-panel {
+        padding: 16px;
+    }
+
+    .selection-actions {
+        flex-direction: column;
+    }
+
+    .selection-actions button {
+        width: 100%;
+    }
+}
 </style>
 </head>
 
@@ -1124,20 +1277,60 @@ button:hover {
 
 </div>
 
-  <div class="card">
-    <h2>Weekly Selections</h2>
+ <!-- WEEKLY SELECTIONS -->
+<div class="card selections-section">
 
-    <select id="selectionWeek"></select>
-    <select id="selectionPlayer"></select>
-    <select id="selectionTeam"></select>
-
-    <button onclick="saveSelection()">Save Selection</button>
-    <button onclick="makeOfficial()">Make Official</button>
-
-    <div id="selectionsTable">
-      Loading...
+    <div class="section-heading">
+        <div class="section-label">SELECTION MANAGEMENT</div>
+        <h2>⚽ Weekly Selections</h2>
+        <p>Choose a week, player and Premier League team to manage Survivor selections.</p>
     </div>
-  </div>
+
+    <div class="selection-panel">
+
+        <div class="selection-grid">
+            <div class="selection-field">
+                <label>WEEK</label>
+                <select id="selectionWeek"></select>
+            </div>
+
+            <div class="selection-field">
+                <label>PLAYER</label>
+                <select id="selectionPlayer"></select>
+            </div>
+
+            <div class="selection-field">
+                <label>TEAM</label>
+                <select id="selectionTeam"></select>
+            </div>
+        </div>
+
+        <div class="selection-actions">
+            <button class="selection-save" onclick="saveSelection()">
+                Save Selection
+            </button>
+
+            <button class="selection-official" onclick="makeOfficial()">
+                ✓ Make Official
+            </button>
+        </div>
+
+    </div>
+
+    <div class="selection-list-heading">
+        <div>
+            <strong>Current Selections</strong>
+            <span>Saved and official selections for the competition</span>
+        </div>
+    </div>
+
+    <div class="table-panel">
+        <div id="selectionsTable">
+            Loading...
+        </div>
+    </div>
+
+</div>
 
   <div class="card">
     <h2>Fixtures & Results</h2>
