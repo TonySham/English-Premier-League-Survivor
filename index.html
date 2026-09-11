@@ -4089,6 +4089,302 @@ html body #dashboard table tbody tr:hover .team-badge {
 html body #dashboard table tbody tr:hover > td:first-child {
     box-shadow: inset 4px 0 0 #20d4a0 !important;
 }
+/* =====================================================
+   FOOTBALL DASHBOARD QUICK ACTION CENTRE
+   ===================================================== */
+
+.football-action-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin:18px 0 22px;
+}
+
+.football-action-card{
+    position:relative;
+    min-height:170px;
+    padding:0 !important;
+    overflow:hidden;
+
+    text-align:left;
+
+    border-radius:18px !important;
+    border:1px solid rgba(100,210,190,.25) !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(10,47,70,.90),
+            rgba(4,26,45,.98)
+        ) !important;
+
+    box-shadow:
+        0 14px 32px rgba(0,0,0,.28),
+        inset 0 1px rgba(255,255,255,.07) !important;
+
+    cursor:pointer;
+}
+
+
+/* Giant background artwork */
+
+.football-action-card .action-art{
+    position:absolute;
+
+    right:-5px;
+    top:4px;
+
+    font-size:105px;
+    line-height:1;
+
+    opacity:.11;
+
+    filter:grayscale(.2);
+
+    transform:rotate(-7deg);
+
+    transition:
+        transform .35s ease,
+        opacity .35s ease;
+}
+
+
+/* Different subtle backgrounds */
+
+.players-action{
+    background:
+        radial-gradient(circle at 85% 20%,
+            rgba(39,151,255,.25),
+            transparent 40%),
+        linear-gradient(145deg,#0b3655,#071e34) !important;
+}
+
+.fixtures-action{
+    background:
+        radial-gradient(circle at 85% 20%,
+            rgba(41,221,144,.24),
+            transparent 40%),
+        linear-gradient(145deg,#0a3c45,#071f32) !important;
+}
+
+.selections-action{
+    background:
+        radial-gradient(circle at 85% 20%,
+            rgba(75,230,139,.22),
+            transparent 40%),
+        linear-gradient(145deg,#124235,#071f32) !important;
+}
+
+.results-action{
+    background:
+        radial-gradient(circle at 85% 20%,
+            rgba(255,188,48,.25),
+            transparent 40%),
+        linear-gradient(145deg,#423313,#071f32) !important;
+}
+
+
+/* Bottom information strip */
+
+.action-content{
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    z-index:3;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:16px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(3,22,39,.97),
+            rgba(7,39,58,.90)
+        );
+
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.action-icon{
+    display:grid;
+    place-items:center;
+
+    width:43px;
+    height:43px;
+
+    flex:0 0 43px;
+
+    border-radius:12px;
+
+    font-size:23px;
+
+    background:rgba(40,220,163,.12);
+
+    border:1px solid rgba(80,235,190,.19);
+}
+
+.action-content strong{
+    display:block;
+
+    color:#fff !important;
+
+    font-size:17px;
+    font-weight:900;
+}
+
+.action-content span{
+    display:block;
+
+    margin-top:3px;
+
+    color:#9db4c6 !important;
+
+    font-size:11px;
+    font-weight:600;
+}
+
+
+/* Arrow */
+
+.action-arrow{
+    position:absolute;
+
+    z-index:5;
+
+    right:13px;
+    bottom:21px;
+
+    display:grid;
+    place-items:center;
+
+    width:32px;
+    height:32px;
+
+    border-radius:50%;
+
+    color:#fff !important;
+
+    font-size:19px;
+
+    background:rgba(30,207,153,.16);
+
+    border:1px solid rgba(70,230,185,.30);
+
+    opacity:0;
+
+    transform:translateX(-6px);
+
+    transition:.25s ease;
+}
+
+
+/* Hover */
+
+.football-action-card:hover{
+    transform:translateY(-6px) !important;
+
+    border-color:rgba(64,239,189,.55) !important;
+
+    box-shadow:
+        0 20px 42px rgba(0,0,0,.35),
+        0 0 25px rgba(29,208,153,.10) !important;
+}
+
+.football-action-card:hover .action-art{
+    transform:
+        scale(1.10)
+        rotate(2deg);
+
+    opacity:.19;
+}
+
+.football-action-card:hover .action-arrow{
+    opacity:1;
+    transform:translateX(0);
+}
+
+
+/* Green glow along bottom */
+
+.football-action-card::after{
+    content:"";
+
+    position:absolute;
+
+    left:15%;
+    right:15%;
+    bottom:0;
+
+    height:2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #26dca4,
+            transparent
+        );
+
+    opacity:.45;
+}
+
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .football-action-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+
+@media(max-width:520px){
+
+    .football-action-grid{
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+    }
+
+    .football-action-card{
+        min-height:145px;
+    }
+
+    .football-action-card .action-art{
+        font-size:80px;
+    }
+
+    .action-content{
+        padding:12px;
+    }
+
+    .action-icon{
+        width:35px;
+        height:35px;
+        flex-basis:35px;
+        font-size:18px;
+    }
+
+    .action-content strong{
+        font-size:14px;
+    }
+
+    .action-content span{
+        font-size:9px;
+    }
+
+    .action-arrow{
+        display:none;
+    }
+
+}
 </style>
 </head>
 
@@ -4198,7 +4494,78 @@ html body #dashboard table tbody tr:hover > td:first-child {
         </button>
 
     </div>
+<!-- ===== DASHBOARD QUICK ACTION CENTRE ===== -->
 
+<div class="football-action-grid">
+
+    <button class="football-action-card players-action"
+        onclick="document.getElementById('playersTable').scrollIntoView({behavior:'smooth'})">
+
+        <div class="action-art">👥</div>
+
+        <div class="action-content">
+            <div class="action-icon">👥</div>
+            <div>
+                <strong>Players</strong>
+                <span>Manage Survivor competitors</span>
+            </div>
+        </div>
+
+        <div class="action-arrow">→</div>
+    </button>
+
+
+    <button class="football-action-card fixtures-action"
+        onclick="document.getElementById('fixturesTable').scrollIntoView({behavior:'smooth'})">
+
+        <div class="action-art">🏟️</div>
+
+        <div class="action-content">
+            <div class="action-icon">📅</div>
+            <div>
+                <strong>Fixtures</strong>
+                <span>View upcoming matches</span>
+            </div>
+        </div>
+
+        <div class="action-arrow">→</div>
+    </button>
+
+
+    <button class="football-action-card selections-action"
+        onclick="document.getElementById('selectionsTable').scrollIntoView({behavior:'smooth'})">
+
+        <div class="action-art">⚽</div>
+
+        <div class="action-content">
+            <div class="action-icon">👕</div>
+            <div>
+                <strong>Selections</strong>
+                <span>Manage weekly team picks</span>
+            </div>
+        </div>
+
+        <div class="action-arrow">→</div>
+    </button>
+
+
+    <button class="football-action-card results-action"
+        onclick="document.getElementById('resultsTable').scrollIntoView({behavior:'smooth'})">
+
+        <div class="action-art">🏆</div>
+
+        <div class="action-content">
+            <div class="action-icon">🏆</div>
+            <div>
+                <strong>Results</strong>
+                <span>Process Survivor outcomes</span>
+            </div>
+        </div>
+
+        <div class="action-arrow">→</div>
+    </button>
+
+</div>
     <div id="message"></div>
 
 </div>
