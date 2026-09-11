@@ -2635,6 +2635,518 @@ td:first-child{
     background:rgba(225,166,45,.17);
     border-color:rgba(255,198,70,.42);
 }
+/* =====================================================
+   PREMIER LEAGUE SURVIVOR - FOOTBALL HERO
+   ===================================================== */
+
+.football-hero{
+    position:relative;
+    overflow:hidden;
+    min-height:285px;
+    padding:34px 38px !important;
+
+    background:
+        radial-gradient(circle at 78% 45%,
+            rgba(28,224,166,.22),
+            transparent 27%),
+        radial-gradient(circle at 15% 0%,
+            rgba(122,75,255,.28),
+            transparent 34%),
+        linear-gradient(120deg,
+            #08172b 0%,
+            #10284a 48%,
+            #073d42 100%) !important;
+
+    border:1px solid rgba(75,224,196,.30) !important;
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.30),
+        inset 0 1px rgba(255,255,255,.08) !important;
+}
+
+/* Football pitch artwork */
+
+.hero-pitch{
+    position:absolute;
+    width:430px;
+    height:430px;
+    right:-75px;
+    top:-75px;
+
+    border:2px solid rgba(255,255,255,.055);
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
+.hero-pitch::before{
+    content:"";
+    position:absolute;
+
+    width:165px;
+    height:165px;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    border:2px solid rgba(255,255,255,.055);
+    border-radius:50%;
+}
+
+.hero-pitch::after{
+    content:"";
+    position:absolute;
+
+    width:2px;
+    height:100%;
+
+    left:50%;
+
+    background:rgba(255,255,255,.045);
+}
+
+/* Stadium lighting */
+
+.hero-spotlight{
+    position:absolute;
+    width:300px;
+    height:300px;
+
+    border-radius:50%;
+    filter:blur(65px);
+
+    pointer-events:none;
+    opacity:.32;
+
+    animation:stadiumGlow 6s ease-in-out infinite;
+}
+
+.hero-light-one{
+    background:#17d6a0;
+    right:5%;
+    top:-180px;
+}
+
+.hero-light-two{
+    background:#744cff;
+    left:-130px;
+    bottom:-220px;
+
+    animation-delay:2s;
+}
+
+@keyframes stadiumGlow{
+    0%,100%{
+        opacity:.20;
+        transform:scale(.92);
+    }
+
+    50%{
+        opacity:.42;
+        transform:scale(1.08);
+    }
+}
+
+/* Main header */
+
+.football-hero .header-main{
+    position:relative;
+    z-index:5;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:30px;
+    min-height:210px;
+}
+
+.hero-brand{
+    display:flex;
+    align-items:center;
+    gap:26px;
+}
+
+/* Survivor emblem */
+
+.survivor-emblem{
+    width:130px;
+    height:145px;
+
+    flex-shrink:0;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+
+    border-radius:28px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(23,184,144,.26),
+            rgba(98,61,220,.25));
+
+    border:1px solid rgba(255,255,255,.18);
+
+    box-shadow:
+        0 18px 35px rgba(0,0,0,.28),
+        inset 0 1px rgba(255,255,255,.12);
+
+    backdrop-filter:blur(10px);
+
+    animation:emblemEntrance .7s ease both;
+}
+
+.emblem-ball{
+    font-size:52px;
+    line-height:1;
+
+    filter:drop-shadow(0 8px 12px rgba(0,0,0,.35));
+
+    animation:footballFloat 3.4s ease-in-out infinite;
+}
+
+.emblem-text{
+    text-align:center;
+    margin-top:12px;
+}
+
+.emblem-text span{
+    display:block;
+
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1.8px;
+
+    color:#7dffe0 !important;
+}
+
+.emblem-text strong{
+    display:block;
+
+    margin-top:3px;
+
+    font-size:15px;
+    font-weight:950;
+    letter-spacing:1.2px;
+
+    color:#fff !important;
+}
+
+@keyframes footballFloat{
+    0%,100%{
+        transform:translateY(0) rotate(-4deg);
+    }
+
+    50%{
+        transform:translateY(-7px) rotate(5deg);
+    }
+}
+
+@keyframes emblemEntrance{
+    from{
+        opacity:0;
+        transform:translateX(-18px) scale(.92);
+    }
+
+    to{
+        opacity:1;
+        transform:translateX(0) scale(1);
+    }
+}
+
+/* Heading */
+
+.football-hero .header-small{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    margin-bottom:8px;
+
+    color:#65f4cf !important;
+
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.football-hero h1{
+    margin:0 !important;
+
+    color:#fff !important;
+
+    font-size:clamp(31px,4vw,52px) !important;
+    line-height:1.02 !important;
+
+    letter-spacing:-1.5px;
+
+    text-shadow:0 5px 20px rgba(0,0,0,.28);
+}
+
+.football-hero h1 span{
+    display:block;
+
+    margin-top:7px;
+
+    color:#a9bed3 !important;
+
+    font-size:.45em;
+    font-weight:700;
+
+    letter-spacing:.5px;
+}
+
+/* Pick survive outlast */
+
+.football-hero .header-tagline{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:20px;
+}
+
+.football-hero .header-tagline span{
+    display:inline-flex;
+    align-items:center;
+
+    padding:7px 11px;
+
+    border-radius:999px;
+
+    color:#fff !important;
+
+    font-size:11px;
+    font-weight:850;
+    letter-spacing:.6px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    box-shadow:inset 0 1px rgba(255,255,255,.07);
+}
+
+.football-hero .header-tagline b{
+    color:#44e9bf !important;
+}
+
+/* Admin area */
+
+.hero-admin{
+    position:relative;
+    z-index:5;
+
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+
+    gap:12px;
+}
+
+.admin-badge{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:8px 12px;
+
+    border-radius:999px;
+
+    color:#c9ffe9 !important;
+
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1.2px;
+
+    background:rgba(16,48,59,.65);
+
+    border:1px solid rgba(66,224,184,.25);
+}
+
+.admin-dot{
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:#22e5a8;
+
+    box-shadow:0 0 12px #22e5a8;
+
+    animation:adminPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes adminPulse{
+    0%,100%{
+        opacity:.5;
+        transform:scale(.8);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.25);
+    }
+}
+
+.football-hero .header-logout{
+    background:rgba(6,24,45,.75) !important;
+
+    color:#fff !important;
+
+    border:1px solid rgba(255,255,255,.16) !important;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.20);
+}
+
+.football-hero .header-logout:hover{
+    color:#fff !important;
+
+    background:rgba(216,74,91,.88) !important;
+
+    transform:translateY(-2px);
+}
+
+/* Decorative floating footballs */
+
+.floating-ball{
+    position:absolute;
+
+    pointer-events:none;
+
+    opacity:.055;
+
+    filter:grayscale(1);
+
+    z-index:1;
+}
+
+.ball-one{
+    right:9%;
+    bottom:-35px;
+
+    font-size:150px;
+
+    animation:backgroundBall 9s ease-in-out infinite;
+}
+
+.ball-two{
+    right:33%;
+    top:-32px;
+
+    font-size:75px;
+
+    animation:backgroundBall 7s ease-in-out infinite reverse;
+}
+
+@keyframes backgroundBall{
+    0%,100%{
+        transform:translateY(0) rotate(0deg);
+    }
+
+    50%{
+        transform:translateY(-15px) rotate(18deg);
+    }
+}
+
+/* Header hover polish */
+
+.football-hero:hover .survivor-emblem{
+    border-color:rgba(78,238,196,.35);
+
+    box-shadow:
+        0 20px 42px rgba(0,0,0,.32),
+        0 0 28px rgba(23,184,144,.10);
+}
+
+/* Mobile */
+
+@media(max-width:700px){
+
+    .football-hero{
+        padding:25px 20px !important;
+        min-height:auto;
+    }
+
+    .football-hero .header-main{
+        display:block;
+        min-height:auto;
+    }
+
+    .hero-brand{
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .survivor-emblem{
+        width:78px;
+        height:92px;
+        border-radius:20px;
+    }
+
+    .emblem-ball{
+        font-size:34px;
+    }
+
+    .emblem-text span{
+        font-size:6px;
+        letter-spacing:1px;
+    }
+
+    .emblem-text strong{
+        font-size:10px;
+    }
+
+    .football-hero h1{
+        font-size:29px !important;
+        letter-spacing:-.7px;
+    }
+
+    .football-hero .header-tagline{
+        gap:6px;
+        margin-top:14px;
+    }
+
+    .football-hero .header-tagline span{
+        padding:6px 8px;
+        font-size:9px;
+    }
+
+    .football-hero .header-tagline b{
+        display:none;
+    }
+
+    .hero-admin{
+        align-items:flex-start;
+        flex-direction:row;
+        flex-wrap:wrap;
+
+        margin-top:20px;
+    }
+
+    .ball-one{
+        font-size:100px;
+        right:-25px;
+    }
+
+    .ball-two{
+        display:none;
+    }
+
+    .hero-pitch{
+        width:300px;
+        height:300px;
+        right:-130px;
+    }
+}
 </style>
 </head>
 
@@ -2658,30 +3170,64 @@ td:first-child{
 
 <div id="dashboard" class="hidden">
 
-  <div class="card survivor-header">
+<div class="card survivor-header football-hero">
+
+    <div class="hero-pitch"></div>
+    <div class="hero-spotlight hero-light-one"></div>
+    <div class="hero-spotlight hero-light-two"></div>
+
+    <div class="floating-ball ball-one">⚽</div>
+    <div class="floating-ball ball-two">⚽</div>
 
     <div class="header-main">
 
-        <div class="header-icon">⚽</div>
+        <div class="hero-brand">
 
-        <div class="header-title">
-            <div class="header-small">SURVIVOR COMPETITION</div>
-
-            <h1>
-                Premier League Survivor
-                <span>Admin Dashboard</span>
-            </h1>
-
-            <div class="header-tagline">
-                PICK • SURVIVE • OUTLAST
+            <div class="survivor-emblem">
+                <div class="emblem-ball">⚽</div>
+                <div class="emblem-text">
+                    <span>PREMIER LEAGUE</span>
+                    <strong>SURVIVOR</strong>
+                </div>
             </div>
+
+            <div class="header-title">
+
+                <div class="header-small">
+                    🏆 SURVIVOR COMPETITION
+                </div>
+
+                <h1>
+                    Premier League Survivor
+                    <span>Admin Dashboard</span>
+                </h1>
+
+                <div class="header-tagline">
+                    <span>⚽ PICK</span>
+                    <b>•</b>
+                    <span>🛡️ SURVIVE</span>
+                    <b>•</b>
+                    <span>🏆 OUTLAST</span>
+                </div>
+
+            </div>
+
         </div>
 
-        <button class="header-logout" onclick="logout()">
-            ⏻ Logout
-        </button>
+        <div class="hero-admin">
+            <div class="admin-badge">
+                <span class="admin-dot"></span>
+                ADMIN CONTROL
+            </div>
+
+            <button class="header-logout" onclick="logout()">
+                ⏻ Logout
+            </button>
+        </div>
 
     </div>
+
+</div>
 
     <div class="dashboard-nav">
 
