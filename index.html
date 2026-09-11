@@ -3147,6 +3147,871 @@ td:first-child{
         right:-130px;
     }
 }
+/* =========================================================
+   SURVIVOR FOOTBALL CONTROL CENTRE - MASTER VISUAL UPGRADE
+   ========================================================= */
+
+/* ---------- MAIN DASHBOARD ---------- */
+
+#dashboard{
+    position:relative;
+    isolation:isolate;
+}
+
+#dashboard::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-5;
+    pointer-events:none;
+
+    background:
+        radial-gradient(ellipse at 50% 7%,
+            rgba(37,220,160,.13) 0%,
+            transparent 37%),
+        linear-gradient(
+            180deg,
+            rgba(2,17,31,.08),
+            rgba(2,14,27,.40)
+        );
+}
+
+
+/* =========================================================
+   HERO / STADIUM HEADER
+   ========================================================= */
+
+#dashboard .survivor-header{
+    position:relative;
+    overflow:hidden;
+
+    min-height:300px;
+    padding:30px 34px !important;
+
+    border-radius:24px !important;
+
+    background:
+        radial-gradient(circle at 52% 105%,
+            rgba(35,222,126,.38) 0%,
+            rgba(20,130,92,.15) 22%,
+            transparent 44%),
+
+        radial-gradient(circle at 50% 20%,
+            rgba(255,255,255,.10),
+            transparent 23%),
+
+        linear-gradient(
+            115deg,
+            #061426 0%,
+            #0b2440 45%,
+            #063f43 100%
+        ) !important;
+
+    border:1px solid rgba(55,222,186,.32) !important;
+
+    box-shadow:
+        0 28px 70px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.10) !important;
+}
+
+
+/* Stadium grass */
+
+#dashboard .survivor-header::before{
+    content:"";
+
+    position:absolute;
+    left:-5%;
+    right:-5%;
+    bottom:-105px;
+
+    height:190px;
+
+    transform:perspective(400px) rotateX(62deg);
+
+    transform-origin:bottom;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(23,172,83,.48) 0 65px,
+            rgba(15,130,67,.48) 65px 130px
+        );
+
+    border-top:2px solid rgba(104,255,165,.25);
+
+    box-shadow:
+        0 -18px 60px rgba(35,255,136,.15);
+
+    pointer-events:none;
+}
+
+
+/* Stadium floodlights */
+
+#dashboard .survivor-header::after{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    pointer-events:none;
+
+    background:
+        radial-gradient(circle at 3% 35%,
+            rgba(255,255,255,.72) 0 2px,
+            transparent 4px),
+
+        radial-gradient(circle at 8% 27%,
+            rgba(255,255,255,.58) 0 2px,
+            transparent 4px),
+
+        radial-gradient(circle at 14% 22%,
+            rgba(255,255,255,.48) 0 2px,
+            transparent 4px),
+
+        radial-gradient(circle at 86% 22%,
+            rgba(255,255,255,.48) 0 2px,
+            transparent 4px),
+
+        radial-gradient(circle at 92% 27%,
+            rgba(255,255,255,.58) 0 2px,
+            transparent 4px),
+
+        radial-gradient(circle at 97% 35%,
+            rgba(255,255,255,.72) 0 2px,
+            transparent 4px);
+
+    opacity:.8;
+
+    animation:stadiumLights 4s ease-in-out infinite;
+}
+
+@keyframes stadiumLights{
+    0%,100%{opacity:.55;}
+    50%{opacity:1;}
+}
+
+
+/* Keep header content above artwork */
+
+#dashboard .header-main,
+#dashboard .dashboard-nav{
+    position:relative;
+    z-index:5;
+}
+
+
+/* ---------- FOOTBALL EMBLEM ---------- */
+
+#dashboard .header-icon{
+    width:86px !important;
+    height:86px !important;
+
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50% !important;
+
+    font-size:51px !important;
+
+    background:
+        radial-gradient(circle,
+            rgba(255,255,255,.16),
+            rgba(23,184,144,.15)) !important;
+
+    border:2px solid rgba(93,255,210,.48);
+
+    box-shadow:
+        0 0 0 7px rgba(23,184,144,.08),
+        0 15px 35px rgba(0,0,0,.30),
+        0 0 30px rgba(23,184,144,.18);
+
+    animation:heroFootball 4s ease-in-out infinite;
+}
+
+@keyframes heroFootball{
+    0%,100%{
+        transform:translateY(0) rotate(-3deg);
+    }
+
+    50%{
+        transform:translateY(-8px) rotate(5deg);
+    }
+}
+
+
+/* ---------- HERO TEXT ---------- */
+
+#dashboard .header-small{
+    color:#5ff2ca !important;
+
+    font-weight:900 !important;
+    letter-spacing:2.2px !important;
+
+    text-shadow:0 0 18px rgba(70,255,206,.25);
+}
+
+#dashboard .header-title h1{
+    color:#fff !important;
+
+    font-size:clamp(34px,4.4vw,58px) !important;
+    line-height:1.02 !important;
+
+    letter-spacing:-1.8px !important;
+
+    text-shadow:
+        0 7px 25px rgba(0,0,0,.38);
+}
+
+#dashboard .header-title h1 span{
+    color:#65efc9 !important;
+}
+
+#dashboard .header-tagline{
+    color:#dbe9f6 !important;
+
+    font-weight:800;
+    letter-spacing:1.1px;
+}
+
+
+/* =========================================================
+   NAVIGATION - FANTASY FOOTBALL STYLE
+   ========================================================= */
+
+#dashboard .dashboard-nav{
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(6,minmax(115px,1fr));
+
+    gap:10px !important;
+
+    margin-top:24px !important;
+}
+
+#dashboard .dashboard-nav button{
+    position:relative;
+
+    min-height:58px !important;
+
+    padding:12px 14px !important;
+
+    border-radius:13px !important;
+
+    color:#eaf5ff !important;
+
+    font-weight:850 !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,53,78,.93),
+            rgba(8,31,53,.93)
+        ) !important;
+
+    border:1px solid rgba(127,191,218,.22) !important;
+
+    box-shadow:
+        0 9px 22px rgba(0,0,0,.20),
+        inset 0 1px rgba(255,255,255,.06) !important;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease !important;
+}
+
+#dashboard .dashboard-nav button:hover{
+    color:#fff !important;
+
+    transform:translateY(-4px) !important;
+
+    border-color:rgba(64,239,189,.58) !important;
+
+    box-shadow:
+        0 14px 28px rgba(0,0,0,.28),
+        0 0 20px rgba(23,184,144,.13) !important;
+}
+
+#dashboard .dashboard-nav button:first-child{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(26,184,124,.95),
+            rgba(9,111,85,.95)
+        ) !important;
+
+    border-color:rgba(92,255,199,.48) !important;
+}
+
+
+/* =========================================================
+   COMPETITION PANEL
+   ========================================================= */
+
+#dashboard > .card:not(.survivor-header){
+    position:relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10,38,61,.95),
+            rgba(8,30,50,.94)
+        ) !important;
+
+    border:1px solid rgba(77,164,194,.25) !important;
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.24),
+        inset 0 1px rgba(255,255,255,.04) !important;
+}
+
+
+/* Competition heading */
+
+#dashboard > .card:not(.survivor-header) > h2{
+    color:#fff !important;
+
+    font-size:20px !important;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+#dashboard > .card:not(.survivor-header) > h2::before{
+    content:"🏆";
+
+    display:grid;
+    place-items:center;
+
+    width:37px;
+    height:37px;
+
+    border-radius:10px;
+
+    background:rgba(255,193,55,.13);
+
+    box-shadow:0 0 18px rgba(255,188,44,.09);
+}
+
+
+/* Competition information */
+
+#competitionInfo{
+    position:relative;
+
+    padding:22px 24px !important;
+
+    border-radius:16px;
+
+    color:#dceaf7 !important;
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(17,66,94,.75),
+            rgba(10,45,69,.68)
+        ) !important;
+
+    border:1px solid rgba(74,206,177,.24);
+
+    box-shadow:
+        inset 4px 0 #1fd2a0,
+        0 12px 28px rgba(0,0,0,.13);
+}
+
+#competitionInfo strong{
+    color:#fff !important;
+
+    font-size:20px !important;
+}
+
+
+/* =========================================================
+   DEADLINE CONTROL CENTRE
+   ========================================================= */
+
+#dashboard .deadline-card{
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(circle at 88% 20%,
+            rgba(30,232,165,.17),
+            transparent 28%),
+
+        linear-gradient(
+            135deg,
+            #0a1e38,
+            #102f50 55%,
+            #06443e
+        ) !important;
+
+    border:1px solid rgba(61,226,183,.30) !important;
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.28) !important;
+}
+
+#dashboard .deadline-card::after{
+    content:"⚽";
+
+    position:absolute;
+
+    right:4%;
+    bottom:-45px;
+
+    font-size:155px;
+
+    opacity:.045;
+
+    pointer-events:none;
+
+    animation:deadlineBall 9s linear infinite;
+}
+
+@keyframes deadlineBall{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+#dashboard .deadline-small{
+    color:#79f3d2 !important;
+
+    font-weight:900 !important;
+    letter-spacing:2px;
+}
+
+#dashboard #deadlineTitle{
+    color:#fff !important;
+}
+
+
+/* Countdown */
+
+#dashboard .countdown-grid{
+    position:relative;
+    z-index:2;
+
+    gap:14px !important;
+}
+
+#dashboard .countdown-box{
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            160deg,
+            rgba(255,255,255,.98),
+            rgba(225,237,244,.96)
+        ) !important;
+
+    border:1px solid rgba(255,255,255,.65) !important;
+
+    box-shadow:
+        0 14px 28px rgba(0,0,0,.18) !important;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+#dashboard .countdown-box:hover{
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 18px 34px rgba(0,0,0,.25) !important;
+}
+
+#dashboard .countdown-number{
+    color:#281061 !important;
+
+    font-size:clamp(31px,4vw,48px) !important;
+
+    font-weight:950 !important;
+}
+
+#dashboard .countdown-label{
+    color:#647386 !important;
+
+    font-weight:850 !important;
+    letter-spacing:1px;
+}
+
+#dashboard .deadline-badge{
+    color:#022a21 !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #33e4a8,
+            #19bb83
+        ) !important;
+
+    border:1px solid rgba(115,255,211,.55);
+
+    box-shadow:
+        0 8px 22px rgba(25,208,146,.20);
+
+    animation:liveBadge 2s ease-in-out infinite;
+}
+
+@keyframes liveBadge{
+    0%,100%{
+        box-shadow:0 0 0 rgba(37,229,164,0);
+    }
+
+    50%{
+        box-shadow:0 0 24px rgba(37,229,164,.30);
+    }
+}
+
+
+/* =========================================================
+   SUMMARY CARDS - GAME HUD
+   ========================================================= */
+
+#dashboard .summary-grid{
+    gap:14px !important;
+}
+
+#dashboard .summary-card{
+    position:relative;
+
+    overflow:hidden;
+
+    min-height:115px;
+
+    border-radius:17px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,55,81,.96),
+            rgba(8,32,54,.96)
+        ) !important;
+
+    border:1px solid rgba(116,184,211,.20) !important;
+
+    box-shadow:
+        0 14px 30px rgba(0,0,0,.20) !important;
+
+    transition:
+        transform .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease !important;
+}
+
+#dashboard .summary-card:hover{
+    transform:translateY(-6px) scale(1.015);
+
+    border-color:rgba(61,231,181,.42) !important;
+
+    box-shadow:
+        0 19px 38px rgba(0,0,0,.27),
+        0 0 22px rgba(23,184,144,.09) !important;
+}
+
+#dashboard .summary-card::after{
+    position:absolute;
+
+    right:13px;
+    bottom:-17px;
+
+    font-size:70px;
+
+    opacity:.07;
+
+    pointer-events:none;
+}
+
+#dashboard .summary-card:nth-child(1)::after{
+    content:"👥";
+}
+
+#dashboard .summary-card:nth-child(2)::after{
+    content:"⚡";
+}
+
+#dashboard .summary-card:nth-child(3)::after{
+    content:"✕";
+}
+
+#dashboard .summary-card:nth-child(4)::after{
+    content:"🏆";
+}
+
+#dashboard .summary-card strong{
+    color:#fff !important;
+
+    font-size:31px !important;
+}
+
+#dashboard .summary-card span{
+    color:#b8cad9 !important;
+}
+
+
+/* =========================================================
+   SEASON / PROGRESS AREA
+   ========================================================= */
+
+#dashboard .season-stat{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:17px !important;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,59,83,.82),
+            rgba(9,35,58,.82)
+        ) !important;
+
+    border:1px solid rgba(101,175,204,.18);
+
+    transition:transform .2s ease;
+}
+
+#dashboard .season-stat:hover{
+    transform:translateY(-3px);
+}
+
+#dashboard .season-stat strong{
+    color:#fff !important;
+}
+
+#dashboard .season-stat span{
+    color:#aabed0 !important;
+}
+
+
+/* =========================================================
+   GENERAL FOOTBALL DASHBOARD CARDS
+   ========================================================= */
+
+#dashboard .card{
+    animation:dashboardEntrance .55s ease both;
+}
+
+#dashboard .card:nth-of-type(2){
+    animation-delay:.05s;
+}
+
+#dashboard .card:nth-of-type(3){
+    animation-delay:.10s;
+}
+
+#dashboard .card:nth-of-type(4){
+    animation-delay:.15s;
+}
+
+@keyframes dashboardEntrance{
+    from{
+        opacity:0;
+        transform:translateY(14px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+/* =========================================================
+   FOOTBALL SECTION HEADINGS
+   ========================================================= */
+
+#dashboard .section-heading{
+    position:relative;
+
+    padding:20px 22px !important;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            110deg,
+            rgba(16,62,89,.80),
+            rgba(11,47,70,.62)
+        ) !important;
+
+    border:1px solid rgba(74,180,194,.19);
+
+    box-shadow:inset 4px 0 #20d4a0;
+}
+
+#dashboard .section-heading h2{
+    color:#fff !important;
+}
+
+#dashboard .section-heading p{
+    color:#9eb5c8 !important;
+}
+
+#dashboard .section-label{
+    color:#54e7c0 !important;
+
+    font-weight:900 !important;
+    letter-spacing:1.8px !important;
+}
+
+
+/* =========================================================
+   TABLES - SPORTS SCOREBOARD
+   ========================================================= */
+
+#dashboard table{
+    background:#102a40 !important;
+
+    border-color:rgba(110,175,201,.16) !important;
+
+    box-shadow:
+        0 13px 30px rgba(0,0,0,.17);
+}
+
+#dashboard th{
+    color:#bcd2e6 !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #123a5d,
+            #0e2f4d
+        ) !important;
+
+    letter-spacing:1px;
+}
+
+#dashboard td{
+    color:#e7f1fa !important;
+
+    background:rgba(255,255,255,.025) !important;
+}
+
+#dashboard tr:hover td{
+    color:#fff !important;
+
+    background:rgba(32,191,149,.10) !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+#dashboard button{
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        filter .18s ease !important;
+}
+
+#dashboard button:hover{
+    transform:translateY(-2px);
+
+    filter:brightness(1.08);
+}
+
+#dashboard button:active{
+    transform:translateY(0) scale(.98);
+}
+
+
+/* =========================================================
+   MOBILE DASHBOARD
+   ========================================================= */
+
+@media(max-width:900px){
+
+    #dashboard .dashboard-nav{
+        grid-template-columns:
+            repeat(3,1fr) !important;
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    #dashboard .survivor-header{
+        min-height:auto;
+
+        padding:23px 18px !important;
+    }
+
+    #dashboard .header-main{
+        align-items:flex-start !important;
+    }
+
+    #dashboard .header-icon{
+        width:62px !important;
+        height:62px !important;
+
+        font-size:36px !important;
+    }
+
+    #dashboard .header-title h1{
+        font-size:29px !important;
+    }
+
+    #dashboard .dashboard-nav{
+        grid-template-columns:
+            repeat(2,1fr) !important;
+
+        gap:8px !important;
+    }
+
+    #dashboard .dashboard-nav button{
+        min-height:52px !important;
+
+        font-size:11px !important;
+    }
+
+    #dashboard .countdown-grid{
+        grid-template-columns:
+            repeat(2,1fr) !important;
+    }
+
+    #dashboard .summary-grid{
+        grid-template-columns:
+            repeat(2,1fr) !important;
+    }
+
+    #dashboard .survivor-header::before{
+        bottom:-130px;
+    }
+
+}
+
+
+@media(max-width:430px){
+
+    #dashboard .dashboard-nav{
+        grid-template-columns:1fr 1fr !important;
+    }
+
+    #dashboard .header-title h1{
+        font-size:25px !important;
+    }
+
+    #dashboard .summary-card strong{
+        font-size:25px !important;
+    }
+
+}
 </style>
 </head>
 
