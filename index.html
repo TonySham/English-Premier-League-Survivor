@@ -3820,6 +3820,23 @@ async function generateReport() {
 
 checkSession();
 
+// Remove accidental repeated < characters from fixture area
+function cleanFixtureStrayCharacters() {
+    const fixtureArea = document.getElementById("fixturesTable");
+    if (!fixtureArea) return;
+
+    [...fixtureArea.childNodes].forEach(node => {
+        if (
+            node.nodeType === Node.TEXT_NODE &&
+            /^[<\s]+$/.test(node.textContent) &&
+            node.textContent.includes("<")
+        ) {
+            node.remove();
+        }
+    });
+}
+
+setTimeout(cleanFixtureStrayCharacters, 500);
 </script>
 
 </body>
