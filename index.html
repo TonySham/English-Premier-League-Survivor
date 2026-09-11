@@ -51,14 +51,16 @@ background-attachment:fixed;
 }
 
 .card{
-  position:relative;
-  overflow:hidden;
-  background:rgba(255,255,255,.97);
-  padding:24px;
-  margin-bottom:20px;
-  border:1px solid rgba(230,235,242,.95);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+    background:var(--glass);
+    padding:24px;
+    margin-bottom:20px;
+    border:1px solid var(--glass-border);
+    border-radius:var(--radius);
+    box-shadow:var(--glass-shadow);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
 }
 
 #dashboard > .card:first-child{
