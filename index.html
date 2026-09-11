@@ -2034,6 +2034,104 @@ tbody tr:hover{
         padding:5px !important;
     }
 }
+/* ===== TEAM BADGES & FIXTURE POLISH ===== */
+
+.fixture-teams{
+    min-width:300px;
+}
+
+.team-display{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    white-space:nowrap;
+}
+
+.team-badge{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.20),
+            transparent 45%
+        ),
+        var(--team-colour);
+
+    color:#fff !important;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.4px;
+
+    border:2px solid rgba(255,255,255,.75);
+    border-radius:11px 11px 16px 16px;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+.team-name{
+    color:#eef6ff !important;
+    font-weight:700;
+}
+
+.fixture-vs{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:0 12px;
+    padding:4px 7px;
+
+    color:#8fa6ba !important;
+    background:rgba(255,255,255,.06);
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:7px;
+
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+/* Fixture rows become more match-card-like */
+.fixtures-section tbody tr{
+    background:rgba(255,255,255,.035) !important;
+}
+
+.fixtures-section tbody tr:nth-child(even){
+    background:rgba(255,255,255,.065) !important;
+}
+
+.fixtures-section tbody tr:hover{
+    background:#2b4a61 !important;
+    box-shadow:inset 4px 0 0 #20c997 !important;
+}
+
+/* Mobile badges */
+@media(max-width:700px){
+
+    .team-badge{
+        width:32px;
+        height:32px;
+        font-size:9px;
+        border-radius:9px 9px 13px 13px;
+    }
+
+    .team-display{
+        gap:5px;
+    }
+
+    .fixture-vs{
+        margin:0 5px;
+    }
+}
 </style>
 </head>
 
@@ -3336,7 +3434,47 @@ document.getElementById("seasonOfficialSelections").textContent =
 
 
 
-  
+  /* ===== AUTOMATIC TEAM BADGES ===== */
+
+function teamBadge(teamName) {
+    const teams = {
+        "Arsenal": ["ARS", "#e30613"],
+        "Aston Villa": ["AVL", "#7a263a"],
+        "AFC Bournemouth": ["BOU", "#da291c"],
+        "Brentford": ["BRE", "#e30613"],
+        "Brighton & Hove Albion": ["BHA", "#0057b8"],
+        "Chelsea": ["CHE", "#034694"],
+        "Coventry City": ["COV", "#69b3e7"],
+        "Crystal Palace": ["CRY", "#1b458f"],
+        "Everton": ["EVE", "#003399"],
+        "Fulham": ["FUL", "#111111"],
+        "Hull City": ["HUL", "#f5a12d"],
+        "Ipswich Town": ["IPS", "#0054a6"],
+        "Leeds United": ["LEE", "#1d428a"],
+        "Liverpool": ["LIV", "#c8102e"],
+        "Manchester City": ["MCI", "#6cabdd"],
+        "Manchester United": ["MUN", "#da291c"],
+        "Newcastle United": ["NEW", "#111111"],
+        "Nottingham Forest": ["NFO", "#dd0000"],
+        "Sunderland": ["SUN", "#eb172b"],
+        "Tottenham Hotspur": ["TOT", "#132257"]
+    };
+
+    const team = teams[teamName] || [
+        teamName.substring(0,3).toUpperCase(),
+        "#17b890"
+    ];
+
+    return `
+        <span class="team-display">
+            <span class="team-badge"
+                  style="--team-colour:${team[1]}">
+                ${team[0]}
+            </span>
+            <span class="team-name">${teamName}</span>
+        </span>
+    `;
+}
   async function loadFixtures() {
 
   const { data, error } =
@@ -3390,11 +3528,11 @@ document.getElementById("seasonFixturesCompleted").textContent =
           ${week ? "Week " + week.week_number : ""}
         </td>
 
-  <td>
-    ${fixture.home_team.name}
+<td class="fixture-teams">
+    ${teamBadge(fixture.home_team.name)}
     <span class="fixture-vs">VS</span>
-    ${fixture.away_team.name}
-</td>
+    ${teamBadge(fixture.away_team.name)}
+</td><
 
         <td>
           ${new Date(
