@@ -8232,6 +8232,951 @@ body::after{
     }
 
 }
+/* ============================================================
+   BATCH 4
+   REALISTIC STADIUM IMAGE UPGRADE
+   Uses: images/stadium-hero.png
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE ATMOSPHERE
+   ============================================================ */
+
+html{
+    background:#010810 !important;
+}
+
+body{
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(17,79,111,.25),
+            transparent 45%
+        ),
+        linear-gradient(
+            180deg,
+            #020a12 0%,
+            #03121d 45%,
+            #03150e 100%
+        ) !important;
+
+    color:#f2f9fc !important;
+}
+
+
+/* Remove the fake page floodlights */
+
+body::before{
+    content:none !important;
+}
+
+
+/* Keep a subtle grass atmosphere below the top section */
+
+body::after{
+    content:"" !important;
+
+    position:fixed !important;
+
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+
+    height:46vh !important;
+
+    z-index:0 !important;
+
+    pointer-events:none !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(4,54,28,.18) 22%,
+            rgba(3,48,24,.48) 55%,
+            rgba(1,26,14,.86) 100%
+        ) !important;
+
+    border-top:
+        1px solid rgba(69,224,127,.09) !important;
+
+    opacity:1 !important;
+}
+
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+
+#dashboard .dashboard-nav{
+    position:relative !important;
+
+    z-index:30 !important;
+
+    padding:6px 8px !important;
+
+    margin:0 !important;
+
+    border-radius:
+        16px 16px 0 0 !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(2,17,29,.98),
+            rgba(1,12,22,.98)
+        ) !important;
+
+    border:
+        1px solid rgba(94,182,211,.22) !important;
+
+    border-bottom:
+        1px solid rgba(45,214,151,.19) !important;
+
+    box-shadow:
+        0 14px 35px rgba(0,0,0,.40) !important;
+}
+
+#dashboard .dashboard-nav button{
+    min-height:48px !important;
+
+    background:transparent !important;
+
+    box-shadow:none !important;
+
+    color:#c5d9e5 !important;
+
+    border:1px solid transparent !important;
+}
+
+#dashboard .dashboard-nav button:hover{
+    background:
+        rgba(25,173,111,.12) !important;
+
+    border-color:
+        rgba(51,223,158,.19) !important;
+
+    color:#fff !important;
+}
+
+#dashboard .dashboard-nav button:first-child{
+    background:
+        linear-gradient(
+            145deg,
+            #15995f,
+            #087143
+        ) !important;
+
+    color:#fff !important;
+
+    border:
+        1px solid rgba(95,255,192,.27) !important;
+
+    box-shadow:
+        0 6px 18px rgba(3,140,80,.26) !important;
+}
+
+
+/* ============================================================
+   REALISTIC HERO IMAGE
+   ============================================================ */
+
+#dashboard .football-hero{
+    position:relative !important;
+
+    min-height:360px !important;
+
+    padding:
+        42px 410px 50px 38px !important;
+
+    margin:0 !important;
+
+    overflow:hidden !important;
+
+    border-radius:
+        0 0 20px 20px !important;
+
+    border:
+        1px solid rgba(91,186,215,.28) !important;
+
+    border-top:0 !important;
+
+
+    /* REAL IMAGE */
+
+    background-image:
+
+        /* Darken left side for title */
+        linear-gradient(
+            90deg,
+            rgba(0,8,17,.94) 0%,
+            rgba(0,11,21,.80) 29%,
+            rgba(1,16,26,.40) 51%,
+            rgba(1,13,23,.18) 68%,
+            rgba(0,8,16,.32) 100%
+        ),
+
+        /* Slight darkening top and bottom */
+        linear-gradient(
+            180deg,
+            rgba(1,8,16,.30) 0%,
+            transparent 40%,
+            rgba(0,9,13,.18) 70%,
+            rgba(0,15,8,.34) 100%
+        ),
+
+        url("images/stadium-hero.png") !important;
+
+    background-size:
+        cover !important;
+
+    background-position:
+        center center !important;
+
+    background-repeat:
+        no-repeat !important;
+
+    box-shadow:
+        0 28px 70px rgba(0,0,0,.53),
+        0 0 42px rgba(16,145,109,.07) !important;
+}
+
+
+/* REMOVE ALL FAKE STADIUM EFFECTS */
+
+#dashboard .football-hero::before{
+    content:none !important;
+}
+
+#dashboard .football-hero::after{
+    content:none !important;
+}
+
+
+/* ============================================================
+   REMOVE CARTOON FOOTBALL
+   ============================================================ */
+
+#dashboard .ball-one,
+#dashboard .ball-two{
+    display:none !important;
+}
+
+
+/* Remove the fake football grounding shadow */
+
+#dashboard .football-hero .hero-brand::after{
+    display:none !important;
+}
+
+
+/* ============================================================
+   HERO TEXT
+   ============================================================ */
+
+#dashboard .header-main{
+    position:relative !important;
+
+    z-index:10 !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    gap:20px !important;
+}
+
+
+/* Survivor badge becomes glass-like */
+
+#dashboard .survivor-emblem{
+    width:118px !important;
+    min-width:118px !important;
+
+    height:145px !important;
+
+    padding:
+        15px 10px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,48,74,.78),
+            rgba(4,26,49,.82)
+        ) !important;
+
+    border:
+        1px solid rgba(126,215,241,.31) !important;
+
+    backdrop-filter:
+        blur(8px) !important;
+
+    -webkit-backdrop-filter:
+        blur(8px) !important;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.08) !important;
+}
+
+
+/* Reduce the tiny badge football visual */
+
+#dashboard .survivor-emblem .logo-ball{
+    font-size:35px !important;
+
+    opacity:.82 !important;
+}
+
+
+/* Survivor Competition */
+
+#dashboard .header-small{
+    color:#54edbd !important;
+
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.65) !important;
+}
+
+
+/* Main title */
+
+#dashboard .header-title h1{
+    max-width:720px !important;
+
+    margin:
+        7px 0 3px !important;
+
+    font-size:
+        clamp(40px,4.25vw,64px) !important;
+
+    line-height:.98 !important;
+
+    letter-spacing:
+        -.04em !important;
+
+    color:#fff !important;
+
+    text-shadow:
+        0 3px 10px rgba(0,0,0,.75),
+        0 10px 30px rgba(0,0,0,.45) !important;
+}
+
+
+/* Admin Dashboard */
+
+#dashboard .header-title h2,
+#dashboard .header-title .subtitle,
+#dashboard .header-title .dashboard-title{
+    color:#46e8b5 !important;
+
+    text-shadow:
+        0 3px 12px rgba(0,0,0,.60) !important;
+}
+
+
+/* Pick / Survive / Outlast */
+
+#dashboard .header-tagline{
+    margin-top:
+        17px !important;
+}
+
+#dashboard .header-tagline span{
+    background:
+        rgba(2,16,29,.72) !important;
+
+    border:
+        1px solid rgba(145,212,235,.26) !important;
+
+    backdrop-filter:
+        blur(7px) !important;
+
+    -webkit-backdrop-filter:
+        blur(7px) !important;
+
+    color:#f6fbfd !important;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.20),
+        inset 0 1px rgba(255,255,255,.04) !important;
+}
+
+
+/* ============================================================
+   ADMIN CONTROLS
+   ============================================================ */
+
+#dashboard .hero-admin{
+    position:absolute !important;
+
+    top:21px !important;
+    right:23px !important;
+
+    z-index:25 !important;
+}
+
+#dashboard .admin-badge{
+    background:
+        rgba(2,32,40,.68) !important;
+
+    border:
+        1px solid rgba(50,226,166,.31) !important;
+
+    backdrop-filter:
+        blur(10px) !important;
+
+    -webkit-backdrop-filter:
+        blur(10px) !important;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.29) !important;
+}
+
+#dashboard .hero-admin button{
+    background:
+        rgba(3,20,35,.74) !important;
+
+    backdrop-filter:
+        blur(10px) !important;
+
+    -webkit-backdrop-filter:
+        blur(10px) !important;
+
+    border:
+        1px solid rgba(128,198,222,.22) !important;
+}
+
+
+/* ============================================================
+   DEADLINE FLOATING OVER REAL STADIUM
+   ============================================================ */
+
+#dashboard > .deadline-card{
+    position:relative !important;
+
+    z-index:24 !important;
+
+    grid-column:
+        9 / 13 !important;
+
+    grid-row:
+        2 !important;
+
+    align-self:end !important;
+
+    margin:
+        0 22px 28px 0 !important;
+
+    padding:
+        14px !important;
+
+    border-radius:
+        14px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(2,22,38,.90),
+            rgba(3,40,50,.84)
+        ) !important;
+
+    border:
+        1px solid rgba(120,216,237,.34) !important;
+
+    backdrop-filter:
+        blur(13px) saturate(120%) !important;
+
+    -webkit-backdrop-filter:
+        blur(13px) saturate(120%) !important;
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.55),
+        inset 0 1px rgba(255,255,255,.06) !important;
+}
+
+
+/* Countdown */
+
+#dashboard .countdown-grid{
+    gap:
+        5px !important;
+}
+
+#dashboard .countdown-box{
+    min-height:
+        61px !important;
+
+    background:
+        rgba(0,12,22,.68) !important;
+
+    border:
+        1px solid rgba(112,191,217,.17) !important;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.04) !important;
+}
+
+#dashboard .countdown-box strong{
+    color:#fff !important;
+
+    font-size:
+        22px !important;
+}
+
+#dashboard .countdown-box span{
+    color:#a9c1ce !important;
+}
+
+
+/* Deadline date */
+
+#dashboard .deadline-date{
+    background:
+        rgba(6,67,61,.56) !important;
+
+    border:
+        1px solid rgba(55,223,160,.16) !important;
+
+    color:#d9f5e9 !important;
+}
+
+
+/* ============================================================
+   FOUR QUICK ACTION CARDS
+   Use realistic stadium image rather than cartoons
+   ============================================================ */
+
+#dashboard .football-action-grid{
+    position:relative !important;
+
+    z-index:20 !important;
+
+    margin-top:
+        -27px !important;
+
+    padding:
+        0 14px !important;
+
+    gap:
+        11px !important;
+}
+
+#dashboard .football-action-card{
+    position:relative !important;
+
+    min-height:
+        157px !important;
+
+    overflow:hidden !important;
+
+    border-radius:
+        13px !important;
+
+    border:
+        1px solid rgba(116,205,230,.29) !important;
+
+    background-image:
+
+        linear-gradient(
+            180deg,
+            rgba(1,13,23,.08) 0%,
+            rgba(2,18,29,.18) 35%,
+            rgba(1,15,26,.90) 75%,
+            rgba(1,14,24,.98) 100%
+        ),
+
+        url("images/stadium-hero.png") !important;
+
+    background-size:
+        cover !important;
+
+    background-repeat:
+        no-repeat !important;
+
+    box-shadow:
+        0 16px 36px rgba(0,0,0,.40),
+        inset 0 1px rgba(255,255,255,.05) !important;
+
+    transition:
+        transform .20s ease,
+        border-color .20s ease,
+        box-shadow .20s ease !important;
+}
+
+
+/* Different image areas for each card */
+
+#dashboard .players-action{
+    background-position:
+        20% 58% !important;
+}
+
+#dashboard .fixtures-action{
+    background-position:
+        48% 57% !important;
+}
+
+#dashboard .selections-action{
+    background-position:
+        68% 58% !important;
+}
+
+#dashboard .results-action{
+    background-position:
+        88% 57% !important;
+}
+
+
+/* REMOVE FAKE COLOURED CARD OVERLAYS */
+
+#dashboard .football-action-card::before{
+    content:"" !important;
+
+    position:absolute !important;
+
+    inset:0 !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,9,17,.02) 0%,
+            rgba(1,17,28,.12) 45%,
+            rgba(1,15,26,.96) 84%
+        ) !important;
+
+    pointer-events:none !important;
+}
+
+#dashboard .football-action-card::after{
+    content:none !important;
+}
+
+
+/* Hide giant cartoon artwork */
+
+#dashboard .action-art{
+    display:none !important;
+}
+
+
+/* Keep smaller functional icon */
+
+#dashboard .action-icon{
+    width:
+        40px !important;
+
+    min-width:
+        40px !important;
+
+    height:
+        40px !important;
+
+    border-radius:
+        10px !important;
+
+    background:
+        rgba(8,78,70,.72) !important;
+
+    border:
+        1px solid rgba(62,224,166,.25) !important;
+
+    backdrop-filter:
+        blur(7px) !important;
+
+    -webkit-backdrop-filter:
+        blur(7px) !important;
+
+    font-size:
+        19px !important;
+}
+
+
+/* Text strip */
+
+#dashboard .action-content{
+    left:
+        12px !important;
+
+    right:
+        44px !important;
+
+    bottom:
+        12px !important;
+
+    z-index:
+        5 !important;
+
+    padding:
+        8px 5px !important;
+
+    border-radius:
+        8px !important;
+}
+
+#dashboard .action-content strong{
+    color:#fff !important;
+
+    text-shadow:
+        0 2px 6px rgba(0,0,0,.80) !important;
+}
+
+#dashboard .action-content span{
+    color:#b5cbd6 !important;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,.75) !important;
+}
+
+
+/* Arrow */
+
+#dashboard .action-arrow{
+    background:
+        rgba(4,42,62,.77) !important;
+
+    border:
+        1px solid rgba(130,210,236,.31) !important;
+
+    backdrop-filter:
+        blur(6px) !important;
+
+    -webkit-backdrop-filter:
+        blur(6px) !important;
+}
+
+
+/* Hover */
+
+#dashboard .football-action-card:hover{
+    transform:
+        translateY(-5px)
+        scale(1.01) !important;
+
+    border-color:
+        rgba(70,241,176,.62) !important;
+
+    box-shadow:
+        0 24px 45px rgba(0,0,0,.48),
+        0 0 25px rgba(32,211,145,.10) !important;
+}
+
+
+/* ============================================================
+   MAIN PANELS
+   MAKE THEM LOOK LIKE GLASS OVER THE STADIUM
+   ============================================================ */
+
+#dashboard > .card:not(.football-hero),
+#dashboard .dashboard-two-col > .card,
+#dashboard .players-section,
+#dashboard .weeks-section,
+#dashboard .selections-section,
+#dashboard .fixtures-section,
+#dashboard .results-section{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(5,33,51,.94),
+            rgba(3,23,38,.96)
+        ) !important;
+
+    border:
+        1px solid rgba(94,179,207,.20) !important;
+
+    box-shadow:
+        0 19px 45px rgba(0,0,0,.32),
+        inset 0 1px rgba(255,255,255,.035) !important;
+
+    backdrop-filter:
+        blur(9px) !important;
+
+    -webkit-backdrop-filter:
+        blur(9px) !important;
+}
+
+
+/* ============================================================
+   COMPETITION INFORMATION PANEL
+   ============================================================ */
+
+#competitionInfo{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(7,54,70,.88),
+            rgba(5,37,52,.91)
+        ) !important;
+
+    border:
+        1px solid rgba(60,213,161,.22) !important;
+
+    border-left:
+        4px solid #20d595 !important;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.035) !important;
+}
+
+
+/* ============================================================
+   SUMMARY CARDS - MORE PREMIUM
+   ============================================================ */
+
+#dashboard .summary-card{
+    border:
+        1px solid rgba(255,255,255,.10) !important;
+
+    box-shadow:
+        0 13px 28px rgba(0,0,0,.27),
+        inset 0 1px rgba(255,255,255,.12) !important;
+}
+
+#dashboard .summary-blue{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,112,185,.96),
+            rgba(5,69,120,.98)
+        ) !important;
+}
+
+#dashboard .summary-green{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(22,170,108,.96),
+            rgba(6,103,62,.98)
+        ) !important;
+}
+
+#dashboard .summary-red{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(207,57,73,.96),
+            rgba(127,29,43,.98)
+        ) !important;
+}
+
+#dashboard .summary-gold{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(190,139,20,.96),
+            rgba(115,77,5,.98)
+        ) !important;
+}
+
+
+/* ============================================================
+   REMOVE SOME REMAINING OVERSIZED EMOJI WATERMARKS
+   ============================================================ */
+
+#dashboard .summary-card::after,
+#dashboard .progress-card::after,
+#dashboard .command-centre::after,
+#dashboard .command-decoration{
+    display:none !important;
+}
+
+
+/* ============================================================
+   MOBILE / TABLET
+   ============================================================ */
+
+@media(max-width:1100px){
+
+    #dashboard .football-hero{
+        min-height:
+            355px !important;
+
+        padding:
+            37px 340px 45px 30px !important;
+
+        background-position:
+            55% center !important;
+    }
+
+}
+
+
+@media(max-width:850px){
+
+    #dashboard .football-hero{
+        min-height:
+            390px !important;
+
+        padding:
+            28px 20px 145px !important;
+
+        background-position:
+            58% center !important;
+    }
+
+    #dashboard .header-main{
+        align-items:
+            flex-start !important;
+    }
+
+    #dashboard > .deadline-card{
+        grid-column:
+            1 / -1 !important;
+
+        grid-row:
+            auto !important;
+
+        margin:
+            0 !important;
+    }
+
+    #dashboard .football-action-grid{
+        margin-top:
+            0 !important;
+    }
+
+}
+
+
+@media(max-width:560px){
+
+    #dashboard .football-hero{
+        min-height:
+            400px !important;
+
+        padding:
+            23px 17px 130px !important;
+
+        background-position:
+            61% center !important;
+    }
+
+    #dashboard .survivor-emblem{
+        display:none !important;
+    }
+
+    #dashboard .header-title h1{
+        font-size:
+            36px !important;
+    }
+
+    #dashboard .football-action-grid{
+        padding:
+            0 !important;
+    }
+
+    #dashboard .football-action-card{
+        min-height:
+            145px !important;
+    }
+
+}
+
+
+/* ============================================================
+   END BATCH 4
+   ============================================================ */
 </style>
 </head>
 
