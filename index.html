@@ -9177,6 +9177,45 @@ body::after{
 /* ============================================================
    END BATCH 4
    ============================================================ */
+/* ============================================================
+   FINAL WEEKLY SELECTIONS HOVER FIX
+   Prevent white rows when hovering over player selections
+   ============================================================ */
+
+html body #dashboard #selectionsTable table tbody tr,
+html body #dashboard #selectionsTable table tbody tr > td {
+    background-color: #142d42 !important;
+    background-image: none !important;
+    color: #eef7fb !important;
+}
+
+/* Slight alternating row colour */
+html body #dashboard #selectionsTable table tbody tr:nth-child(even) > td {
+    background-color: #10283b !important;
+}
+
+/* DARK HOVER — NEVER WHITE */
+html body #dashboard #selectionsTable table tbody tr:hover,
+html body #dashboard #selectionsTable table tbody tr:hover > td,
+html body #dashboard #selectionsTable table tbody tr:hover > td * {
+    background-color: #1b4557 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+/* Green indicator on the row being hovered */
+html body #dashboard #selectionsTable table tbody tr:hover > td:first-child {
+    box-shadow: inset 4px 0 0 #27d9a0 !important;
+}
+
+/* Keep row movement smooth */
+html body #dashboard #selectionsTable table tbody tr,
+html body #dashboard #selectionsTable table tbody tr > td {
+    transition:
+        background-color .18s ease,
+        color .18s ease,
+        box-shadow .18s ease !important;
+}
 </style>
 </head>
 
