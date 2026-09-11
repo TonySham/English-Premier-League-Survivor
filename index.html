@@ -4385,6 +4385,262 @@ html body #dashboard table tbody tr:hover > td:first-child {
     }
 
 }
+/* =====================================================
+   SURVIVOR COMMAND CENTRE
+   ===================================================== */
+
+.command-centre{
+    position:relative;
+    overflow:hidden;
+    padding:26px !important;
+    background:
+        radial-gradient(circle at 90% 10%,
+            rgba(28,220,166,.12),
+            transparent 30%),
+        linear-gradient(145deg,#071d31,#092a3d) !important;
+    border:1px solid rgba(64,224,181,.25) !important;
+    box-shadow:0 18px 45px rgba(0,0,0,.25) !important;
+}
+
+.command-centre::before{
+    content:"⚽";
+    position:absolute;
+    right:-20px;
+    top:-35px;
+    font-size:180px;
+    opacity:.035;
+    transform:rotate(-15deg);
+    pointer-events:none;
+}
+
+.command-heading{
+    position:relative;
+    z-index:2;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:22px;
+}
+
+.command-label{
+    color:#42e6ba !important;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+    margin-bottom:6px;
+}
+
+.command-heading h2{
+    margin:0 !important;
+    color:#fff !important;
+    font-size:25px;
+    font-weight:900;
+}
+
+.command-heading p{
+    margin:6px 0 0 !important;
+    color:#8faabd !important;
+    font-size:13px;
+}
+
+.command-live{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:30px;
+    color:#72f0c8 !important;
+    background:rgba(25,211,156,.10);
+    border:1px solid rgba(54,230,178,.30);
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.command-live span{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#27e4a8;
+    box-shadow:0 0 12px #27e4a8;
+    animation:commandPulse 1.7s infinite;
+}
+
+@keyframes commandPulse{
+    0%,100%{
+        opacity:1;
+        transform:scale(1);
+    }
+    50%{
+        opacity:.45;
+        transform:scale(.75);
+    }
+}
+
+.command-grid{
+    position:relative;
+    z-index:2;
+    display:grid !important;
+    grid-template-columns:repeat(4,1fr) !important;
+    gap:14px !important;
+}
+
+.command-stat{
+    position:relative;
+    overflow:hidden;
+    min-height:120px;
+    display:flex !important;
+    align-items:center;
+    gap:15px;
+    padding:20px !important;
+    border-radius:16px !important;
+    border:1px solid rgba(255,255,255,.08) !important;
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+.players-command{
+    background:
+        radial-gradient(circle at 90% 20%,
+            rgba(48,142,255,.22),
+            transparent 45%),
+        #0b2941 !important;
+}
+
+.selections-command{
+    background:
+        radial-gradient(circle at 90% 20%,
+            rgba(39,226,161,.20),
+            transparent 45%),
+        #0a3040 !important;
+}
+
+.fixtures-command{
+    background:
+        radial-gradient(circle at 90% 20%,
+            rgba(92,191,255,.20),
+            transparent 45%),
+        #102c43 !important;
+}
+
+.weeks-command{
+    background:
+        radial-gradient(circle at 90% 20%,
+            rgba(255,190,48,.19),
+            transparent 45%),
+        #302b1d !important;
+}
+
+.command-stat .season-icon{
+    position:relative;
+    z-index:2;
+    width:52px;
+    height:52px;
+    min-width:52px;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    font-size:25px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.10);
+}
+
+.command-number{
+    position:relative;
+    z-index:2;
+}
+
+.command-number strong{
+    display:block;
+    color:#fff !important;
+    font-size:32px !important;
+    line-height:1;
+    font-weight:900 !important;
+}
+
+.command-number span{
+    display:block;
+    margin-top:7px;
+    color:#a8bdca !important;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.command-decoration{
+    position:absolute;
+    right:-4px;
+    bottom:-18px;
+    font-size:82px;
+    opacity:.055;
+    transform:rotate(-8deg);
+    pointer-events:none;
+}
+
+.command-stat:hover{
+    transform:translateY(-5px) !important;
+    border-color:rgba(66,230,186,.38) !important;
+    box-shadow:0 14px 28px rgba(0,0,0,.25) !important;
+}
+
+.command-stat:hover .command-decoration{
+    opacity:.09;
+}
+
+@media(max-width:900px){
+    .command-grid{
+        grid-template-columns:repeat(2,1fr) !important;
+    }
+}
+
+@media(max-width:520px){
+    .command-centre{
+        padding:18px !important;
+    }
+
+    .command-heading{
+        align-items:flex-start;
+    }
+
+    .command-heading h2{
+        font-size:20px;
+    }
+
+    .command-grid{
+        grid-template-columns:1fr 1fr !important;
+        gap:9px !important;
+    }
+
+    .command-stat{
+        min-height:105px;
+        padding:13px !important;
+        gap:9px;
+    }
+
+    .command-stat .season-icon{
+        width:38px;
+        height:38px;
+        min-width:38px;
+        font-size:18px;
+    }
+
+    .command-number strong{
+        font-size:25px !important;
+    }
+
+    .command-number span{
+        font-size:9px;
+    }
+
+    .command-live{
+        padding:6px 9px;
+        font-size:9px;
+    }
+}  
 </style>
 </head>
 
