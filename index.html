@@ -4670,37 +4670,63 @@ html body #dashboard table tbody tr:hover > td:first-child {
         </div>
     </div>
 
-    <div class="card season-card">
-        <h2>📊 Season Stats</h2>
+ <!-- ===== SURVIVOR COMMAND CENTRE ===== -->
+<div class="card season-card command-centre">
 
-        <div class="season-grid">
+    <div class="command-heading">
+        <div>
+            <div class="command-label">LIVE COMPETITION DATA</div>
+            <h2>⚡ Survivor Command Centre</h2>
+            <p>Real-time overview of the current competition</p>
+        </div>
 
-            <div class="season-stat">
-                <div class="season-icon">👥</div>
+        <div class="command-live">
+            <span></span>
+            LIVE
+        </div>
+    </div>
+
+    <div class="season-grid command-grid">
+
+        <div class="season-stat command-stat players-command">
+            <div class="season-icon">👥</div>
+            <div class="command-number">
                 <strong id="seasonPlayersRemaining">0</strong>
                 <span>Players Remaining</span>
             </div>
+            <div class="command-decoration">👥</div>
+        </div>
 
-            <div class="season-stat">
-                <div class="season-icon">✅</div>
+        <div class="season-stat command-stat selections-command">
+            <div class="season-icon">✅</div>
+            <div class="command-number">
                 <strong id="seasonOfficialSelections">0</strong>
                 <span>Official Selections</span>
             </div>
+            <div class="command-decoration">✓</div>
+        </div>
 
-            <div class="season-stat">
-                <div class="season-icon">⚽</div>
+        <div class="season-stat command-stat fixtures-command">
+            <div class="season-icon">⚽</div>
+            <div class="command-number">
                 <strong id="seasonFixturesCompleted">0</strong>
                 <span>Fixtures Completed</span>
             </div>
+            <div class="command-decoration">⚽</div>
+        </div>
 
-            <div class="season-stat">
-                <div class="season-icon">📅</div>
+        <div class="season-stat command-stat weeks-command">
+            <div class="season-icon">📅</div>
+            <div class="command-number">
                 <strong id="seasonWeeksCompleted">0</strong>
                 <span>Weeks Completed</span>
             </div>
-
+            <div class="command-decoration">📅</div>
         </div>
+
     </div>
+
+</div>   
 
 </div> 
   
