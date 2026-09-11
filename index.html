@@ -5847,6 +5847,1296 @@ body::after{
             1fr 1fr !important;
     }
 }
+/* ============================================================
+   BATCH 2
+   SURVIVOR STADIUM DASHBOARD - LOWER DASHBOARD + ADMIN CENTRE
+   ============================================================ */
+
+
+/* ============================================================
+   GLOBAL DASHBOARD POLISH
+   ============================================================ */
+
+#dashboard{
+    padding-bottom:45px;
+}
+
+#dashboard .card{
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+#dashboard .card:hover{
+    border-color:rgba(74,219,177,.32) !important;
+}
+
+
+/* Section title accent */
+
+#dashboard h2::before{
+    width:4px !important;
+    height:23px !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #31efae,
+            #0b9c65
+        ) !important;
+
+    box-shadow:
+        0 0 12px rgba(49,239,174,.35);
+}
+
+
+/* ============================================================
+   COMPETITION SUMMARY
+   ============================================================ */
+
+#dashboard > .card:has(.summary-grid){
+    padding:20px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(6,31,51,.97),
+            rgba(5,24,41,.97)
+        ) !important;
+}
+
+#dashboard > .card:has(.summary-grid) > h2{
+    margin-bottom:15px !important;
+
+    font-size:17px !important;
+}
+
+#dashboard .summary-grid{
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr)) !important;
+
+    gap:10px !important;
+
+    margin-top:0 !important;
+}
+
+#dashboard .summary-card{
+    position:relative;
+
+    min-height:108px !important;
+
+    padding:16px !important;
+
+    overflow:hidden;
+
+    text-align:left !important;
+
+    border-radius:12px !important;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.10),
+        0 9px 22px rgba(0,0,0,.25) !important;
+}
+
+#dashboard .summary-card::after{
+    position:absolute;
+
+    right:-8px;
+    bottom:-15px;
+
+    font-size:73px;
+
+    opacity:.10;
+
+    pointer-events:none;
+}
+
+#dashboard .summary-blue::after{
+    content:"👥";
+}
+
+#dashboard .summary-green::after{
+    content:"✓";
+}
+
+#dashboard .summary-red::after{
+    content:"✕";
+}
+
+#dashboard .summary-gold::after{
+    content:"🏆";
+}
+
+#dashboard .summary-icon{
+    position:absolute;
+
+    right:13px;
+    top:12px;
+
+    margin:0 !important;
+
+    font-size:21px !important;
+
+    opacity:.90;
+}
+
+#dashboard .summary-number{
+    margin-top:17px;
+
+    font-size:31px !important;
+
+    font-weight:900 !important;
+
+    line-height:1 !important;
+
+    color:white !important;
+}
+
+#dashboard .summary-label{
+    margin-top:7px !important;
+
+    font-size:11px !important;
+
+    letter-spacing:.04em;
+
+    color:rgba(255,255,255,.82) !important;
+}
+
+
+/* More reference-image style colours */
+
+#dashboard .summary-blue{
+    background:
+        linear-gradient(
+            135deg,
+            #147ad1,
+            #064c8d
+        ) !important;
+}
+
+#dashboard .summary-green{
+    background:
+        linear-gradient(
+            135deg,
+            #1ab574,
+            #087347
+        ) !important;
+}
+
+#dashboard .summary-red{
+    background:
+        linear-gradient(
+            135deg,
+            #e64558,
+            #962334
+        ) !important;
+}
+
+#dashboard .summary-gold{
+    background:
+        linear-gradient(
+            135deg,
+            #d49c18,
+            #855b08
+        ) !important;
+}
+
+
+/* ============================================================
+   PROGRESS + COMMAND CENTRE ROW
+   ============================================================ */
+
+#dashboard .dashboard-two-col{
+    display:grid !important;
+
+    grid-template-columns:
+        minmax(280px,.8fr)
+        minmax(0,1.7fr) !important;
+
+    gap:14px !important;
+
+    align-items:stretch !important;
+
+    margin:0 !important;
+}
+
+#dashboard .dashboard-two-col > .card{
+    margin:0 !important;
+}
+
+
+/* ============================================================
+   PROGRESS TO WINNER
+   ============================================================ */
+
+#dashboard .progress-card{
+    position:relative;
+
+    min-height:250px;
+
+    padding:22px !important;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(50,218,160,.18),
+            transparent 38%
+        ),
+        linear-gradient(
+            145deg,
+            #082942,
+            #061b30
+        ) !important;
+
+    border:
+        1px solid rgba(86,189,218,.25) !important;
+
+    border-radius:14px !important;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.30) !important;
+}
+
+#dashboard .progress-card::after{
+    content:"🏁";
+
+    position:absolute;
+
+    right:15px;
+    bottom:-10px;
+
+    font-size:95px;
+
+    opacity:.055;
+
+    transform:rotate(-10deg);
+}
+
+#dashboard .progress-card h2{
+    position:relative;
+    z-index:2;
+
+    margin-bottom:25px !important;
+
+    color:#fff !important;
+
+    font-size:17px !important;
+}
+
+#dashboard .progress-info{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:10px;
+
+    color:#bdd2de;
+}
+
+#dashboard .progress-info span{
+    font-size:12px;
+
+    font-weight:650;
+}
+
+#dashboard .progress-info strong{
+    color:#3ce3aa !important;
+
+    font-size:21px;
+
+    font-weight:900;
+}
+
+
+/* Existing outer track */
+
+#dashboard .progress-track{
+    position:relative;
+
+    z-index:2;
+
+    width:100%;
+    height:13px;
+
+    overflow:hidden;
+
+    border-radius:999px;
+
+    background:
+        rgba(1,13,24,.68) !important;
+
+    border:
+        1px solid rgba(92,181,210,.17);
+
+    box-shadow:
+        inset 0 2px 5px rgba(0,0,0,.30);
+}
+
+
+/* Important:
+   JS changes width on #progressBar
+*/
+
+#dashboard #progressBar{
+    height:100% !important;
+
+    margin:0 !important;
+
+    border-radius:999px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            #12ad6f,
+            #39eca9,
+            #bce839
+        ) !important;
+
+    box-shadow:
+        0 0 14px rgba(46,237,170,.42);
+
+    transition:
+        width .5s ease !important;
+}
+
+#dashboard .progress-note{
+    position:relative;
+
+    z-index:2;
+
+    margin-top:23px;
+
+    padding-top:15px;
+
+    border-top:
+        1px solid rgba(104,184,211,.13);
+
+    color:#8ca9ba;
+
+    font-size:11px;
+
+    font-style:italic;
+}
+
+
+/* ============================================================
+   SURVIVOR COMMAND CENTRE
+   ============================================================ */
+
+#dashboard .command-centre{
+    position:relative;
+
+    min-height:250px;
+
+    padding:21px !important;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(28,212,141,.17),
+            transparent 37%
+        ),
+
+        linear-gradient(
+            135deg,
+            #082a42 0%,
+            #062238 55%,
+            #061c2e 100%
+        ) !important;
+
+    border:
+        1px solid rgba(82,191,218,.25) !important;
+
+    border-radius:14px !important;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.30) !important;
+}
+
+#dashboard .command-centre::before{
+    display:none !important;
+}
+
+#dashboard .command-centre::after{
+    content:"⚽" !important;
+
+    position:absolute;
+
+    right:18px;
+    top:10px;
+
+    font-size:74px !important;
+
+    opacity:.035 !important;
+}
+
+#dashboard .command-heading{
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:flex-start;
+
+    gap:20px;
+
+    margin-bottom:17px;
+}
+
+#dashboard .command-heading h2{
+    margin:
+        4px 0 2px !important;
+
+    color:#fff !important;
+
+    font-size:17px !important;
+}
+
+#dashboard .command-heading p{
+    margin:0;
+
+    color:#88a7b8;
+
+    font-size:10px;
+}
+
+#dashboard .command-label{
+    color:#36dfaa !important;
+
+    font-size:9px !important;
+
+    font-weight:900;
+
+    letter-spacing:.15em;
+}
+
+#dashboard .command-live{
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    padding:
+        6px 10px;
+
+    border-radius:999px;
+
+    background:
+        rgba(15,170,107,.13);
+
+    border:
+        1px solid rgba(49,226,161,.25);
+
+    color:#65efbc;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:.09em;
+}
+
+#dashboard .command-live span{
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#35e7a7;
+
+    box-shadow:
+        0 0 9px #35e7a7;
+}
+
+
+/* Four command stats */
+
+#dashboard .command-grid{
+    position:relative;
+
+    z-index:2;
+
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr)) !important;
+
+    gap:9px !important;
+
+    margin-top:0 !important;
+}
+
+#dashboard .command-stat{
+    position:relative;
+
+    min-height:125px !important;
+
+    padding:
+        15px 11px !important;
+
+    overflow:hidden;
+
+    border-radius:11px !important;
+
+    border:
+        1px solid rgba(101,189,218,.16) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9,48,70,.96),
+            rgba(6,33,53,.96)
+        ) !important;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.04) !important;
+}
+
+#dashboard .command-stat:nth-child(1),
+#dashboard .command-stat:nth-child(2),
+#dashboard .command-stat:nth-child(3),
+#dashboard .command-stat:nth-child(4){
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10,51,75,.98),
+            rgba(5,31,50,.98)
+        ) !important;
+}
+
+#dashboard .command-stat .season-icon{
+    margin-bottom:7px !important;
+
+    font-size:20px !important;
+}
+
+#dashboard .command-number strong{
+    display:block;
+
+    margin-bottom:5px !important;
+
+    color:#fff !important;
+
+    font-size:25px !important;
+
+    font-weight:900 !important;
+}
+
+#dashboard .command-number span{
+    color:#98b2c1 !important;
+
+    font-size:9px !important;
+
+    line-height:1.25;
+}
+
+#dashboard .command-decoration{
+    position:absolute;
+
+    right:-6px;
+    bottom:-16px;
+
+    font-size:58px;
+
+    opacity:.035;
+}
+
+
+/* ============================================================
+   MANAGEMENT SECTIONS
+   ============================================================ */
+
+#dashboard .players-section,
+#dashboard .weeks-section,
+#dashboard .selections-section,
+#dashboard .fixtures-section,
+#dashboard .results-section{
+    padding:18px !important;
+
+    overflow:hidden;
+
+    border:
+        1px solid rgba(82,181,211,.22) !important;
+
+    border-radius:15px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(6,30,49,.98),
+            rgba(4,23,39,.98)
+        ) !important;
+
+    box-shadow:
+        0 17px 42px rgba(0,0,0,.31) !important;
+}
+
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+
+#dashboard .section-heading{
+    position:relative;
+
+    margin:
+        -18px -18px 17px !important;
+
+    padding:
+        18px 20px !important;
+
+    overflow:hidden;
+
+    border-radius:
+        14px 14px 0 0 !important;
+
+    background:
+        radial-gradient(
+            circle at 92% 10%,
+            rgba(45,221,159,.13),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            135deg,
+            rgba(9,51,76,.98),
+            rgba(5,31,51,.98)
+        ) !important;
+
+    border-bottom:
+        1px solid rgba(87,190,218,.17);
+}
+
+#dashboard .section-heading::after{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    bottom:0;
+
+    width:115px;
+    height:2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2ce4a7,
+            transparent
+        );
+}
+
+#dashboard .section-label{
+    color:#3be3ad !important;
+
+    font-size:9px !important;
+
+    letter-spacing:.17em !important;
+
+    font-weight:900 !important;
+}
+
+#dashboard .section-heading h2{
+    margin:
+        5px 0 3px !important;
+
+    color:white !important;
+
+    font-size:19px !important;
+}
+
+#dashboard .section-heading h2::before{
+    display:none !important;
+}
+
+#dashboard .section-heading p{
+    margin:0 !important;
+
+    color:#8ea9b9 !important;
+
+    font-size:11px !important;
+}
+
+
+/* ============================================================
+   INPUT / CONTROL PANELS
+   ============================================================ */
+
+#dashboard .player-add-panel,
+#dashboard .selection-panel,
+#dashboard .results-control-panel,
+#dashboard .report-panel{
+    padding:15px !important;
+
+    margin-bottom:16px !important;
+
+    border-radius:12px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,43,64,.84),
+            rgba(5,32,51,.84)
+        ) !important;
+
+    border:
+        1px solid rgba(84,181,210,.18) !important;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.03) !important;
+}
+
+
+/* Field labels */
+
+#dashboard .selection-field label,
+#dashboard .results-field label{
+    color:#79e9c2 !important;
+
+    font-size:9px !important;
+
+    letter-spacing:.12em !important;
+
+    font-weight:900 !important;
+}
+
+
+/* All fields */
+
+#dashboard .player-inputs input,
+#dashboard .selection-field select,
+#dashboard .results-field select,
+#dashboard #reportBox{
+    border:
+        1px solid rgba(102,190,219,.24) !important;
+
+    background:
+        rgba(3,24,41,.88) !important;
+
+    color:#eaf6fb !important;
+
+    box-shadow:
+        inset 0 2px 6px rgba(0,0,0,.15) !important;
+}
+
+#dashboard .player-inputs input:focus,
+#dashboard .selection-field select:focus,
+#dashboard .results-field select:focus,
+#dashboard #reportBox:focus{
+    border-color:
+        rgba(53,230,168,.60) !important;
+
+    box-shadow:
+        0 0 0 3px rgba(31,211,149,.10) !important;
+}
+
+
+/* Dropdown options */
+
+#dashboard select option{
+    background:#061f34;
+
+    color:#fff;
+}
+
+
+/* ============================================================
+   SELECTION BUTTONS
+   ============================================================ */
+
+#dashboard .selection-actions,
+#dashboard .results-actions{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:9px;
+}
+
+#dashboard .selection-actions button,
+#dashboard .results-actions button{
+    margin:0 !important;
+
+    min-height:40px !important;
+
+    border-radius:9px !important;
+
+    font-size:11px !important;
+}
+
+#dashboard .selection-save,
+#dashboard .results-process{
+    background:
+        linear-gradient(
+            135deg,
+            #18b978,
+            #087b4c
+        ) !important;
+
+    border:
+        1px solid rgba(86,255,191,.25) !important;
+}
+
+#dashboard .selection-official{
+    background:
+        linear-gradient(
+            135deg,
+            #188cba,
+            #07577c
+        ) !important;
+}
+
+#dashboard .results-report{
+    background:
+        linear-gradient(
+            135deg,
+            #16a46c,
+            #08633f
+        ) !important;
+}
+
+
+/* ============================================================
+   LIST SUBHEADINGS
+   ============================================================ */
+
+#dashboard .selection-list-heading,
+#dashboard .fixture-list-heading,
+#dashboard .results-list-heading,
+#dashboard .report-heading{
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    margin:
+        6px 2px 10px;
+
+    color:#fff;
+}
+
+#dashboard .selection-list-heading strong,
+#dashboard .fixture-list-heading strong,
+#dashboard .results-list-heading strong,
+#dashboard .report-heading strong{
+    display:block;
+
+    color:#eef9fd !important;
+
+    font-size:12px !important;
+}
+
+#dashboard .selection-list-heading span,
+#dashboard .fixture-list-heading span,
+#dashboard .results-list-heading span,
+#dashboard .report-heading span{
+    display:block;
+
+    margin-top:2px;
+
+    color:#7897a8 !important;
+
+    font-size:9px !important;
+}
+
+
+/* ============================================================
+   TABLE PANEL
+   ============================================================ */
+
+#dashboard .table-panel{
+    padding:0 !important;
+
+    overflow-x:auto;
+
+    border-radius:11px !important;
+
+    border:
+        1px solid rgba(83,173,203,.15) !important;
+
+    background:
+        rgba(2,20,34,.54) !important;
+}
+
+
+/* Tables */
+
+#dashboard .table-panel table{
+    margin:0 !important;
+
+    border:0 !important;
+
+    border-radius:0 !important;
+
+    background:transparent !important;
+}
+
+#dashboard .table-panel table th{
+    padding:
+        11px 12px !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0b3a55,
+            #082d47
+        ) !important;
+
+    color:#a9c8d8 !important;
+
+    border-bottom:
+        1px solid rgba(105,194,220,.15) !important;
+
+    font-size:9px !important;
+
+    letter-spacing:.10em !important;
+
+    font-weight:900 !important;
+}
+
+#dashboard .table-panel table td{
+    padding:
+        11px 12px !important;
+
+    background:
+        rgba(5,31,49,.76) !important;
+
+    color:#e7f3f8 !important;
+
+    border-bottom:
+        1px solid rgba(88,164,190,.08) !important;
+
+    font-size:11px !important;
+}
+
+#dashboard .table-panel table tbody tr:nth-child(even) td{
+    background:
+        rgba(7,37,57,.74) !important;
+}
+
+
+/* Hover */
+
+html body #dashboard .table-panel table tbody tr:hover > td{
+    background:
+        linear-gradient(
+            90deg,
+            rgba(14,80,80,.92),
+            rgba(8,55,68,.92)
+        ) !important;
+
+    color:#fff !important;
+}
+
+
+/* Small table buttons */
+
+#dashboard .table-panel table button{
+    min-height:30px !important;
+
+    margin:
+        2px !important;
+
+    padding:
+        5px 9px !important;
+
+    border-radius:7px !important;
+
+    font-size:9px !important;
+}
+
+
+/* ============================================================
+   PLAYER STATUS BADGES
+   ============================================================ */
+
+#dashboard .player-status{
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:5px;
+
+    padding:
+        5px 9px;
+
+    border-radius:999px;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:.06em;
+
+    border:
+        1px solid transparent;
+}
+
+#dashboard .status-active{
+    color:#6df2bd !important;
+
+    background:
+        rgba(22,183,117,.13);
+
+    border-color:
+        rgba(50,224,158,.22);
+}
+
+#dashboard .status-eliminated{
+    color:#ff8f9a !important;
+
+    background:
+        rgba(206,50,69,.14);
+
+    border-color:
+        rgba(255,105,119,.20);
+}
+
+#dashboard .status-winner{
+    color:#ffd96a !important;
+
+    background:
+        rgba(207,154,23,.15);
+
+    border-color:
+        rgba(255,205,72,.23);
+}
+
+
+/* ============================================================
+   WHATSAPP REPORT
+   ============================================================ */
+
+#dashboard .report-panel{
+    margin-top:16px !important;
+}
+
+#dashboard #reportBox{
+    display:block;
+
+    width:100% !important;
+
+    min-height:170px !important;
+
+    height:170px !important;
+
+    margin:
+        10px 0 0 !important;
+
+    padding:
+        14px !important;
+
+    resize:vertical;
+
+    color:#bfe2d5 !important;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace !important;
+
+    font-size:11px !important;
+}
+
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+#dashboard ::-webkit-scrollbar{
+    width:9px;
+    height:9px;
+}
+
+#dashboard ::-webkit-scrollbar-track{
+    background:#031626;
+}
+
+#dashboard ::-webkit-scrollbar-thumb{
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #147859,
+            #0b5145
+        );
+}
+
+#dashboard ::-webkit-scrollbar-thumb:hover{
+    background:#1ca973;
+}
+
+
+/* ============================================================
+   SMALL GREEN EDGE GLOW ON MANAGEMENT PANELS
+   ============================================================ */
+
+#dashboard .players-section::before,
+#dashboard .weeks-section::before,
+#dashboard .selections-section::before,
+#dashboard .fixtures-section::before,
+#dashboard .results-section::before{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:70px;
+    bottom:20px;
+
+    width:2px;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent,
+            #22d698,
+            transparent
+        );
+
+    opacity:.40;
+}
+
+
+/* ============================================================
+   DESKTOP - SLIGHTLY MORE COMPACT LIKE REFERENCE
+   ============================================================ */
+
+@media(min-width:1001px){
+
+    #dashboard .players-section,
+    #dashboard .weeks-section,
+    #dashboard .selections-section,
+    #dashboard .fixtures-section,
+    #dashboard .results-section{
+        padding:
+            18px 20px !important;
+    }
+
+    #dashboard .selection-grid{
+        grid-template-columns:
+            repeat(3,1fr) !important;
+
+        gap:11px !important;
+    }
+
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media(max-width:1000px){
+
+    #dashboard .dashboard-two-col{
+        grid-template-columns:
+            1fr !important;
+    }
+
+    #dashboard .command-grid{
+        grid-template-columns:
+            repeat(2,1fr) !important;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media(max-width:700px){
+
+    #dashboard .summary-grid{
+        grid-template-columns:
+            repeat(2,1fr) !important;
+
+        gap:7px !important;
+    }
+
+    #dashboard .summary-card{
+        min-height:92px !important;
+
+        padding:12px !important;
+    }
+
+    #dashboard .summary-number{
+        font-size:26px !important;
+    }
+
+    #dashboard .command-grid{
+        grid-template-columns:
+            repeat(2,1fr) !important;
+    }
+
+    #dashboard .command-stat{
+        min-height:105px !important;
+    }
+
+    #dashboard .selection-grid{
+        grid-template-columns:
+            1fr !important;
+    }
+
+    #dashboard .player-inputs{
+        grid-template-columns:
+            1fr !important;
+    }
+
+    #dashboard .selection-actions,
+    #dashboard .results-actions{
+        flex-direction:column;
+    }
+
+    #dashboard .selection-actions button,
+    #dashboard .results-actions button{
+        width:100% !important;
+    }
+
+    #dashboard .section-heading{
+        padding:
+            15px 16px !important;
+    }
+
+}
+
+
+/* ============================================================
+   SMALL PHONE
+   ============================================================ */
+
+@media(max-width:430px){
+
+    #dashboard .summary-grid{
+        grid-template-columns:
+            1fr 1fr !important;
+    }
+
+    #dashboard .command-grid{
+        grid-template-columns:
+            1fr 1fr !important;
+    }
+
+    #dashboard .command-heading{
+        flex-direction:column;
+    }
+
+}
 </style>
 </head>
 
