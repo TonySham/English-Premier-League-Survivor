@@ -4012,6 +4012,41 @@ td:first-child{
     }
 
 }
+/* ===== PERMANENT TABLE HOVER FIX ===== */
+
+/* Never turn dashboard rows white on hover */
+#dashboard table tbody tr:hover,
+#dashboard table tbody tr:hover td,
+#dashboard .table-panel table tbody tr:hover,
+#dashboard .table-panel table tbody tr:hover td {
+    background: #18364d !important;
+    color: #ffffff !important;
+}
+
+/* Keep ALL text inside hovered rows visible */
+#dashboard table tbody tr:hover *,
+#dashboard .table-panel table tbody tr:hover * {
+    color: #ffffff !important;
+}
+
+/* Status badges keep their styling */
+#dashboard table tbody tr:hover .status-badge {
+    color: inherit !important;
+}
+
+/* Small green indicator instead of white hover */
+#dashboard table tbody tr:hover td:first-child {
+    box-shadow: inset 4px 0 0 #20d4a0 !important;
+}
+
+/* Smooth professional hover */
+#dashboard table tbody tr,
+#dashboard table tbody tr td {
+    transition:
+        background-color .18s ease,
+        color .18s ease,
+        box-shadow .18s ease !important;
+}
 </style>
 </head>
 
