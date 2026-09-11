@@ -2132,6 +2132,32 @@ tbody tr:hover{
         margin:0 5px;
     }
 }
+/* ===== FIXTURE WRAPPING FIX ===== */
+
+.fixtures-section .fixture-teams{
+    min-width:520px !important;
+    white-space:nowrap !important;
+}
+
+.fixtures-section .team-display{
+    display:inline-flex !important;
+    align-items:center;
+    white-space:nowrap !important;
+}
+
+.fixtures-section .team-name{
+    white-space:nowrap !important;
+}
+
+.fixtures-section table{
+    min-width:1150px;
+}
+
+/* Keep VS centred between teams */
+.fixtures-section .fixture-vs{
+    flex-shrink:0;
+    vertical-align:middle;
+}
 </style>
 </head>
 
