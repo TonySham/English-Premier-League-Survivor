@@ -9216,6 +9216,49 @@ html body #dashboard #selectionsTable table tbody tr > td {
         color .18s ease,
         box-shadow .18s ease !important;
 }
+/* ============================================================
+   ABSOLUTE FINAL WEEKLY SELECTION HOVER FIX
+   KEEP THIS AS THE LAST CSS BEFORE </style>
+   ============================================================ */
+
+/* Normal Weekly Selection rows */
+html body #dashboard .selections-section #selectionsTable table tbody tr td {
+    background: #142d42 !important;
+    background-color: #142d42 !important;
+    background-image: none !important;
+    color: #eef7fb !important;
+}
+
+/* Alternating rows */
+html body #dashboard .selections-section #selectionsTable table tbody tr:nth-child(even) td {
+    background: #102638 !important;
+    background-color: #102638 !important;
+    background-image: none !important;
+}
+
+/* Hover the whole row */
+html body #dashboard .selections-section #selectionsTable table tbody tr:hover td,
+html body #dashboard .selections-section #selectionsTable table tbody tr:hover td:hover,
+html body #dashboard .selections-section #selectionsTable table tbody tr td:hover {
+    background: #1c4b5c !important;
+    background-color: #1c4b5c !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+/* Keep every piece of text white */
+html body #dashboard .selections-section #selectionsTable table tbody tr:hover td *,
+html body #dashboard .selections-section #selectionsTable table tbody tr:hover span,
+html body #dashboard .selections-section #selectionsTable table tbody tr:hover strong {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+/* Green bar on hovered row */
+html body #dashboard .selections-section #selectionsTable table tbody tr:hover td:first-child {
+    box-shadow: inset 4px 0 0 #2ce0a4 !important;
+}
 </style>
 </head>
 
