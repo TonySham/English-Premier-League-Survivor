@@ -4047,6 +4047,48 @@ td:first-child{
         color .18s ease,
         box-shadow .18s ease !important;
 }
+/* =====================================================
+   FINAL FORCE FIX - NO WHITE TABLE HOVER
+   ===================================================== */
+
+html body #dashboard table tbody tr:hover,
+html body #dashboard table tbody tr:hover > td,
+html body #dashboard .table-panel table tbody tr:hover,
+html body #dashboard .table-panel table tbody tr:hover > td,
+html body #fixturesTable table tbody tr:hover,
+html body #fixturesTable table tbody tr:hover > td,
+html body #weeksTable table tbody tr:hover,
+html body #weeksTable table tbody tr:hover > td,
+html body #playersTable table tbody tr:hover,
+html body #playersTable table tbody tr:hover > td {
+    background-color: #17344b !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+/* Everything inside the row stays readable */
+html body #dashboard table tbody tr:hover > td *,
+html body #fixturesTable table tbody tr:hover > td *,
+html body #weeksTable table tbody tr:hover > td *,
+html body #playersTable table tbody tr:hover > td * {
+    color: #ffffff !important;
+}
+
+/* Preserve buttons */
+html body #dashboard table tbody tr:hover button {
+    background: #082747 !important;
+    color: #ffffff !important;
+}
+
+/* Preserve team badges */
+html body #dashboard table tbody tr:hover .team-badge {
+    color: #ffffff !important;
+}
+
+/* Green hover indicator */
+html body #dashboard table tbody tr:hover > td:first-child {
+    box-shadow: inset 4px 0 0 #20d4a0 !important;
+}
 </style>
 </head>
 
