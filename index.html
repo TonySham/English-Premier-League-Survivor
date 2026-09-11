@@ -1697,6 +1697,28 @@ tbody tr:hover{
     background:#0d9f70 !important;
     color:#ffffff !important;
 }
+/* ===== PERMANENT TABLE HOVER FIX ===== */
+
+#dashboard table tbody tr:hover,
+#dashboard table tbody tr:nth-child(even):hover,
+#dashboard table tbody tr:nth-child(odd):hover,
+#dashboard table tr:hover{
+    background:#2b4a61 !important;
+}
+
+#dashboard table tbody tr:hover td,
+#dashboard table tbody tr:hover td *,
+#dashboard table tr:hover td,
+#dashboard table tr:hover td *{
+    background:transparent !important;
+    color:#ffffff !important;
+}
+
+/* Never allow table cells to turn white on hover */
+#dashboard table td:hover{
+    background:transparent !important;
+    color:#ffffff !important;
+}
 </style>
 </head>
 
