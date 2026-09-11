@@ -2582,6 +2582,59 @@ td:first-child{
         transform:scale(1.25);
     }
 }
+/* ===== COMPETITION STATUS PILLS ===== */
+
+.week-status{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    min-width:105px;
+    padding:7px 13px;
+    border-radius:999px;
+
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.7px;
+
+    border:1px solid rgba(255,255,255,.18);
+    animation:statusAppear .45s ease both;
+    transition:transform .2s ease, box-shadow .2s ease;
+}
+
+.week-status:hover{
+    transform:translateY(-2px) scale(1.04);
+}
+
+/* Upcoming */
+.week-status.status-upcoming{
+    color:#9fdcff !important;
+    background:rgba(42,137,220,.17);
+    border-color:rgba(75,174,255,.42);
+    box-shadow:0 0 16px rgba(48,145,230,.13);
+}
+
+/* Active */
+.week-status.status-active{
+    color:#65ffd1 !important;
+    background:rgba(23,184,144,.17);
+    border-color:rgba(35,230,175,.42);
+    box-shadow:0 0 16px rgba(23,184,144,.14);
+}
+
+/* Completed */
+.week-status.status-completed{
+    color:#7effbf !important;
+    background:rgba(38,183,113,.17);
+    border-color:rgba(72,224,145,.42);
+}
+
+/* Postponed */
+.week-status.status-postponed{
+    color:#ffd77c !important;
+    background:rgba(225,166,45,.17);
+    border-color:rgba(255,198,70,.42);
+}
 </style>
 </head>
 
@@ -3554,7 +3607,15 @@ document.getElementById("seasonWeeksCompleted").textContent =
       <tr>
         <td>Week ${week.week_number}</td>
         <td>${deadline}</td>
-        <td>${week.status}</td>
+       <td>
+    <span class="week-status status-${week.status}">
+        ${week.status === "upcoming" ? "⏱" :
+          week.status === "active" ? "⚽" :
+          week.status === "completed" ? "✓" :
+          week.status === "postponed" ? "⏸" : "•"}
+        ${week.status.toUpperCase()}
+    </span>
+</td>
       </tr>
     `;
   });
