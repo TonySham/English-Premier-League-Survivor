@@ -2158,6 +2158,328 @@ tbody tr:hover{
     flex-shrink:0;
     vertical-align:middle;
 }
+/* =========================================================
+   SURVIVOR DASHBOARD — FINAL VISUAL POLISH
+   ========================================================= */
+
+/* ---------- SECTION CARDS ---------- */
+
+.players-section,
+.weeks-section,
+.selections-section,
+.fixtures-section,
+.results-section{
+    position:relative;
+    border:1px solid rgba(66,211,170,.22) !important;
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.25),
+        inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+/* subtle football pitch pattern */
+.players-section::before,
+.weeks-section::before,
+.selections-section::before,
+.fixtures-section::before,
+.results-section::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.035;
+
+    background-image:
+        linear-gradient(90deg,
+            transparent 49.7%,
+            #ffffff 49.7%,
+            #ffffff 50.3%,
+            transparent 50.3%
+        ),
+        radial-gradient(
+            circle at center,
+            transparent 0 58px,
+            #ffffff 59px 60px,
+            transparent 61px
+        );
+
+    border-radius:inherit;
+}
+
+/* ---------- SECTION HEADINGS ---------- */
+
+.section-heading{
+    position:relative;
+    padding:18px 20px !important;
+    margin-bottom:22px !important;
+
+    background:
+        linear-gradient(
+            110deg,
+            rgba(23,184,144,.12),
+            rgba(39,90,140,.13),
+            rgba(126,72,255,.08)
+        );
+
+    border-left:5px solid #20d6a4;
+    border-radius:15px;
+    border-top:1px solid rgba(255,255,255,.08);
+    border-right:1px solid rgba(255,255,255,.05);
+    border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.section-heading h2{
+    margin:3px 0 3px !important;
+    color:#ffffff !important;
+    font-size:25px !important;
+    font-weight:900 !important;
+    letter-spacing:-.5px;
+}
+
+.section-heading p{
+    color:#aebed0 !important;
+    margin:0 !important;
+}
+
+.section-label{
+    color:#4ce2bb !important;
+    font-size:11px !important;
+    font-weight:900 !important;
+    letter-spacing:2px !important;
+    text-transform:uppercase;
+}
+
+/* ---------- TABLE PANELS ---------- */
+
+.table-panel{
+    position:relative;
+    border-radius:18px !important;
+    overflow:auto !important;
+    border:1px solid rgba(255,255,255,.10) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,48,72,.95),
+            rgba(9,31,50,.96)
+        ) !important;
+
+    box-shadow:0 14px 35px rgba(0,0,0,.22);
+}
+
+table{
+    border:0 !important;
+    margin-top:0 !important;
+}
+
+th{
+    background:
+        linear-gradient(
+            180deg,
+            #143d60,
+            #0d2f4d
+        ) !important;
+
+    color:#c9d9ea !important;
+    font-size:12px !important;
+    font-weight:900 !important;
+    letter-spacing:1px !important;
+    text-transform:uppercase;
+    border-bottom:1px solid rgba(255,255,255,.12) !important;
+}
+
+td{
+    color:#edf5ff !important;
+    border-bottom:1px solid rgba(255,255,255,.09) !important;
+}
+
+tbody tr{
+    transition:
+        background .18s ease,
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+tbody tr:nth-child(odd){
+    background:rgba(255,255,255,.025) !important;
+}
+
+tbody tr:nth-child(even){
+    background:rgba(255,255,255,.055) !important;
+}
+
+tbody tr:hover{
+    background:#294b63 !important;
+    box-shadow:inset 4px 0 0 #20d6a4 !important;
+}
+
+tbody tr:hover td,
+tbody tr:hover td *,
+tbody tr:hover span,
+tbody tr:hover strong{
+    color:#ffffff !important;
+}
+
+/* ---------- BUTTONS ---------- */
+
+button{
+    position:relative;
+    border:1px solid rgba(255,255,255,.10) !important;
+    border-radius:13px !important;
+    font-weight:800 !important;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.10);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        filter .18s ease !important;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.12);
+
+    box-shadow:
+        0 12px 26px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.14);
+}
+
+button:active{
+    transform:translateY(0);
+}
+
+/* ---------- INPUTS / SELECT BOXES ---------- */
+
+input,
+select,
+textarea{
+    border:1px solid rgba(108,159,205,.38) !important;
+    border-radius:13px !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(248,252,255,.98),
+            rgba(234,244,252,.98)
+        ) !important;
+
+    box-shadow:
+        inset 0 1px 3px rgba(0,0,0,.06),
+        0 5px 14px rgba(0,0,0,.08);
+
+    color:#10253a !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#20c997 !important;
+    box-shadow:
+        0 0 0 3px rgba(32,201,151,.16),
+        0 8px 18px rgba(0,0,0,.12) !important;
+}
+
+/* ---------- FIXTURE TEAM BADGES ---------- */
+
+.team-badge{
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+.team-display:hover .team-badge{
+    transform:scale(1.08);
+    box-shadow:
+        0 7px 17px rgba(0,0,0,.38),
+        inset 0 1px 0 rgba(255,255,255,.30);
+}
+
+.fixture-teams{
+    font-weight:700;
+}
+
+.fixture-vs{
+    color:#dce8f5 !important;
+    background:#304c63 !important;
+    border:1px solid rgba(255,255,255,.12) !important;
+    border-radius:8px !important;
+    padding:4px 7px !important;
+    font-size:10px !important;
+}
+
+/* ---------- SMALL STATUS STYLE ---------- */
+
+/* Text values commonly used by the app */
+td{
+    font-weight:500;
+}
+
+/* first column gets stronger emphasis */
+td:first-child{
+    font-weight:750;
+}
+
+/* ---------- WHATSAPP / REPORT AREA ---------- */
+
+.results-section textarea{
+    min-height:180px;
+    padding:18px !important;
+    line-height:1.6;
+}
+
+/* ---------- SCROLLBAR ---------- */
+
+.table-panel::-webkit-scrollbar{
+    height:10px;
+    width:10px;
+}
+
+.table-panel::-webkit-scrollbar-track{
+    background:#081d30;
+}
+
+.table-panel::-webkit-scrollbar-thumb{
+    background:#31566f;
+    border-radius:20px;
+    border:2px solid #081d30;
+}
+
+.table-panel::-webkit-scrollbar-thumb:hover{
+    background:#20b98d;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media(max-width:700px){
+
+    .section-heading{
+        padding:15px !important;
+    }
+
+    .section-heading h2{
+        font-size:21px !important;
+    }
+
+    .section-heading p{
+        font-size:13px !important;
+    }
+
+    th,
+    td{
+        padding:12px 10px !important;
+    }
+
+    button{
+        min-height:44px;
+    }
+
+    .team-badge{
+        width:31px !important;
+        height:31px !important;
+    }
+}
 </style>
 </head>
 
