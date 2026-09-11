@@ -2480,6 +2480,108 @@ td:first-child{
         height:31px !important;
     }
 }
+/* ===== ANIMATED PLAYER STATUS BADGES ===== */
+
+.player-status{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+
+    padding:7px 13px;
+    border-radius:999px;
+
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.8px;
+
+    border:1px solid rgba(255,255,255,.18);
+
+    animation:statusAppear .45s ease both;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.player-status:hover{
+    transform:translateY(-2px) scale(1.04);
+}
+
+/* ACTIVE */
+.status-active{
+    color:#65ffd1 !important;
+    background:rgba(23,184,144,.16);
+    border-color:rgba(35,230,175,.42);
+
+    box-shadow:
+        0 0 16px rgba(23,184,144,.13),
+        inset 0 0 12px rgba(23,184,144,.08);
+}
+
+.status-active::before{
+    content:"";
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#28e7ae;
+
+    box-shadow:0 0 9px #28e7ae;
+
+    animation:activePulse 1.8s ease-in-out infinite;
+}
+
+/* ELIMINATED */
+.status-eliminated{
+    color:#ff9caa !important;
+    background:rgba(216,74,91,.16);
+    border-color:rgba(255,91,110,.38);
+
+    box-shadow:0 0 15px rgba(216,74,91,.12);
+}
+
+/* WINNER */
+.status-winner{
+    color:#ffe38b !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(213,169,54,.24),
+            rgba(255,204,72,.10)
+        );
+
+    border-color:rgba(255,211,91,.48);
+
+    box-shadow:
+        0 0 20px rgba(213,169,54,.18);
+}
+
+/* Entrance animation */
+@keyframes statusAppear{
+    from{
+        opacity:0;
+        transform:translateY(5px) scale(.94);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+/* Small live pulse on ACTIVE */
+@keyframes activePulse{
+    0%,100%{
+        opacity:.55;
+        transform:scale(.85);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.25);
+    }
+}
 </style>
 </head>
 
@@ -3074,7 +3176,14 @@ document.getElementById("seasonPlayersRemaining").textContent =
       <tr>
         <td>${player.name}</td>
         <td>${player.whatsapp_number || ""}</td>
-        <td>${cp.status}</td>
+        <td>
+    <span class="player-status status-${cp.status}">
+        ${cp.status === "active" ? "✓" :
+          cp.status === "eliminated" ? "✕" :
+          cp.status === "winner" ? "🏆" : "⚽"}
+        ${cp.status.toUpperCase()}
+    </span>
+</td>
         <td>
           <button onclick="editPlayer(${player.id})">
             Edit
