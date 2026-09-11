@@ -1551,6 +1551,123 @@ tbody tr:hover{
         padding:28px 20px !important;
     }
 }
+/* =========================================================
+   FINAL DARK THEME CONSISTENCY FIX
+   ========================================================= */
+
+/* All dashboard section headings */
+#dashboard h1,
+#dashboard h2,
+#dashboard h3,
+#dashboard h4,
+#dashboard h5,
+#dashboard h6{
+    color:#ffffff !important;
+}
+
+/* Supporting/subtitle text */
+#dashboard p,
+#dashboard small{
+    color:#aebbd0;
+}
+
+/* Remove remaining bright inner panels */
+#dashboard .form-card,
+#dashboard .form-panel,
+#dashboard .report-box,
+#dashboard .selection-form{
+    background:linear-gradient(
+        145deg,
+        rgba(17,48,73,.94),
+        rgba(8,31,51,.94)
+    ) !important;
+    color:#f4f7fb !important;
+    border:1px solid rgba(255,255,255,.10) !important;
+}
+
+/* Any direct light panels inside main dashboard cards */
+#dashboard .card > form,
+#dashboard .card > .controls{
+    background:rgba(13,39,62,.92) !important;
+    color:#f4f7fb !important;
+}
+
+/* Force every table row into the dark theme */
+#dashboard table tbody tr,
+#dashboard table tbody tr:nth-child(even),
+#dashboard table tbody tr:nth-child(odd){
+    background:#20374b !important;
+    color:#eef5fc !important;
+}
+
+#dashboard table tbody tr:hover{
+    background:#28465d !important;
+}
+
+#dashboard table tbody td,
+#dashboard table tbody td *,
+#dashboard table tbody tr td{
+    color:#eef5fc !important;
+}
+
+/* Keep table action buttons readable */
+#dashboard table button,
+#dashboard table button *{
+    color:#ffffff !important;
+}
+
+/* Form labels */
+#dashboard label{
+    color:#b8c9d8 !important;
+    font-weight:700;
+    letter-spacing:.04em;
+}
+
+/* Keep actual input controls light and readable */
+#dashboard input,
+#dashboard select,
+#dashboard textarea{
+    background:#f3f7fc !important;
+    color:#142033 !important;
+}
+
+/* WhatsApp report container */
+#reportOutput,
+#whatsappReport{
+    background:#f3f7fc !important;
+    color:#142033 !important;
+    border:1px solid rgba(160,185,210,.45) !important;
+}
+
+/* Stronger green highlights throughout */
+#dashboard .card{
+    position:relative;
+}
+
+#dashboard .card:not(.survivor-header){
+    border-color:rgba(48,203,158,.18) !important;
+}
+
+/* More polished section separation */
+#dashboard section{
+    border-radius:16px;
+}
+
+/* Fixture/result rows */
+#dashboard tbody tr{
+    box-shadow:inset 0 -1px 0 rgba(255,255,255,.035);
+}
+
+/* Make VS text slightly subdued */
+#dashboard td strong,
+#dashboard td b{
+    color:#9eb0c1 !important;
+}
+
+/* Maintain white player/team names */
+#dashboard td{
+    color:#eef5fc !important;
+}
 </style>
 </head>
 
