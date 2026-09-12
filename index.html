@@ -9825,6 +9825,12 @@ async function loadDashboard() {
   try {
 
     await loadCompetition();
+
+    // If this is a completely new competition that has
+    // not started yet, automatically move everybody from
+    // the waiting list into the new competition.
+    await activateWaitingPlayersForCurrentCompetition();
+
     await loadPlayers();
     await loadTeams();
     await loadWeeks();
@@ -9842,6 +9848,7 @@ async function loadDashboard() {
 
   }
 }
+
 
 
 async function loadCompetition() {
@@ -9865,6 +9872,33 @@ async function loadCompetition() {
 }
 
 
+
+/* ============================================================
+   WAITING PLAYERS
+   ============================================================ */
+
+async function activateWaitingPlayersForCurrentCompetition() {
+
+  const { error } =
+    await supabaseClient.rpc(
+      "activate_waiting_players_for_competition",
+      {
+        p_competition_id: competitionId
+      }
+    );
+
+  if (error) {
+    throw error;
+  }
+
+}
+
+
+
+/* ============================================================
+   LOAD PLAYERS
+   ============================================================ */
+
 async function loadPlayers() {
 
   const { data, error } =
@@ -9877,6 +9911,7 @@ async function loadPlayers() {
 
   players = data || [];
 
+
   const { data: cpData, error: cpError } =
     await supabaseClient
       .from("competition_players")
@@ -9885,37 +9920,95 @@ async function loadPlayers() {
 
   if (cpError) throw cpError;
 
+
   const competitionPlayers =
     cpData || [];
-  const totalCompetitionPlayers = competitionPlayers.length;
 
-const eliminatedPlayers = competitionPlayers.filter(player =>
-    player.status === "eliminated"
-).length;
 
-const remainingPlayers = competitionPlayers.filter(player =>
-    player.status === "active"
-).length;
+  /*
+     Current competition participants.
+     Waiting players are deliberately NOT included here.
+  */
 
-const progressPercent =
+  const totalCompetitionPlayers =
+    competitionPlayers.length;
+
+
+  const eliminatedPlayers =
+    competitionPlayers.filter(
+      player => player.status === "eliminated"
+    ).length;
+
+
+  const remainingPlayers =
+    competitionPlayers.filter(
+      player => player.status === "active"
+    ).length;
+
+
+  const progressPercent =
     totalCompetitionPlayers > 0
-        ? Math.round((eliminatedPlayers / totalCompetitionPlayers) * 100)
-        : 0;
+      ? Math.round(
+          (
+            eliminatedPlayers /
+            totalCompetitionPlayers
+          ) * 100
+        )
+      : 0;
 
-document.getElementById("progressText").textContent =
-    `${eliminatedPlayers} of ${totalCompetitionPlayers} players eliminated`;
 
-document.getElementById("progressPercent").textContent =
-    `${progressPercent}%`;
+  document.getElementById("progressText")
+    .textContent =
+      `${eliminatedPlayers} of ${totalCompetitionPlayers} players eliminated`;
 
-document.getElementById("progressBar").style.width =
-    `${progressPercent}%`;
 
-document.getElementById("seasonPlayersRemaining").textContent =
-    remainingPlayers;
+  document.getElementById("progressPercent")
+    .textContent =
+      `${progressPercent}%`;
+
+
+  document.getElementById("progressBar")
+    .style.width =
+      `${progressPercent}%`;
+
+
+  document.getElementById("seasonPlayersRemaining")
+    .textContent =
+      remainingPlayers;
+
+
+
+  /*
+     Find people who exist in the master Players list
+     but are waiting for the NEXT competition.
+  */
+
+  const competitionPlayerIds =
+    new Set(
+      competitionPlayers.map(
+        cp => Number(cp.player_id)
+      )
+    );
+
+
+  const waitingPlayers =
+    players.filter(player =>
+
+      player.active === true &&
+
+      player.waiting_for_next_competition === true &&
+
+      !competitionPlayerIds.has(
+        Number(player.id)
+      )
+
+    );
+
+
 
   let html = `
     <table>
+
     <tr>
       <th>Name</th>
       <th>WhatsApp</th>
@@ -9924,96 +10017,269 @@ document.getElementById("seasonPlayersRemaining").textContent =
     </tr>
   `;
 
+
   let active = 0;
   let eliminated = 0;
   let winners = 0;
 
+
+
+  /* ----------------------------------------------------------
+     CURRENT COMPETITION PLAYERS
+     ---------------------------------------------------------- */
+
   competitionPlayers.forEach(cp => {
 
     const player =
-      players.find(p => p.id === cp.player_id);
+      players.find(
+        p => Number(p.id) === Number(cp.player_id)
+      );
 
     if (!player) return;
 
-    if (cp.status === "active") active++;
-    if (cp.status === "eliminated") eliminated++;
-    if (cp.status === "winner") winners++;
+
+    if (cp.status === "active") {
+      active++;
+    }
+
+    if (cp.status === "eliminated") {
+      eliminated++;
+    }
+
+    if (cp.status === "winner") {
+      winners++;
+    }
+
 
     html += `
+
       <tr>
-        <td>${player.name}</td>
-        <td>${player.whatsapp_number || ""}</td>
+
         <td>
-    <span class="player-status status-${cp.status}">
-        ${cp.status === "active" ? "✓" :
-          cp.status === "eliminated" ? "✕" :
-          cp.status === "winner" ? "🏆" : "⚽"}
-        ${cp.status.toUpperCase()}
-    </span>
-</td>
+          ${player.name}
+        </td>
+
         <td>
-          <button onclick="editPlayer(${player.id})">
+          ${player.whatsapp_number || ""}
+        </td>
+
+        <td>
+
+          <span
+            class="player-status status-${cp.status}"
+          >
+
+            ${
+              cp.status === "active"
+                ? "✓"
+                : cp.status === "eliminated"
+                ? "✕"
+                : cp.status === "winner"
+                ? "🏆"
+                : "•"
+            }
+
+            ${cp.status.toUpperCase()}
+
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            onclick="editPlayer(${player.id})">
             Edit
           </button>
 
-          <button onclick="removePlayer(${player.id})">
+          <button
+            onclick="removePlayer(${player.id})">
             Remove
           </button>
+
         </td>
+
       </tr>
+
     `;
+
   });
 
+
+
+  /* ----------------------------------------------------------
+     WAITING PLAYERS
+     ---------------------------------------------------------- */
+
+  waitingPlayers.forEach(player => {
+
+    html += `
+
+      <tr>
+
+        <td>
+          ${player.name}
+        </td>
+
+        <td>
+          ${player.whatsapp_number || ""}
+        </td>
+
+        <td>
+
+          <span
+            class="player-status"
+            style="
+              color:#ffd76a;
+              background:rgba(208,156,28,.15);
+              border:1px solid rgba(255,212,91,.28);
+            "
+          >
+
+            ⏳ WAITING — NEXT COMPETITION
+
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            onclick="editPlayer(${player.id})">
+            Edit
+          </button>
+
+          <button
+            onclick="removeWaitingPlayer(${player.id})">
+            Remove
+          </button>
+
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+
+
   html += "</table>";
+
 
   document.getElementById("playersTable")
     .innerHTML = html;
 
+
+
+  /*
+     Dashboard numbers continue to represent THIS
+     competition only.
+
+     Waiting players are NOT counted as competitors yet.
+  */
+
   document.getElementById("playerCount")
-    .textContent = competitionPlayers.length;
+    .textContent =
+      competitionPlayers.length;
+
 
   document.getElementById("activeCount")
-    .textContent = active;
+    .textContent =
+      active;
+
 
   document.getElementById("eliminatedCount")
-    .textContent = eliminated;
+    .textContent =
+      eliminated;
+
 
   document.getElementById("winnerCount")
-    .textContent = winners;
+    .textContent =
+      winners;
+
+
+
+  /* ==========================================================
+     WEEKLY SELECTION PLAYER DROPDOWN
+
+     IMPORTANT:
+     ONLY active competition_players appear here.
+
+     Waiting players NEVER appear here.
+     ========================================================== */
 
   const playerSelect =
     document.getElementById("selectionPlayer");
 
+
   playerSelect.innerHTML =
     '<option value="">Select player</option>';
 
+
   competitionPlayers
-    .filter(cp => cp.status === "active")
+
+    .filter(
+      cp => cp.status === "active"
+    )
+
     .forEach(cp => {
 
       const player =
-        players.find(p => p.id === cp.player_id);
+        players.find(
+          p =>
+            Number(p.id) ===
+            Number(cp.player_id)
+        );
+
 
       if (!player) return;
 
+
+      /*
+         Extra safety check:
+         Even if bad data somehow existed,
+         a waiting player is still excluded.
+      */
+
+      if (
+        player.waiting_for_next_competition === true
+      ) {
+        return;
+      }
+
+
       playerSelect.innerHTML += `
+
         <option value="${player.id}">
           ${player.name}
         </option>
+
       `;
+
     });
+
 }
 
+
+
+/* ============================================================
+   ADD PLAYER
+   ============================================================ */
 
 async function addPlayer() {
 
   const name =
     document.getElementById("newPlayerName")
-      .value.trim();
+      .value
+      .trim();
+
 
   const whatsapp =
     document.getElementById("newPlayerWhatsApp")
-      .value.trim();
+      .value
+      .trim();
+
 
   if (!name) {
 
@@ -10023,56 +10289,154 @@ async function addPlayer() {
     );
 
     return;
+
   }
 
-  const { data: player, error } =
-    await supabaseClient
-      .from("players")
-      .insert({
-        name: name,
-        whatsapp_number: whatsapp,
-        active: true
-      })
-      .select()
-      .single();
+
+  /*
+     Supabase now decides whether they can join the
+     current competition or must wait for the next one.
+  */
+
+  const { data, error } =
+    await supabaseClient.rpc(
+      "add_survivor_player",
+      {
+
+        p_competition_id:
+          competitionId,
+
+        p_name:
+          name,
+
+        p_whatsapp_number:
+          whatsapp || null
+
+      }
+    );
+
 
   if (error) {
 
-    showMessage(error.message, "error");
+    showMessage(
+      error.message,
+      "error"
+    );
+
     return;
+
   }
 
-  const { error: cpError } =
-    await supabaseClient
-      .from("competition_players")
-      .insert({
-        competition_id: competitionId,
-        player_id: player.id,
-        status: "active"
-      });
-
-  if (cpError) {
-
-    showMessage(cpError.message, "error");
-    return;
-  }
 
   document.getElementById("newPlayerName")
     .value = "";
 
+
   document.getElementById("newPlayerWhatsApp")
     .value = "";
 
-  showMessage(
-    "Player added successfully.",
-    "success"
-  );
+
+  const result =
+    Array.isArray(data)
+      ? data[0]
+      : data;
+
+
+  if (
+    result &&
+    result.is_waiting === true
+  ) {
+
+    showMessage(
+      "Player added. They are waiting for the next competition and cannot make selections in the current competition.",
+      "success"
+    );
+
+  } else {
+
+    showMessage(
+      "Player added to the current competition.",
+      "success"
+    );
+
+  }
+
 
   await loadPlayers();
+
 }
 
 
-async function editPlayer(id) {
+
+/* ============================================================
+   REMOVE SOMEONE FROM WAITING LIST
+
+   We soft-disable them instead of deleting the database row.
+   This is safer for historical records.
+   ============================================================ */
+
+async function removeWaitingPlayer(id) {
+
+  const player =
+    players.find(
+      p => Number(p.id) === Number(id)
+    );
+
+
+  if (!player) {
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      "Remove " +
+      player.name +
+      " from the waiting list?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const { error } =
+    await supabaseClient
+      .from("players")
+      .update({
+
+        active: false,
+
+        waiting_for_next_competition:
+          false
+
+      })
+      .eq("id", id);
+
+
+  if (error) {
+
+    showMessage(
+      error.message,
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showMessage(
+    "Player removed from the waiting list.",
+    "success"
+  );
+
+
+  await loadPlayers();
+
+}
+  async function editPlayer(id) {
 
   const player =
     players.find(p => p.id === id);
