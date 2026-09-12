@@ -11214,181 +11214,565 @@ async function editFixture(id) {
 }
 
 
+/* ============================================================
+   BATCH 6
+   RESULTS + DASHBOARD + WHATSAPP REPAIR
+   ============================================================ */
+
+
+/* ============================================================
+   PROCESS SURVIVOR RESULTS
+   ============================================================ */
+
 async function processResults() {
 
   const weekId =
     document.getElementById("resultWeek").value;
 
+
   if (!weekId) {
+
     showMessage(
       "Select a week first.",
       "error"
     );
+
     return;
   }
-const { error: processError } = await supabaseClient.rpc(
-    'process_survivor_week',
-    {
+
+
+  /*
+     Supabase remains authoritative for deciding:
+     - progressed
+     - eliminated
+     - pending
+     - postponed / bye rules
+  */
+
+  const { error: processError } =
+    await supabaseClient.rpc(
+      "process_survivor_week",
+      {
         p_competition_id: competitionId,
         p_week_id: weekId
-    }
-);
+      }
+    );
 
-if (processError) {
-    showMessage(processError.message, 'error');
+
+  if (processError) {
+
+    showMessage(
+      processError.message,
+      "error"
+    );
+
     return;
+  }
+
+
+  /*
+     IMPORTANT:
+     Refresh every part of the app that depends
+     on the newly processed results.
+
+     Previously the function returned immediately,
+     leaving the dashboard showing old information.
+  */
+
+  await loadPlayers();
+
+  await loadSelections();
+
+  await loadFixtures();
+
+  await loadResults(weekId);
+
+
+  showMessage(
+    "Weekly results processed and dashboard updated successfully.",
+    "success"
+  );
 }
 
-showMessage('Weekly results processed successfully.', 'success');
-return;
-
-}
 
 
-async function loadResults() {
+/* ============================================================
+   LOAD WEEKLY RESULTS
 
-  const { data, error } =
-    await supabaseClient
+   If a week is selected, show that week's results.
+   Otherwise show all available results.
+   ============================================================ */
+
+async function loadResults(weekIdOverride = null) {
+
+  const resultWeekElement =
+    document.getElementById("resultWeek");
+
+
+  const selectedWeekId =
+    weekIdOverride ||
+    (
+      resultWeekElement
+        ? resultWeekElement.value
+        : null
+    );
+
+
+  let query =
+    supabaseClient
       .from("weekly_results")
       .select("*")
       .eq("competition_id", competitionId)
-      .order("week_id");
+      .order("week_id")
+      .order("player_id");
 
-  if (error) throw error;
+
+  if (selectedWeekId) {
+
+    query =
+      query.eq(
+        "week_id",
+        selectedWeekId
+      );
+  }
+
+
+  const { data, error } =
+    await query;
+
+
+  if (error) {
+
+    showMessage(
+      error.message,
+      "error"
+    );
+
+    return;
+  }
+
 
   let html = `
+
     <table>
-    <tr>
-      <th>Week</th>
-      <th>Player</th>
-      <th>Outcome</th>
-      <th>Notes</th>
-    </tr>
+
+      <tr>
+
+        <th>Week</th>
+        <th>Player</th>
+        <th>Outcome</th>
+        <th>Notes</th>
+
+      </tr>
+
   `;
 
-  (data || []).forEach(result => {
 
-    const player =
-      players.find(
-        p => p.id === result.player_id
-      );
+  /*
+     Show a useful message instead of
+     leaving an empty table.
+  */
 
-    const week =
-      weeks.find(
-        w => w.id === result.week_id
-      );
+  if (!data || data.length === 0) {
 
     html += `
+
       <tr>
-        <td>
-          ${week ? "Week " + week.week_number : ""}
+
+        <td colspan="4">
+          No processed results are available for this week yet.
         </td>
 
-        <td>
-          ${player ? player.name : ""}
-        </td>
-
-        <td>
-          ${result.outcome}
-        </td>
-
-        <td>
-          ${result.notes || ""}
-        </td>
       </tr>
+
     `;
-  });
+
+  } else {
+
+
+    data.forEach(result => {
+
+      const player =
+        players.find(
+          p =>
+            Number(p.id) ===
+            Number(result.player_id)
+        );
+
+
+      const week =
+        weeks.find(
+          w =>
+            Number(w.id) ===
+            Number(result.week_id)
+        );
+
+
+      /*
+         Make the outcome clearer visually.
+      */
+
+      let outcomeDisplay = result.outcome;
+
+
+      switch (result.outcome) {
+
+        case "progressed":
+
+          outcomeDisplay =
+            "✅ Progressed";
+
+          break;
+
+
+        case "eliminated":
+
+          outcomeDisplay =
+            "❌ Eliminated";
+
+          break;
+
+
+        case "pending":
+
+          outcomeDisplay =
+            "⏳ Pending";
+
+          break;
+
+
+        case "bye_second_chance":
+
+          outcomeDisplay =
+            "🟡 Bye / Second Chance";
+
+          break;
+
+
+        default:
+
+          outcomeDisplay =
+            result.outcome || "Pending";
+
+      }
+
+
+      html += `
+
+        <tr>
+
+          <td>
+
+            ${
+              week
+                ? "Week " + week.week_number
+                : ""
+            }
+
+          </td>
+
+
+          <td>
+
+            ${
+              player
+                ? player.name
+                : ""
+            }
+
+          </td>
+
+
+          <td>
+
+            ${outcomeDisplay}
+
+          </td>
+
+
+          <td>
+
+            ${result.notes || ""}
+
+          </td>
+
+        </tr>
+
+      `;
+
+    });
+
+  }
+
 
   html += "</table>";
+
 
   document.getElementById("resultsTable")
     .innerHTML = html;
 }
 
 
+
+/* ============================================================
+   FORMAT ONE RESULT FOR WHATSAPP
+   ============================================================ */
+
+function getWhatsAppOutcome(result) {
+
+  switch (result.outcome) {
+
+
+    case "progressed":
+
+      return "✅ Progressed";
+
+
+    case "eliminated":
+
+      return "❌ Eliminated";
+
+
+    case "pending":
+
+      return "⏳ Pending";
+
+
+    case "bye_second_chance":
+
+      return "🟡 Bye / Second Chance";
+
+
+    default:
+
+      return (
+        "⏳ " +
+        (
+          result.outcome ||
+          "Pending"
+        )
+      );
+
+  }
+
+}
+
+
+
+/* ============================================================
+   GENERATE WHATSAPP REPORT
+   ============================================================ */
+
 async function generateReport() {
 
   const weekId =
     document.getElementById("resultWeek").value;
 
+
   if (!weekId) {
+
     showMessage(
       "Select a week first.",
       "error"
     );
+
     return;
   }
 
+
   const week =
-    weeks.find(w => w.id == weekId);
+    weeks.find(
+      w =>
+        Number(w.id) ===
+        Number(weekId)
+    );
+
+
+  if (!week) {
+
+    showMessage(
+      "Selected week could not be found.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  /*
+     Refresh player information first so the
+     report and dashboard both use current data.
+  */
+
+  await loadPlayers();
+
 
   const { data: results, error } =
     await supabaseClient
       .from("weekly_results")
       .select("*")
       .eq("competition_id", competitionId)
-      .eq("week_id", weekId);
+      .eq("week_id", weekId)
+      .order("player_id");
+
 
   if (error) {
-    showMessage(error.message, "error");
+
+    showMessage(
+      error.message,
+      "error"
+    );
+
     return;
   }
 
+
   let report =
     "🏆 PREMIER LEAGUE SURVIVOR\n\n";
+
 
   report +=
     "Week " +
     week.week_number +
     " Results\n\n";
 
+
+  /*
+     Each possible outcome is handled separately.
+
+     Pending is NEVER treated as eliminated.
+  */
+
   (results || []).forEach(result => {
 
     const player =
       players.find(
-        p => p.id === result.player_id
+        p =>
+          Number(p.id) ===
+          Number(result.player_id)
       );
 
-    if (!player) return;
+
+    if (!player) {
+      return;
+    }
+
 
     const status =
-      result.outcome === "progressed"
-        ? "✅ Progressed"
-        : "❌ Eliminated";
+      getWhatsAppOutcome(result);
+
 
     report +=
       player.name +
       " — " +
-      status +
-      "\n";
+      status;
+
+
+    /*
+       For pending results it is useful to explain
+       why the result is not final.
+    */
+
+    if (
+      result.outcome === "pending" &&
+      result.notes
+    ) {
+
+      report +=
+        " (" +
+        result.notes +
+        ")";
+
+    }
+
+
+    report += "\n";
+
   });
 
-  const { data: cps } =
+
+
+  /*
+     Get CURRENT competition status directly
+     from Supabase.
+  */
+
+  const { data: cps, error: cpError } =
     await supabaseClient
       .from("competition_players")
-      .select("*")
-      .eq("competition_id", competitionId);
+      .select("status")
+      .eq(
+        "competition_id",
+        competitionId
+      );
+
+
+  if (cpError) {
+
+    showMessage(
+      cpError.message,
+      "error"
+    );
+
+    return;
+  }
+
 
   const active =
     (cps || []).filter(
       p => p.status === "active"
     ).length;
 
+
+  const eliminated =
+    (cps || []).filter(
+      p => p.status === "eliminated"
+    ).length;
+
+
+  const winners =
+    (cps || []).filter(
+      p => p.status === "winner"
+    ).length;
+
+
   report +=
     "\nPlayers remaining: " +
     active;
 
+
+  report +=
+    "\nPlayers eliminated: " +
+    eliminated;
+
+
+  if (winners > 0) {
+
+    report +=
+      "\nWinner: " +
+      winners;
+
+  }
+
+
   document.getElementById("reportBox")
     .value = report;
 
+
+  /*
+     Also refresh the processed-results table
+     while we're here.
+  */
+
+  await loadResults(weekId);
+
+
   showMessage(
-    "WhatsApp report generated.",
+    "WhatsApp report generated using the latest results.",
     "success"
   );
 }
-
-
-checkSession();
+  checkSession();
 
 // Remove accidental repeated < characters from fixture area
 function cleanFixtureStrayCharacters() {
