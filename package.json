@@ -1,0 +1,17 @@
+{
+  "name": "premier-league-survivor-android",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare:web": "node scripts/prepare-web.mjs",
+    "android:add": "npm run prepare:web && npx cap add android",
+    "android:sync": "npm run prepare:web && npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0"
+  }
+}

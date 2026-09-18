@@ -1,0 +1,8 @@
+{
+  "appId": "com.tonysham.premierleaguesurvivor",
+  "appName": "Premier League Survivor",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
