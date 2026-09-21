@@ -12073,39 +12073,132 @@ async function processResults() {
   const weekId =
     document.getElementById("resultWeek").value;
 
-
   if (!weekId) {
-
     showMessage(
       "Select a week first.",
+      "error"
+    );
+    return;
+  }
+
+  showMessage(
+    "Checking fixture results before processing...",
+    ""
+  );
+
+  /* ==========================================================
+     STEP 1 — CHECK THE SELECTED WEEK'S FIXTURES
+     ========================================================== */
+
+  const { data: weekFixtures, error: fixtureError } =
+    await supabaseClient
+      .from("fixtures")
+      .select(`
+        id,
+        week_id,
+        home_team_id,
+        away_team_id,
+        home_score,
+        away_score,
+        status,
+        home_team:teams!fixtures_home_team_id_fkey(name),
+        away_team:teams!fixtures_away_team_id_fkey(name)
+      `)
+      .eq("week_id", weekId);
+
+  if (fixtureError) {
+    showMessage(
+      "Could not check fixture results: " +
+      fixtureError.message,
+      "error"
+    );
+    return;
+  }
+
+  if (!weekFixtures || weekFixtures.length === 0) {
+    showMessage(
+      "No fixtures were found for this week. Results have NOT been processed.",
+      "error"
+    );
+    return;
+  }
+
+  /* ==========================================================
+     STEP 2 — FIND ANY MATCHES THAT ARE NOT READY
+     
+     A fixture is ready when:
+     - it is completed AND has both scores
+     OR
+     - it has been postponed
+     ========================================================== */
+
+  const incompleteFixtures =
+    weekFixtures.filter(fixture => {
+
+      const isPostponed =
+        fixture.status === "postponed";
+
+      const isCompleted =
+        fixture.status === "completed" &&
+        fixture.home_score !== null &&
+        fixture.away_score !== null;
+
+      return !isPostponed && !isCompleted;
+    });
+
+  if (incompleteFixtures.length > 0) {
+
+    const missingMatches =
+      incompleteFixtures
+        .map(fixture => {
+
+          const home =
+            fixture.home_team
+              ? fixture.home_team.name
+              : "Home team";
+
+          const away =
+            fixture.away_team
+              ? fixture.away_team.name
+              : "Away team";
+
+          return home + " vs " + away;
+        })
+        .join(", ");
+
+    showMessage(
+      "Results NOT processed. " +
+      incompleteFixtures.length +
+      " fixture(s) still need a completed score: " +
+      missingMatches,
       "error"
     );
 
     return;
   }
 
+  /* ==========================================================
+     STEP 3 — PROCESS SURVIVOR RESULTS
+     ========================================================== */
 
-  /*
-     Supabase remains authoritative for deciding:
-     - progressed
-     - eliminated
-     - pending
-     - postponed / bye rules
-  */
+  showMessage(
+    "All fixture results confirmed. Processing Survivor results...",
+    ""
+  );
 
   const { error: processError } =
     await supabaseClient.rpc(
       "process_survivor_week",
       {
         p_competition_id: competitionId,
-        p_week_id: weekId
+        p_week_id: Number(weekId)
       }
     );
-
 
   if (processError) {
 
     showMessage(
+      "Results could not be processed: " +
       processError.message,
       "error"
     );
@@ -12113,34 +12206,95 @@ async function processResults() {
     return;
   }
 
+  /* ==========================================================
+     STEP 4 — VERIFY RESULTS WERE ACTUALLY CREATED
+     ========================================================== */
 
-  /*
-     IMPORTANT:
-     Refresh every part of the app that depends
-     on the newly processed results.
+  const { data: processedResults, error: verifyError } =
+    await supabaseClient
+      .from("weekly_results")
+      .select("player_id,outcome,notes")
+      .eq("competition_id", competitionId)
+      .eq("week_id", weekId);
 
-     Previously the function returned immediately,
-     leaving the dashboard showing old information.
-  */
+  if (verifyError) {
+
+    showMessage(
+      "Results were processed but verification failed: " +
+      verifyError.message,
+      "error"
+    );
+
+    return;
+  }
+
+  if (!processedResults || processedResults.length === 0) {
+
+    showMessage(
+      "Processing finished but no player results were created. Please do not process again until this is checked.",
+      "error"
+    );
+
+    return;
+  }
+
+  /* ==========================================================
+     STEP 5 — MAKE SURE NOTHING IS STILL PENDING
+     ========================================================== */
+
+  const pendingResults =
+    processedResults.filter(
+      result => result.outcome === "pending"
+    );
+
+  if (pendingResults.length > 0) {
+
+    await loadPlayers();
+    await loadSelections();
+    await loadFixtures();
+    await loadResults(weekId);
+
+    showMessage(
+      "Processing completed, but " +
+      pendingResults.length +
+      " player result(s) are still pending. Please check those results before continuing.",
+      "error"
+    );
+
+    return;
+  }
+
+  /* ==========================================================
+     STEP 6 — REFRESH THE FULL DASHBOARD
+     ========================================================== */
 
   await loadPlayers();
-
   await loadSelections();
-
   await loadFixtures();
-
   await loadResults(weekId);
 
+  const progressedCount =
+    processedResults.filter(
+      result =>
+        result.outcome === "progressed" ||
+        result.outcome === "bye_second_chance"
+    ).length;
+
+  const eliminatedCount =
+    processedResults.filter(
+      result => result.outcome === "eliminated"
+    ).length;
 
   showMessage(
-    "Weekly results processed and dashboard updated successfully.",
+    "✓ Week processed successfully. " +
+    progressedCount +
+    " progressed and " +
+    eliminatedCount +
+    " eliminated.",
     "success"
   );
 }
-
-
-
-/* ============================================================
+  /* ============================================================
    LOAD WEEKLY RESULTS
 
    If a week is selected, show that week's results.
