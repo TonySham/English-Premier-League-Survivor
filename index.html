@@ -12018,23 +12018,30 @@ async function editFixture(id) {
   if (awayScore === null) return;
 
   const home =
-    parseInt(homeScore);
+    Number(homeScore);
 
   const away =
-    parseInt(awayScore);
+    Number(awayScore);
 
   if (
-    Number.isNaN(home) ||
-    Number.isNaN(away)
+    !Number.isInteger(home) ||
+    !Number.isInteger(away) ||
+    home < 0 ||
+    away < 0
   ) {
     showMessage(
-      "Please enter valid scores.",
+      "Please enter valid whole-number scores.",
       "error"
     );
     return;
   }
 
-  const { error } =
+  showMessage(
+    "Saving fixture result...",
+    ""
+  );
+
+  const { data, error } =
     await supabaseClient
       .from("fixtures")
       .update({
@@ -12042,15 +12049,49 @@ async function editFixture(id) {
         away_score: away,
         status: "completed"
       })
-      .eq("id", id);
+      .eq("id", id)
+      .select(`
+        id,
+        home_score,
+        away_score,
+        status
+      `)
+      .single();
 
   if (error) {
-    showMessage(error.message, "error");
+    showMessage(
+      "Fixture result was NOT saved: " +
+      error.message,
+      "error"
+    );
+    return;
+  }
+
+  if (!data) {
+    showMessage(
+      "Fixture result was NOT saved. Supabase did not return an updated fixture.",
+      "error"
+    );
+    return;
+  }
+
+  if (
+    data.home_score !== home ||
+    data.away_score !== away ||
+    data.status !== "completed"
+  ) {
+    showMessage(
+      "Fixture result could not be verified. Please do not process the week yet.",
+      "error"
+    );
     return;
   }
 
   showMessage(
-    "Fixture result saved.",
+    "✓ Fixture result saved and verified: " +
+    home +
+    " - " +
+    away,
     "success"
   );
 
