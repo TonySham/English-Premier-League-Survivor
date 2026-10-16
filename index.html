@@ -10514,14 +10514,23 @@ html body #dashboard .table-panel table tbody tr:hover > td{
         <p>View Premier League fixtures and update match results.</p>
     </div>
 
-    <div class="fixture-list-heading">
-        <div>
-            <strong>Competition Fixtures</strong>
-            <span>Fixtures and results for the current Survivor competition</span>
-        </div>
+ <div class="fixture-list-heading">
+    <div>
+        <strong>Competition Fixtures</strong>
+        <span>Fixtures and results for the current Survivor competition</span>
     </div>
+</div>
 
-    <div class="table-panel">
+<div class="results-control-panel">
+    <div class="results-field">
+        <label>WEEK</label>
+        <select id="fixtureWeek" onchange="loadFixtures()">
+            <option value="">Select week</option>
+        </select>
+    </div>
+</div>
+
+<div class="table-panel">
         <div id="fixturesTable">
             Loading...
         </div>
@@ -11485,18 +11494,23 @@ const weeksCompleted = weeks.filter(week =>
 
 document.getElementById("seasonWeeksCompleted").textContent =
     weeksCompleted;
-  const weekSelect =
-    document.getElementById("selectionWeek");
+const weekSelect =
+  document.getElementById("selectionWeek");
 
-  const resultWeek =
-    document.getElementById("resultWeek");
+const resultWeek =
+  document.getElementById("resultWeek");
 
-  weekSelect.innerHTML =
-    '<option value="">Select week</option>';
+const fixtureWeek =
+  document.getElementById("fixtureWeek");
 
-  resultWeek.innerHTML =
-    '<option value="">Select week</option>';
+weekSelect.innerHTML =
+  '<option value="">Select week</option>';
 
+resultWeek.innerHTML =
+  '<option value="">Select week</option>';
+
+fixtureWeek.innerHTML =
+  '<option value="">Select week</option>';
   let html = `
     <table>
     <tr>
@@ -11541,7 +11555,15 @@ document.getElementById("seasonWeeksCompleted").textContent =
       </tr>
     `;
   });
+const firstUnfinishedWeek =
+  weeks.find(
+    week => week.status !== "completed"
+  ) || weeks[weeks.length - 1];
 
+if (firstUnfinishedWeek) {
+  fixtureWeek.value =
+    String(firstUnfinishedWeek.id);
+}
   html += "</table>";
 
   document.getElementById("weeksTable")
@@ -11915,93 +11937,152 @@ function teamBadge(teamName) {
         </span>
     `;
 }
-  async function loadFixtures() {
+async function loadFixtures(weekIdOverride = null) {
 
-  const { data, error } =
-    await supabaseClient
+  const fixtureWeekElement =
+    document.getElementById("fixtureWeek");
+
+  const selectedWeekId =
+    weekIdOverride ||
+    (
+      fixtureWeekElement
+        ? fixtureWeekElement.value
+        : null
+    );
+
+  let query =
+    supabaseClient
       .from("fixtures")
       .select(`
         *,
         home_team:teams!fixtures_home_team_id_fkey(id,name),
         away_team:teams!fixtures_away_team_id_fkey(id,name)
       `)
-      .order("week_id")
       .order("scheduled_time");
 
-  if (error) throw error;
-const fixturesCompleted = (data || []).filter(fixture =>
-    fixture.status === "completed"
-).length;
+  if (selectedWeekId) {
+    query =
+      query.eq(
+        "week_id",
+        selectedWeekId
+      );
+  }
 
-document.getElementById("seasonFixturesCompleted").textContent =
+  const { data, error } =
+    await query;
+
+  if (error) {
+    showMessage(
+      "Could not load fixtures: " +
+      error.message,
+      "error"
+    );
+    return;
+  }
+
+  const fixturesCompleted =
+    (data || []).filter(
+      fixture =>
+        fixture.status === "completed"
+    ).length;
+
+  document.getElementById(
+    "seasonFixturesCompleted"
+  ).textContent =
     fixturesCompleted;
+
   let html = `
     <table>
-    <tr>
-      <th>Week</th>
-      <th>Fixture</th>
-      <th>Date</th>
-      <th>Status</th>
-      <th>Score</th>
-      <th>Action</th>
-    </tr>
+      <tr>
+        <th>Week</th>
+        <th>Fixture</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Score</th>
+        <th>Action</th>
+      </tr>
   `;
 
-  (data || []).forEach(fixture => {
-
-    const week =
-      weeks.find(
-        w => w.id === fixture.week_id
-      );
-
-    const score =
-      fixture.home_score !== null &&
-      fixture.away_score !== null
-        ? fixture.home_score +
-          " - " +
-          fixture.away_score
-        : "Not played";
+  if (!data || data.length === 0) {
 
     html += `
       <tr>
-        <td>
-          ${week ? "Week " + week.week_number : ""}
-        </td>
-
-<td class="fixture-teams">
-    ${teamBadge(fixture.home_team.name)}
-    <span class="fixture-vs">VS</span>
-    ${teamBadge(fixture.away_team.name)}
-</td><
-
-        <td>
-          ${new Date(
-            fixture.scheduled_time
-          ).toLocaleString()}
-        </td>
-
-        <td>
-          ${fixture.status}
-        </td>
-
-        <td>
-          ${score}
-        </td>
-
-        <td>
-          <button
-            onclick="editFixture(${fixture.id})">
-            Edit Result
-          </button>
+        <td colspan="6">
+          No fixtures found for this week.
         </td>
       </tr>
     `;
-  });
+
+  } else {
+
+    data.forEach(fixture => {
+
+      const week =
+        weeks.find(
+          w =>
+            Number(w.id) ===
+            Number(fixture.week_id)
+        );
+
+      const score =
+        fixture.home_score !== null &&
+        fixture.away_score !== null
+          ? fixture.home_score +
+            " - " +
+            fixture.away_score
+          : "Not played";
+
+      html += `
+        <tr>
+
+          <td>
+            ${
+              week
+                ? "Week " + week.week_number
+                : ""
+            }
+          </td>
+
+          <td class="fixture-teams">
+            ${teamBadge(fixture.home_team.name)}
+            <span class="fixture-vs">VS</span>
+            ${teamBadge(fixture.away_team.name)}
+          </td>
+
+          <td>
+            ${
+              new Date(
+                fixture.scheduled_time
+              ).toLocaleString()
+            }
+          </td>
+
+          <td>
+            ${fixture.status}
+          </td>
+
+          <td>
+            ${score}
+          </td>
+
+          <td>
+            <button
+              onclick="editFixture(${fixture.id})">
+              Edit Result
+            </button>
+          </td>
+
+        </tr>
+      `;
+    });
+  }
 
   html += "</table>";
 
-  document.getElementById("fixturesTable")
-    .innerHTML = html;
+  document.getElementById(
+    "fixturesTable"
+  ).innerHTML =
+    html;
 }
 
 
